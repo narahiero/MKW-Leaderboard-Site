@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using mkw_leaderboard.Models.Enums;
+using my_app.Models.Enums;
 
-namespace mkw_leaderboard.Models
+namespace my_app.Models
 {
     public class Time
     {

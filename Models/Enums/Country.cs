@@ -1,4 +1,4 @@
-namespace mkw_leaderboard.Models.Enums
+namespace my_app.Models.Enums
 {
     public enum Country
     {

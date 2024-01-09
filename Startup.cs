@@ -4,10 +4,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
-using mkw_leaderboard.Services.Database;
+using my_app.Services.Database;
 using Microsoft.EntityFrameworkCore;
 
-namespace mkw_leaderboard
+namespace my_app
 {
     public class Startup
     {

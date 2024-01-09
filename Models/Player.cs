@@ -1,25 +1,22 @@
 using System.ComponentModel.DataAnnotations;
-using mkw_leaderboard.Models.Enums;
+using my_app.Models.Enums;
 
-namespace mkw_leaderboard.Models
+namespace my_app.Models
 {
     public class Player
     {
         public Player() {
             Name = "";
-            CTGPProfiles = new List<string>();
         }
 
-        public Player(string name, Country country, string town, string otherInfo, List<string> ctgpProfiles, string discord, string ppProofStatus) {
+        public Player(string name, Country country, string town, string otherInfo, string discord, string ppProofStatus) {
             Name = name;
             Country = country;
             Town = town;
             OtherInfo = otherInfo;
-            CTGPProfiles = ctgpProfiles;
             Discord = discord;
             PPProofStatus = ppProofStatus;
         }
-
 
         public int Id { get; set; }
 
@@ -32,8 +29,6 @@ namespace mkw_leaderboard.Models
         public string? Town { get; set; }
 
         public string? OtherInfo { get; set; }
-
-        public List<string> CTGPProfiles { get; set; }
 
         public string? Discord { get; set; }
 

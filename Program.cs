@@ -1,11 +1,11 @@
 ﻿
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using mkw_leaderboard.Services.Database;
+using my_app.Services.Database;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 
-namespace mkw_leaderboard
+namespace my_app
 {
     public class Program
     {
