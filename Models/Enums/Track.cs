@@ -1,0 +1,38 @@
+namespace mkw_leaderboard.Models.Enums
+{
+    public enum Track
+    {
+        LC,
+        MMM,
+        MG,
+        TF,
+        MC,
+        CM,
+        DKS,
+        WGM,
+        DC,
+        KC,
+        MT,
+        GV,
+        DDR,
+        MH,
+        BC,
+        RR,
+        rPB,
+        rYF,
+        rGV2,
+        rMR,
+        rSL,
+        rSGB,
+        rDS,
+        rWS,
+        rDH,
+        rBC3,
+        rDKJP,
+        rMC,
+        rMC3,
+        rPG,
+        rDKM,
+        rBC
+    }
+}
