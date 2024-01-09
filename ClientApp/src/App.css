@@ -1,0 +1,67 @@
+/* App.css */
+
+.table-container {
+  display: flex;
+  justify-content: space-around; /* Adjust as needed */
+  margin-top: 20px;
+  padding: 2%;
+}
+
+.top10-table {
+  flex: 1;
+  margin-right: 2%; /* Adjust as needed */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  width: calc(100% - 2px); /* Adjust based on border size */
+  margin: 1px; /* Create a border effect */
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2; /* Optional: Alternate row background color */
+}
+
+
+thead {
+  background-color: #3498db;
+  color: #fff;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  font-weight: bold;
+}
+
+/* Add these styles to center the button container */
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10vh;
+}
+
+/* Add the styles for the cool button as before */
+.cool-button {
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+}
