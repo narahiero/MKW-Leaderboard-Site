@@ -10,8 +10,9 @@ namespace my_app.Models
 
         }
 
-        public Time(DateTime date, Track track, bool glitch, bool flap, int minutes, int seconds, int milliseconds, string link, string ghost) {
+        public Time(DateTime date, int playerId, Track track, bool glitch, bool flap, int minutes, int seconds, int milliseconds, string link, string ghost) {
             Date = date;
+            PlayerId = playerId;
             Track = track;
             Glitch = glitch;
             Flap = flap;
@@ -25,6 +26,9 @@ namespace my_app.Models
         public int Id { get; set; }
 
         public DateTime? Date { get; set; }
+
+        [Required]
+        public int PlayerId { get; set; }
 
         [Required]
         public Track Track { get; set; }

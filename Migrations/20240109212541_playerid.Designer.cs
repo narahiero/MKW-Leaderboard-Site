@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using my_app.Services.Database;
 
@@ -11,9 +12,10 @@ using my_app.Services.Database;
 namespace my_app.Migrations
 {
     [DbContext(typeof(MKWLeaderboardContext))]
-    partial class MKWLeaderboardContextModelSnapshot : ModelSnapshot
+    [Migration("20240109212541_playerid")]
+    partial class playerid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
