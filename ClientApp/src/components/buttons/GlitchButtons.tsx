@@ -1,10 +1,10 @@
 import React from 'react';
 
-interface CategoryButtonsProps {
+interface GlitchButtonsProps {
   onButtonClick: (buttonType: boolean) => void;
 }
 
-class CategoryButtons extends React.Component<CategoryButtonsProps> {
+class GlitchButtons extends React.Component<GlitchButtonsProps> {
   render() {
     const { onButtonClick } = this.props;
 
@@ -21,4 +21,4 @@ class CategoryButtons extends React.Component<CategoryButtonsProps> {
   }
 }
 
-export default CategoryButtons;
+export default GlitchButtons;

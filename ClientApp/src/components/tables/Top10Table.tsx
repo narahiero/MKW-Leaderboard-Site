@@ -5,6 +5,7 @@ import {
   TableRow as Row,
   TableCell as Cell,
 } from '@mui/material';
+import Track from '../../types/enums'
 
 const calculateRank = (player: LeaderBoardTimeEntry, data: LeaderBoardTimeEntry[]): string => {
 const sortedData = [...data].sort((a, b) => {
@@ -73,15 +74,16 @@ const formatTime = (time: Time): JSX.Element => {
   }
 };
 
-const Top10Table: React.FC<LeaderBoardTimeEntry[]> = (entries) => {
+const Top10Table: React.FC<Top10TableProps> = ({top10s}) => {
+  console.log(top10s)
   return (
     <div className="top10-table">
-      <h2>{Track[entries[0].time.track]}</h2>
+      <h2>{"troll"}</h2>
       <Table>
         <Body>
-          {entries.map((entry: LeaderBoardTimeEntry) => (
+          {top10s.map((entry: LeaderBoardTimeEntry) => (
             <Row key={entry.player.id}>
-              <Cell>{calculateRank(entry, entries)}</Cell>
+              <Cell>{calculateRank(entry, top10s)}</Cell>
               <Cell><img src={`/assets/flags/${Country[entry.player.country]}.png`} alt={Country[entry.player.country]} style={{ maxWidth: '3vh', maxHeight: '3vh', width: 'auto', height: 'auto' }} /></Cell>
               <Cell>{entry.player.name}</Cell>
               <Cell>{formatTime(entry.time)}</Cell>

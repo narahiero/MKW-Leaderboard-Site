@@ -1,4 +1,4 @@
-enum Track {
+export enum Track {
     LC,
     MMM,
     MG,
@@ -33,7 +33,7 @@ enum Track {
     rBC
 }
 
-enum Country {
+export enum Country {
     Unknown,
         AF,
         AX,

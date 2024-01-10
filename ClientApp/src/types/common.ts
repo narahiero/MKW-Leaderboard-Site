@@ -26,3 +26,7 @@ interface LeaderBoardTimeEntry {
     time: Time;
     player: Player;
 }
+
+interface Top10TableProps {
+    top10s: LeaderBoardTimeEntry[];
+}
