@@ -5,9 +5,6 @@ namespace my_app.Models
 {
     public class CTGPProfileLink
     {
-        public CTGPProfileLink() {
-        }
-
         public CTGPProfileLink(int playerId, string link) {
             PlayerId = playerId;
             Link = link;

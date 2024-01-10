@@ -1,15 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using my_app.Models;
 
-
 namespace my_app.Services.Database
 {
     public class MKWLeaderboardContext : DbContext
     {
-        public MKWLeaderboardContext() : base()
-        {
-
-        }
         public MKWLeaderboardContext(DbContextOptions<MKWLeaderboardContext> options) : base(options)
         {
 

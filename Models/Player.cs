@@ -33,5 +33,7 @@ namespace my_app.Models
         public string? Discord { get; set; }
 
         public string? PPProofStatus { get; set; }
+
+        public DateTime? DeletedAt { get; set; }
     }
 }

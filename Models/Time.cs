@@ -51,5 +51,9 @@ namespace my_app.Models
         public string? Link { get; set; }
 
         public string? Ghost { get; set; }
+
+        public bool Obsoleted { get; set; }
+
+        public DateTime? DeletedAt { get; set; }
     }
 }

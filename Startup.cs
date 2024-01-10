@@ -6,6 +6,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using my_app.Services.Database;
 using Microsoft.EntityFrameworkCore;
+using my_app.Services.Interfaces;
+using my_app.Models;
+using my_app.Services;
 
 namespace my_app
 {
@@ -36,6 +39,8 @@ namespace my_app
 
             services.AddControllersWithViews();
             services.AddSingleton(Configuration);
+            services.AddSingleton<IPlayerService, PlayerService>();
+            services.AddSingleton<ITimeService, TimeService>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using my_app.Services.Database;
 
@@ -11,9 +12,10 @@ using my_app.Services.Database;
 namespace my_app.Migrations
 {
     [DbContext(typeof(MKWLeaderboardContext))]
-    partial class MKWLeaderboardContextModelSnapshot : ModelSnapshot
+    [Migration("20240110120234_DeletedAt")]
+    partial class DeletedAt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,9 +110,6 @@ namespace my_app.Migrations
 
                     b.Property<int>("Minutes")
                         .HasColumnType("int");
-
-                    b.Property<bool>("Obsoleted")
-                        .HasColumnType("bit");
 
                     b.Property<int>("PlayerId")
                         .HasColumnType("int");
