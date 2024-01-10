@@ -1,4 +1,5 @@
 using my_app.Models;
+using my_app.Models.Enums;
 
 namespace my_app.Services.Interfaces
 {
@@ -19,5 +20,6 @@ namespace my_app.Services.Interfaces
         Task<IEnumerable<Time>> GetGFlapByPlayerId(int playerId);
         Task<IEnumerable<Time>> GetNGFlapByPlayerId(int playerId);
         Task<IEnumerable<Time>> GetAll();
+        Task<IEnumerable<Time>> GetTimeHistory(int playerId, Track track, bool glitch, bool flap);
     }
 }

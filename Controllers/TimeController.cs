@@ -3,6 +3,7 @@ using System.Diagnostics;
 using my_app.Services.Interfaces;
 using my_app.Models;
 using Microsoft.Extensions.Configuration;
+using my_app.Models.Enums;
 
 namespace my_app.Controllers
 {
@@ -155,6 +156,21 @@ namespace my_app.Controllers
             try
             {
                 return Ok(await _timeService.GetAll());
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(e.Message);
+
+                return InternalServerError();
+            }
+        }
+
+        [HttpGet("history/player/{playerId}/track/{track}/glitch/{glitch}/flap/{flap}")]
+        public async Task<ActionResult<IEnumerable<Time>>> GetTimeHistory(int playerId, Track track, bool glitch, bool flap)
+        {
+            try
+            {
+                return Ok(await _timeService.GetTimeHistory(playerId, track, glitch, flap));
             }
             catch (Exception e)
             {

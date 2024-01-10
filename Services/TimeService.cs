@@ -3,6 +3,7 @@ using my_app.Models;
 using my_app.Services.Interfaces;
 using Dapper;
 using Microsoft.Extensions.Configuration;
+using my_app.Models.Enums;
 
 namespace my_app.Services
 {
@@ -27,6 +28,9 @@ namespace my_app.Services
             if(time.Date < minDate) {
                 time.Date = null;
             }
+
+            var oldTime = await GetExistingTime(time.PlayerId, time.Track, time.Glitch, time.Flap);
+            await Obsolete(oldTime.Id);
 
             string sqlQuery = "INSERT INTO Times (PlayerId, Date, Track, Glitch, Flap, Minutes, Seconds, Milliseconds, Link, Ghost)" +
             "VALUES (@PlayerId, @Date, @Track, @Glitch, @Flap, @Minutes, @Seconds, @Milliseconds, @Link, @Ghost)";
@@ -101,7 +105,7 @@ namespace my_app.Services
 
         public async Task<IEnumerable<Time>> GetNGByPlayerId(int playerId)
         {
-            string sqlQuery = "SELECT * FROM Times WHERE PlayerId = @PlayerId AND Glitch = 0 AND Flap = 0";
+            string sqlQuery = "SELECT * FROM Times WHERE PlayerId = @PlayerId AND Glitch = 0 AND Flap = 0 AND Obsoleted = 0";
 
             using var connection = GetConnection();
             return await connection.QueryAsync<Time>(sqlQuery, new { PlayerId = playerId });
@@ -109,7 +113,7 @@ namespace my_app.Services
 
         public async Task<IEnumerable<Time>> GetAllByPlayerId(int playerId)
         {
-            string sqlQuery = "SELECT * FROM Times WHERE PlayerId = @PlayerId AND Glitch = 0 AND Flap = 0";
+            string sqlQuery = "SELECT * FROM Times WHERE PlayerId = @PlayerId AND Glitch = 0 AND Flap = 0 AND Obsoleted = 0";
 
             using var connection = GetConnection();
             return await connection.QueryAsync<Time>(sqlQuery, new { PlayerId = playerId });
@@ -117,7 +121,7 @@ namespace my_app.Services
 
         public async Task<IEnumerable<Time>> GetGByPlayerId(int playerId)
         {
-            string sqlQuery = "SELECT * FROM Times WHERE PlayerId = @PlayerId AND Glitch = 1 AND Flap = 0";
+            string sqlQuery = "SELECT * FROM Times WHERE PlayerId = @PlayerId AND Glitch = 1 AND Flap = 0 AND Obsoleted = 0";
 
             using var connection = GetConnection();
             return await connection.QueryAsync<Time>(sqlQuery, new { PlayerId = playerId });
@@ -125,7 +129,7 @@ namespace my_app.Services
 
         public async Task<IEnumerable<Time>> GetNGFlapByPlayerId(int playerId)
         {
-            string sqlQuery = "SELECT * FROM Times WHERE PlayerId = @PlayerId AND Glitch = 0 AND Flap = 1";
+            string sqlQuery = "SELECT * FROM Times WHERE PlayerId = @PlayerId AND Glitch = 0 AND Flap = 1 AND Obsoleted = 0";
 
             using var connection = GetConnection();
             return await connection.QueryAsync<Time>(sqlQuery, new { PlayerId = playerId });
@@ -133,7 +137,7 @@ namespace my_app.Services
 
         public async Task<IEnumerable<Time>> GetGFlapByPlayerId(int playerId)
         {
-            string sqlQuery = "SELECT * FROM Times WHERE PlayerId = @PlayerId AND Glitch = 1 AND Flap = 1";
+            string sqlQuery = "SELECT * FROM Times WHERE PlayerId = @PlayerId AND Glitch = 1 AND Flap = 1 AND Obsoleted = 0";
 
             using var connection = GetConnection();
             return await connection.QueryAsync<Time>(sqlQuery, new { PlayerId = playerId });
@@ -141,7 +145,23 @@ namespace my_app.Services
 
         public async Task<IEnumerable<Time>> GetAll()
         {
-            string sqlQuery = "SELECT * FROM Times WHERE DeletedAt IS NULL";
+            string sqlQuery = "SELECT * FROM Times WHERE DeletedAt IS NULL AND Obsoleted = 0";
+
+            using var connection = GetConnection();
+            return await connection.QueryAsync<Time>(sqlQuery);
+        }
+
+        public async Task<Time> GetExistingTime(int playerId, Track track, bool glitch, bool flap)
+        {
+            string sqlQuery = "SELECT * FROM Times WHERE PlayerId = @PlayerId AND Track = @Track AND Glitch = @Glitch AND Flap = @Flap AND Obsoleted = 0 AND DeletedAt IS NULL";
+
+            using var connection = GetConnection();
+            return await connection.QueryFirstOrDefaultAsync<Time>(sqlQuery);
+        }
+
+        public async Task<IEnumerable<Time>> GetTimeHistory(int playerId, Track track, bool glitch, bool flap)
+        {
+            string sqlQuery = "SELECT * FROM Times WHERE PlayerId = @PlayerId AND Track = @Track AND Glitch = @Glitch AND Flap = @Flap AND DeletedAt IS NULL ORDER BY Date DESC";
 
             using var connection = GetConnection();
             return await connection.QueryAsync<Time>(sqlQuery);
