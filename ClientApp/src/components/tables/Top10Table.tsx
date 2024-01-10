@@ -6,16 +6,16 @@ import {
   TableCell as Cell,
 } from '@mui/material';
 
-const calculateRank = (player: PlayerData, data: PlayerData[]): string => {
+const calculateRank = (player: LeaderBoardTimeEntry, data: LeaderBoardTimeEntry[]): string => {
 const sortedData = [...data].sort((a, b) => {
     // Compare times in ascending order
-    if (a.timeData.minutes !== b.timeData.minutes) {
-    return a.timeData.minutes - b.timeData.minutes;
+    if (a.time.minutes !== b.time.minutes) {
+    return a.time.minutes - b.time.minutes;
     }
-    if (a.timeData.seconds !== b.timeData.seconds) {
-    return a.timeData.seconds - b.timeData.seconds;
+    if (a.time.seconds !== b.time.seconds) {
+    return a.time.seconds - b.time.seconds;
     }
-    return a.timeData.milliseconds - b.timeData.milliseconds;
+    return a.time.milliseconds - b.time.milliseconds;
 });
 
 const playerIndex = sortedData.findIndex((item) => item === player);
@@ -31,9 +31,9 @@ let rank = playerIndex + 1;
 let tieCount = 0;
 for (let i = playerIndex - 1; i >= 0; i--) {
     if (
-    sortedData[i].timeData.minutes === player.timeData.minutes &&
-    sortedData[i].timeData.seconds === player.timeData.seconds &&
-    sortedData[i].timeData.milliseconds === player.timeData.milliseconds
+    sortedData[i].time.minutes === player.time.minutes &&
+    sortedData[i].time.seconds === player.time.seconds &&
+    sortedData[i].time.milliseconds === player.time.milliseconds
     ) {
     tieCount++;
     } else {
@@ -50,7 +50,7 @@ if (tieCount > 0) {
 return rank.toString();
 };
 
-const formatTime = (time: TimeData, link?: string): JSX.Element => {
+const formatTime = (time: Time): JSX.Element => {
   const minutesStr = time.minutes.toString();
   const secondsStr = time.seconds < 10 ? `0${time.seconds}` : time.seconds.toString();
   const millisecondsStr =
@@ -62,9 +62,9 @@ const formatTime = (time: TimeData, link?: string): JSX.Element => {
 
   const formattedTime = `${minutesStr}:${secondsStr}.${millisecondsStr}`;
 
-  if (link) {
+  if (time.link) {
     return (
-      <a href={`${link}`} target="_blank" rel="noopener noreferrer">
+      <a href={`${time.link}`} target="_blank" rel="noopener noreferrer">
         {formattedTime}
       </a>
     );
@@ -73,21 +73,21 @@ const formatTime = (time: TimeData, link?: string): JSX.Element => {
   }
 };
 
-const Top10Table: React.FC<Top10TableProps> = ({ title, data }) => {
+const Top10Table: React.FC<LeaderBoardTimeEntry[]> = (entries) => {
   return (
     <div className="top10-table">
-      <h2>{title}</h2>
+      <h2>{Track[entries[0].time.track]}</h2>
       <Table>
         <Body>
-          {data.map((item: PlayerData) => (
-            <Row key={item.player}>
-              <Cell>{calculateRank(item, data)}</Cell>
-              <Cell><img src={`/assets/flags/${item.country}.png`} alt={item.country} style={{ maxWidth: '3vh', maxHeight: '3vh', width: 'auto', height: 'auto' }} /></Cell>
-              <Cell>{item.player}</Cell>
-              <Cell>{formatTime(item.timeData, item.link)}</Cell>
+          {entries.map((entry: LeaderBoardTimeEntry) => (
+            <Row key={entry.player.id}>
+              <Cell>{calculateRank(entry, entries)}</Cell>
+              <Cell><img src={`/assets/flags/${Country[entry.player.country]}.png`} alt={Country[entry.player.country]} style={{ maxWidth: '3vh', maxHeight: '3vh', width: 'auto', height: 'auto' }} /></Cell>
+              <Cell>{entry.player.name}</Cell>
+              <Cell>{formatTime(entry.time)}</Cell>
               <Cell>
-                {item.ghost && (
-                  <a href={item.ghost} target="_blank" rel="noopener noreferrer">
+                {entry.time.ghost && (
+                  <a href={entry.time.ghost} target="_blank" rel="noopener noreferrer">
                     <img src="/assets/ghost.png" alt="Ghost" style={{ width: '20px', height: '20px' }} />
                   </a>
                 )}

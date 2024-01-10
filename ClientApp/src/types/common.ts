@@ -1,21 +1,28 @@
-interface TimeData {
+interface Time {
+    id: number;
+    playerId: number;
+    track: Track;
+    glitch: boolean;
+    flap: boolean;
     minutes: number;
     seconds: number;
     milliseconds: number;
+    link: string;
+    ghost: string;
+    obsoleted: boolean;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface PlayerData {
-    player: string;
-    country: string;
-    timeData: TimeData;
-    link?: string;
-    ghost?: string;
+interface Player {
+    id: number;
+    name: string;
+    country: Country;
+    town: string;
+    otherInfo: string;
+    discord: string;
+    ppProofStatus: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface Top10TableProps {
-    title: string;
-    data: { country: string; player: string; timeData: TimeData, link?: string, ghost?: string }[];
-    glitchData?: { country: string; player: string; timeData: TimeData, link?: string, ghost?: string }[];
+interface LeaderBoardTimeEntry {
+    time: Time;
+    player: Player;
 }
