@@ -183,10 +183,8 @@ namespace my_app.Services
             if(glitch)
             {
                 var ngTops = await connection.QueryAsync<Time>(sqlQuery, new { Track = track, Glitch = false, Flap = flap});
-                if(IsFasterOrEqual(top15.AsList()[9], ngTops.AsList()[0])) {
-                    top15.AsList().AddRange(ngTops);
-                    top15.AsList().Sort(CompareTimes);
-                }
+                top15.AsList().AddRange(ngTops);
+                top15.AsList().Sort(CompareTimes);
             }
 
             var result = new List<LeaderBoardTimeEntry>();
@@ -215,37 +213,7 @@ namespace my_app.Services
             return result;
         }
 
-        private bool IsFasterOrEqual(Time time1, Time time2)
-        {
-            if(time2.Minutes > time1.Minutes)
-            {
-                return false;
-            }
-            else if(time1.Minutes > time2.Minutes)
-            {
-                return true;
-            }
-
-            if(time2.Seconds > time1.Seconds)
-            {
-                return false;
-            }
-            else if(time1.Seconds > time2.Seconds)
-            {
-                return true;
-            }
-
-            if(time2.Milliseconds > time1.Milliseconds)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
-        private static int CompareTimes(Time time1, Time time2)
+        private static int CompareTimes(Time time2, Time time1)
         {
             if(time2.Minutes > time1.Minutes)
             {
