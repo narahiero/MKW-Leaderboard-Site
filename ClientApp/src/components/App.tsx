@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import './App.css';
-import Top10Table from './components/tables/Top10Table';
-import MushroomCup from './components/sampleData/MushroomCup';
-import CategoryButtons from './components/buttons/CategoryButtons';
+import Top10Table from './tables/Top10Table';
+import MushroomCup from './sampleData/MushroomCup';
+import CategoryButtons from './buttons/CategoryButtons';
 
 const App = () => {
   const [buttonState, setButtonState] = useState<boolean>(true);
 
-  const handleButtonClick = (buttonType) => {
+  const handleButtonClick = (buttonType: boolean) => {
     setButtonState(buttonType);
   };
 
-  const getTableData = (cupData) => {
+  const getTableData = (cupData: Top10TableProps) => {
     return buttonState ? cupData.data : cupData.glitchData || cupData.data;
   };
 

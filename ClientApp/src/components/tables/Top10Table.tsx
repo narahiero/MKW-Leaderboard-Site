@@ -6,26 +6,6 @@ import {
   TableCell as Cell,
 } from '@mui/material';
 
-interface TimeData {
-  minutes: number;
-  seconds: number;
-  milliseconds: number;
-}
-
-interface PlayerData {
-    player: string;
-    country: string;
-    timeData: TimeData;
-    link?: string;
-    ghost?: string;
-  }
-
-interface Top10TableProps {
-  title: string;
-  data: { country: string; player: string; timeData: TimeData, link?: string, ghost?: string }[];
-  glitchData?: { country: string; player: string; timeData: TimeData, link?: string, ghost?: string }[];
-}
-
 const calculateRank = (player: PlayerData, data: PlayerData[]): string => {
 const sortedData = [...data].sort((a, b) => {
     // Compare times in ascending order
@@ -99,7 +79,7 @@ const Top10Table: React.FC<Top10TableProps> = ({ title, data }) => {
       <h2>{title}</h2>
       <Table>
         <Body>
-          {data.map((item) => (
+          {data.map((item: PlayerData) => (
             <Row key={item.player}>
               <Cell>{calculateRank(item, data)}</Cell>
               <Cell><img src={`/assets/flags/${item.country}.png`} alt={item.country} style={{ maxWidth: '3vh', maxHeight: '3vh', width: 'auto', height: 'auto' }} /></Cell>

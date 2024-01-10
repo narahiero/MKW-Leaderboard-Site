@@ -10,16 +10,19 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "eslint": "7.32.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hot-loader": "^4.13.1",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "webpack serve --config webpack.config.dev.js",
+    "build": "webpack --mode production --config webpack.config.js",
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "types": "tsc",
+    "test": "npm run lint && npm run types"
   },
   "eslintConfig": {
     "extends": [
@@ -40,7 +43,13 @@
     ]
   },
   "devDependencies": {
+    "@babel/parser": "^7.23.6",
     "@typescript-eslint/parser": "^6.18.1",
-    "typescript": "^5.3.3"
+    "copy-webpack-plugin": "^12.0.0",
+    "eslint-plugin-node": "^11.1.0",
+    "import-glob": "^1.5.0",
+    "less-loader": "^11.1.4",
+    "typescript": "^5.3.3",
+    "webpack-cli": "^5.1.4"
   }
 }

@@ -1,12 +1,17 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
+import { createRoot } from 'react-dom/client';
+import App from './components/App';
 
 const mount = document.getElementById('mount');
-const root = ReactDOM.createRoot(mount!);
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const root = createRoot(mount!);
+
+const AppWithCallbackAfterRender = (): JSX.Element => {
+  if (!mount) {
+    console.error('No mountpoint found!');
+    return <h1>No mountpoint found!</h1>;
+  }
+
+  return <App />;
+};
+
+root.render(<AppWithCallbackAfterRender />);
