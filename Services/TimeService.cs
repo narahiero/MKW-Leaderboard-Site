@@ -158,7 +158,7 @@ namespace my_app.Services
             string sqlQuery = "SELECT * FROM Times WHERE PlayerId = @PlayerId AND Track = @Track AND Glitch = @Glitch AND Flap = @Flap AND Obsoleted = 0 AND DeletedAt IS NULL";
 
             using var connection = GetConnection();
-            return await connection.QueryFirstOrDefaultAsync<Time>(sqlQuery);
+            return await connection.QueryFirstOrDefaultAsync<Time>(sqlQuery, new { PlayerId = playerId, Track = track, Glitch = glitch, Flap = flap});
         }
 
         public async Task<IEnumerable<Time>> GetTimeHistory(int playerId, Track track, bool glitch, bool flap)
@@ -166,15 +166,28 @@ namespace my_app.Services
             string sqlQuery = "SELECT * FROM Times WHERE PlayerId = @PlayerId AND Track = @Track AND Glitch = @Glitch AND Flap = @Flap AND DeletedAt IS NULL ORDER BY Date DESC";
 
             using var connection = GetConnection();
-            return await connection.QueryAsync<Time>(sqlQuery);
+            return await connection.QueryAsync<Time>(sqlQuery, new { PlayerId = playerId, Track = track, Glitch = glitch, Flap = flap});
         }
 
         public async Task<IEnumerable<LeaderBoardTimeEntry>> GetTop10(Track track, bool glitch, bool flap)
         {
-            string sqlQuery = "SELECT TOP 15 FROM Times WHERE Track = @Track AND Glitch = @Glitch AND Flap = @Flap AND Obsoleted = 0 AND DeletedAt IS NULL ORDER BY Minutes, Seconds, Milliseconds";
+            string sqlQuery = "SELECT TOP 15 * FROM Times WHERE Track = @Track AND Glitch = @Glitch AND Flap = @Flap AND Obsoleted = 0 AND DeletedAt IS NULL ORDER BY Minutes, Seconds, Milliseconds";
 
             using var connection = GetConnection();
-            var top15 = await connection.QueryAsync<Time>(sqlQuery);
+            var top15 = await connection.QueryAsync<Time>(sqlQuery, new { Track = track, Glitch = glitch, Flap = flap});
+
+            //return ng if there are no glitch times
+            if(glitch && !top15.Any()) {
+                return await GetTop10(track, false, flap);
+            }
+            if(glitch)
+            {
+                var ngTops = await connection.QueryAsync<Time>(sqlQuery, new { Track = track, Glitch = false, Flap = flap});
+                if(IsFasterOrEqual(top15.AsList()[9], ngTops.AsList()[0])) {
+                    top15.AsList().AddRange(ngTops);
+                    top15.AsList().Sort(CompareTimes);
+                }
+            }
 
             var result = new List<LeaderBoardTimeEntry>();
             var times = new List<Time>();
@@ -186,7 +199,7 @@ namespace my_app.Services
 
             var lastPlace = new Digits(times.Last().Minutes, times.Last().Seconds, times.Last().Milliseconds);
 
-            for(int i=10; i<16; i++)
+            for(int i=10; i<15; i++)
             {
                 if(top15.AsList()[i].Milliseconds.Equals(lastPlace.Milliseconds) && top15.AsList()[i].Seconds.Equals(lastPlace.Seconds) &&top15.AsList()[i].Minutes.Equals(lastPlace.Minutes))
                 {
@@ -200,6 +213,78 @@ namespace my_app.Services
             }
 
             return result;
+        }
+
+        private bool IsFasterOrEqual(Time time1, Time time2)
+        {
+            if(time2.Minutes > time1.Minutes)
+            {
+                return false;
+            }
+            else if(time1.Minutes > time2.Minutes)
+            {
+                return true;
+            }
+
+            if(time2.Seconds > time1.Seconds)
+            {
+                return false;
+            }
+            else if(time1.Seconds > time2.Seconds)
+            {
+                return true;
+            }
+
+            if(time2.Milliseconds > time1.Milliseconds)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        private static int CompareTimes(Time time1, Time time2)
+        {
+            if(time2.Minutes > time1.Minutes)
+            {
+                return 1;
+            }
+            else if(time1.Minutes == time2.Minutes)
+            {
+                return 0;
+            }
+            else if(time1.Minutes > time2.Minutes)
+            {
+                return -1;
+            }
+
+            if(time2.Seconds > time1.Seconds)
+            {
+                return 1;
+            }
+            else if(time1.Seconds == time2.Seconds)
+            {
+                return 0;
+            }
+            else if(time1.Seconds > time2.Seconds)
+            {
+                return -1;
+            }
+
+            if(time2.Milliseconds > time1.Milliseconds)
+            {
+                return 1;
+            }
+            else if(time1.Milliseconds == time2.Milliseconds)
+            {
+                return 0;
+            }
+            else
+            {
+                return -1;
+            }
         }
     }
 }
