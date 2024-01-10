@@ -10,10 +10,10 @@ class GlitchButtons extends React.Component<GlitchButtonsProps> {
 
     return (
         <div className="button-container">
-          <button className="cool-button" onClick={() => onButtonClick(true)}>
+          <button className="cool-button" onClick={() => onButtonClick(false)}>
             Non-SC
           </button>
-          <button className="cool-button" onClick={() => onButtonClick(false)}>
+          <button className="cool-button" onClick={() => onButtonClick(true)}>
             Unrestricted
           </button>
         </div>

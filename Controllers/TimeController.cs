@@ -45,14 +45,14 @@ namespace my_app.Controllers
         {
             try
             {
-                var time = await _timeService.GetTop10(track, glitch, flap);
+                var top10 = await _timeService.GetTop10(track, glitch, flap);
 
-                if(time == null)
+                if(top10 == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(time);
+                return Ok(top10);
             }
             catch (Exception e)
             {

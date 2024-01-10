@@ -1,11 +1,13 @@
 import React from 'react';
+import '../App.css';
 import {
   Table,
   TableBody as Body,
   TableRow as Row,
   TableCell as Cell,
 } from '@mui/material';
-import Track from '../../types/enums'
+import { LongTrack, Country } from '../../types/enums'
+import { Top10TableProps, LeaderBoardTimeEntry, Time } from '../../types/common'
 
 const calculateRank = (player: LeaderBoardTimeEntry, data: LeaderBoardTimeEntry[]): string => {
 const sortedData = [...data].sort((a, b) => {
@@ -78,7 +80,7 @@ const Top10Table: React.FC<Top10TableProps> = ({top10s}) => {
   console.log(top10s)
   return (
     <div className="top10-table">
-      <h2>{"troll"}</h2>
+      <h2>{LongTrack[top10s[0]?.time.track]}</h2>
       <Table>
         <Body>
           {top10s.map((entry: LeaderBoardTimeEntry) => (

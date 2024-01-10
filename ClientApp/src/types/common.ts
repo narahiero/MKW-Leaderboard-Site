@@ -1,4 +1,6 @@
-interface Time {
+import { Country, Track } from "./enums";
+
+export interface Time {
     id: number;
     playerId: number;
     track: Track;
@@ -12,7 +14,7 @@ interface Time {
     obsoleted: boolean;
 }
 
-interface Player {
+export interface Player {
     id: number;
     name: string;
     country: Country;
@@ -22,11 +24,11 @@ interface Player {
     ppProofStatus: string;
 }
 
-interface LeaderBoardTimeEntry {
+export interface LeaderBoardTimeEntry {
     time: Time;
     player: Player;
 }
 
-interface Top10TableProps {
+export interface Top10TableProps {
     top10s: LeaderBoardTimeEntry[];
 }

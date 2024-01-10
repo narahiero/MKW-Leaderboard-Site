@@ -1,19 +1,19 @@
 import React from 'react';
 
-interface CategoryButtonsProps {
+interface FlapButtonsProps {
   onButtonClick: (buttonType: boolean) => void;
 }
 
-class FlapButtons extends React.Component<CategoryButtonsProps> {
+class FlapButtons extends React.Component<FlapButtonsProps> {
   render() {
     const { onButtonClick } = this.props;
 
     return (
         <div className="button-container">
-          <button className="cool-button" onClick={() => onButtonClick(true)}>
+          <button className="cool-button" onClick={() => onButtonClick(false)}>
             3Lap
           </button>
-          <button className="cool-button" onClick={() => onButtonClick(false)}>
+          <button className="cool-button" onClick={() => onButtonClick(true)}>
             Flap
           </button>
         </div>
