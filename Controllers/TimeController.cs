@@ -40,6 +40,28 @@ namespace my_app.Controllers
             }
         }
 
+        [HttpGet("top10/{track}/glitch/{glitch}/flap/{flap}")]
+        public async Task<ActionResult<IEnumerable<LeaderBoardTimeEntry>>> GetTop10(Track track, bool glitch, bool flap)
+        {
+            try
+            {
+                var time = await _timeService.GetTop10(track, glitch, flap);
+
+                if(time == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(time);
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(e.Message);
+
+                return InternalServerError();
+            }
+        }
+
         [HttpGet("timesheet/{playerId}")]
         public async Task<ActionResult<TimeSheet>> GetFullTimeSheet(int playerId)
         {

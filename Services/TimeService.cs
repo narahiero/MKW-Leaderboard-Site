@@ -10,10 +10,12 @@ namespace my_app.Services
     public class TimeService : ITimeService
     {
         private readonly IConfiguration _configuration;
+        private readonly IPlayerService _playerService;
 
-        public TimeService(IConfiguration configuration)
+        public TimeService(IConfiguration configuration, IPlayerService playerService)
         {
             _configuration = configuration;
+            _playerService = playerService;
         }
 
         private SqlConnection GetConnection()
@@ -165,6 +167,39 @@ namespace my_app.Services
 
             using var connection = GetConnection();
             return await connection.QueryAsync<Time>(sqlQuery);
+        }
+
+        public async Task<IEnumerable<LeaderBoardTimeEntry>> GetTop10(Track track, bool glitch, bool flap)
+        {
+            string sqlQuery = "SELECT TOP 15 FROM Times WHERE Track = @Track AND Glitch = @Glitch AND Flap = @Flap AND Obsoleted = 0 AND DeletedAt IS NULL ORDER BY Minutes, Seconds, Milliseconds";
+
+            using var connection = GetConnection();
+            var top15 = await connection.QueryAsync<Time>(sqlQuery);
+
+            var result = new List<LeaderBoardTimeEntry>();
+            var times = new List<Time>();
+
+            for(int i=0; i<10; i++)
+            {
+                times.Add(top15.AsList()[i]);
+            }
+
+            var lastPlace = new Digits(times.Last().Minutes, times.Last().Seconds, times.Last().Milliseconds);
+
+            for(int i=10; i<16; i++)
+            {
+                if(top15.AsList()[i].Milliseconds.Equals(lastPlace.Milliseconds) && top15.AsList()[i].Seconds.Equals(lastPlace.Seconds) &&top15.AsList()[i].Minutes.Equals(lastPlace.Minutes))
+                {
+                    times.Add(top15.AsList()[i]);
+                }
+            }
+
+            foreach (var time in times)
+            {
+                result.Add(new LeaderBoardTimeEntry(time, await _playerService.GetById(time.PlayerId)));
+            }
+
+            return result;
         }
     }
 }
