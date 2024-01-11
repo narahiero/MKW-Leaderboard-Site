@@ -218,44 +218,65 @@ namespace my_app.Services
 
         private static int CompareTimes(Time time1, Time time2)
         {
+            //compare by minutes
             if(time2.Minutes > time1.Minutes)
             {
                 return 1;
-            }
-            else if(time1.Minutes == time2.Minutes)
-            {
-                return 0;
             }
             else if(time1.Minutes > time2.Minutes)
             {
                 return -1;
             }
-
-            if(time2.Seconds > time1.Seconds)
-            {
-                return 1;
-            }
-            else if(time1.Seconds == time2.Seconds)
-            {
-                return 0;
-            }
-            else if(time1.Seconds > time2.Seconds)
-            {
-                return -1;
-            }
-
-            if(time2.Milliseconds > time1.Milliseconds)
-            {
-                return 1;
-            }
-            else if(time1.Milliseconds == time2.Milliseconds)
-            {
-                return 0;
-            }
+            //if that is the same, compare by seconds
             else
             {
-                return -1;
+                if(time2.Seconds > time1.Seconds)
+                {
+                    return 1;
+                }
+                else if(time1.Seconds > time2.Seconds)
+                {
+                    return -1;
+                }
+                //if that is the same, compare by milliseconds
+                else
+                {
+                    if(time2.Milliseconds > time1.Milliseconds)
+                    {
+                        return 1;
+                    }
+                    if(time1.Milliseconds > time2.Milliseconds)
+                    {
+                        return -1;
+                    }
+                    //if that is the same, compare by which time was first
+                    else
+                    {
+                        if(time2.Date < time1.Date)
+                        {
+                            return 1;
+                        }
+                        if(time1.Date < time2.Date)
+                        {
+                            return -1;
+                        }
+                        //if even that is the same, sort by player id (this will always be different)
+                        else
+                        {
+                            if(time2.PlayerId < time1.PlayerId)
+                            {
+                                return 1;
+                            }
+                            if(time1.PlayerId < time2.PlayerId)
+                            {
+                                return -1;
+                            }
+                        }
+                    }
+                }
             }
+            //failsafe
+            return 1;
         }
     }
 }
