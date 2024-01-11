@@ -45,7 +45,7 @@ namespace my_app.Controllers
         {
             try
             {
-                var top10 = await _timeService.GetTops(track, glitch, flap, 0, 10);
+                var top10 = await _timeService.GetCharts(track, glitch, flap, 0, 10);
 
                 if(top10 == null)
                 {
@@ -67,7 +67,7 @@ namespace my_app.Controllers
         {
             try
             {
-                var charts = await _timeService.GetTops(track, glitch, flap, page*100, page*100+100);
+                var charts = await _timeService.GetCharts(track, glitch, flap, page*100, 100);
 
                 if(charts == null)
                 {

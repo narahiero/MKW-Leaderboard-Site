@@ -169,30 +169,29 @@ namespace my_app.Services
             return await connection.QueryAsync<Time>(sqlQuery, new { PlayerId = playerId, Track = track, Glitch = glitch, Flap = flap});
         }
 
-        public async Task<IEnumerable<LeaderBoardTimeEntry>> GetTops(Track track, bool glitch, bool flap, int firstPosition, int lastPosition)
+        public async Task<IEnumerable<LeaderBoardTimeEntry>> GetCharts(Track track, bool glitch, bool flap, int firstPosition, int minAmountOfPeople)
         {
             //TODO - implement pagination logic for top100 charts. What to do if there is a tie between 99th-101st? PP would show times 99-100 as #99 but then show time 101 as #101st on the next page.
+            //TODO - charts after top 100 will have logic issues with mixing glitch and no glitch data. figure out how to deal with this
 
             //account for ties (max 5 ties, increase later if needed)
-            var minAmountOfPeople = lastPosition - firstPosition;
             var maxAmountOfPeople = minAmountOfPeople + 5;
-            var lastPossiblePosition = lastPosition + 5;
 
-            string sqlQuery = "SELECT * FROM Times WHERE Track = @Track AND Glitch = @Glitch AND Flap = @Flap AND Obsoleted = 0 AND DeletedAt IS NULL ORDER BY Minutes, Seconds, Milliseconds OFFSET @FirstPosition LIMIT @LastPosition";
+            string sqlQuery = "SELECT * FROM Times WHERE Track = @Track AND Glitch = @Glitch AND Flap = @Flap AND Obsoleted = 0 AND DeletedAt IS NULL ORDER BY Minutes, Seconds, Milliseconds OFFSET @FirstPosition ROWS FETCH NEXT @MaxAmountOfPeople ROWS ONLY";
 
             using var connection = GetConnection();
-            var tops = await connection.QueryAsync<Time>(sqlQuery, new { Track = track, Glitch = glitch, Flap = flap, FirstPosition = firstPosition, LastPosition = lastPossiblePosition});
+            var tops = await connection.QueryAsync<Time>(sqlQuery, new { Track = track, Glitch = glitch, Flap = flap, FirstPosition = firstPosition, MaxAmountOfPeople = maxAmountOfPeople});
 
             //return ng if there are no glitch times
             if(glitch && !tops.Any()) {
-                return await GetTops(track, false, flap, firstPosition, lastPosition);
+                return await GetCharts(track, false, flap, firstPosition, minAmountOfPeople);
             }
 
-            //if category is glitch, mix together the fastest ng times on that track from people that don't have a glitch time, and pick out the fastest from the mix
+            //if category is glitch, mix together the fastest ng times on that track from people that don't have a glitch time, and pick out the fastest from the mix.
             if(glitch)
             {
-                var ngQuery = "SELECT * FROM Times WHERE Track = @Track AND Glitch = 0 AND Flap = @Flap AND Obsoleted = 0 AND DeletedAt IS NULL AND PlayerId NOT IN @GlitcherIds ORDER BY Minutes, Seconds, Milliseconds OFFSET @FirstPosition LIMIT @LastPosition";
-                var ngTops = await connection.QueryAsync<Time>(ngQuery, new { Track = track, Flap = flap, GlitcherIds = await GetAllGlitchersPlayerIds(track, flap)});
+                var ngQuery = "SELECT * FROM Times WHERE Track = @Track AND Glitch = 0 AND Flap = @Flap AND Obsoleted = 0 AND DeletedAt IS NULL AND PlayerId NOT IN @GlitcherIds ORDER BY Minutes, Seconds, Milliseconds OFFSET @FirstPosition ROWS FETCH NEXT @MaxAmountOfPeople ROWS ONLY";
+                var ngTops = await connection.QueryAsync<Time>(ngQuery, new { Track = track, Flap = flap, GlitcherIds = await GetAllGlitchersPlayerIds(track, flap), FirstPosition = firstPosition, MaxAmountOfPeople = maxAmountOfPeople});
                 tops.AsList().AddRange(ngTops);
                 tops.AsList().Sort(CompareTimes);
             }
