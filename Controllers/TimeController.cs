@@ -45,7 +45,7 @@ namespace my_app.Controllers
         {
             try
             {
-                var top10 = await _timeService.GetTop10(track, glitch, flap);
+                var top10 = await _timeService.GetTops(track, glitch, flap, 0, 10);
 
                 if(top10 == null)
                 {
@@ -53,6 +53,28 @@ namespace my_app.Controllers
                 }
 
                 return Ok(top10);
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(e.Message);
+
+                return InternalServerError();
+            }
+        }
+
+        [HttpGet("track-charts/{track}/glitch/{glitch}/flap/{flap}/page/{page}")]
+        public async Task<ActionResult<IEnumerable<LeaderBoardTimeEntry>>> GetTrackCharts(Track track, bool glitch, bool flap, int page)
+        {
+            try
+            {
+                var charts = await _timeService.GetTops(track, glitch, flap, page*100, page*100+100);
+
+                if(charts == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(charts);
             }
             catch (Exception e)
             {

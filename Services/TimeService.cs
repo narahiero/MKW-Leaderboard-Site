@@ -169,40 +169,47 @@ namespace my_app.Services
             return await connection.QueryAsync<Time>(sqlQuery, new { PlayerId = playerId, Track = track, Glitch = glitch, Flap = flap});
         }
 
-        public async Task<IEnumerable<LeaderBoardTimeEntry>> GetTop10(Track track, bool glitch, bool flap)
+        public async Task<IEnumerable<LeaderBoardTimeEntry>> GetTops(Track track, bool glitch, bool flap, int firstPosition, int lastPosition)
         {
-            string sqlQuery = "SELECT TOP 15 * FROM Times WHERE Track = @Track AND Glitch = @Glitch AND Flap = @Flap AND Obsoleted = 0 AND DeletedAt IS NULL ORDER BY Minutes, Seconds, Milliseconds";
+            //TODO - implement pagination logic for top100 charts. What to do if there is a tie between 99th-101st? PP would show times 99-100 as #99 but then show time 101 as #101st on the next page.
+
+            //account for ties (max 5 ties, increase later if needed)
+            var minAmountOfPeople = lastPosition - firstPosition;
+            var maxAmountOfPeople = minAmountOfPeople + 5;
+            var lastPossiblePosition = lastPosition + 5;
+
+            string sqlQuery = "SELECT * FROM Times WHERE Track = @Track AND Glitch = @Glitch AND Flap = @Flap AND Obsoleted = 0 AND DeletedAt IS NULL ORDER BY Minutes, Seconds, Milliseconds OFFSET @FirstPosition LIMIT @LastPosition";
 
             using var connection = GetConnection();
-            var top15 = await connection.QueryAsync<Time>(sqlQuery, new { Track = track, Glitch = glitch, Flap = flap});
+            var tops = await connection.QueryAsync<Time>(sqlQuery, new { Track = track, Glitch = glitch, Flap = flap, FirstPosition = firstPosition, LastPosition = lastPossiblePosition});
 
             //return ng if there are no glitch times
-            if(glitch && !top15.Any()) {
-                return await GetTop10(track, false, flap);
+            if(glitch && !tops.Any()) {
+                return await GetTops(track, false, flap, firstPosition, lastPosition);
             }
 
             //if category is glitch, mix together the fastest ng times on that track from people that don't have a glitch time, and pick out the fastest from the mix
             if(glitch)
             {
-                var ngQuery = "SELECT TOP 15 * FROM Times WHERE Track = @Track AND Glitch = @Glitch AND Flap = @Flap AND Obsoleted = 0 AND DeletedAt IS NULL AND PlayerId NOT IN @GlitchTimeIds ORDER BY Minutes, Seconds, Milliseconds";
-                var ngTops = await connection.QueryAsync<Time>(ngQuery, new { Track = track, Glitch = false, Flap = flap, GlitchTimeIds = top15.Select(t => t.PlayerId)});
-                top15.AsList().AddRange(ngTops);
-                top15.AsList().Sort(CompareTimes);
+                var ngQuery = "SELECT * FROM Times WHERE Track = @Track AND Glitch = 0 AND Flap = @Flap AND Obsoleted = 0 AND DeletedAt IS NULL AND PlayerId NOT IN @GlitcherIds ORDER BY Minutes, Seconds, Milliseconds OFFSET @FirstPosition LIMIT @LastPosition";
+                var ngTops = await connection.QueryAsync<Time>(ngQuery, new { Track = track, Flap = flap, GlitcherIds = await GetAllGlitchersPlayerIds(track, flap)});
+                tops.AsList().AddRange(ngTops);
+                tops.AsList().Sort(CompareTimes);
             }
 
             var result = new List<LeaderBoardTimeEntry>();
             var times = new List<Time>();
 
-            for(int i=0; i<10; i++)
+            for(int i=0; i<minAmountOfPeople; i++)
             {
-                times.Add(top15.AsList()[i]);
+                times.Add(tops.AsList()[i]);
             }
 
-            for(int i=10; i<15; i++)
+            for(int i=minAmountOfPeople; i<maxAmountOfPeople; i++)
             {
-                if(TimesAreEqual(times.Last(), top15.AsList()[i]))
+                if(TimesAreEqual(times.Last(), tops.AsList()[i]))
                 {
-                    times.Add(top15.AsList()[i]);
+                    times.Add(tops.AsList()[i]);
                 }
             }
 
@@ -217,6 +224,14 @@ namespace my_app.Services
         private static bool TimesAreEqual(Time time1, Time time2)
         {
             return time1.Milliseconds.Equals(time2.Milliseconds) && time1.Seconds.Equals(time2.Seconds) && time1.Minutes.Equals(time2.Minutes);
+        }
+
+        private async Task<IEnumerable<int>> GetAllGlitchersPlayerIds(Track track, bool flap)
+        {
+            var glitcherQuery = "SELECT PlayerId FROM Times WHERE Track = @Track AND Glitch = 1 AND Flap = @Flap AND Obsoleted = 0 AND DeletedAt IS NULL";
+
+            using var connection = GetConnection();
+            return await connection.QueryAsync<int>(glitcherQuery, new { Track = track, Flap = flap});
         }
 
         private static int CompareTimes(Time time2, Time time1)
