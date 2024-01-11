@@ -9,7 +9,7 @@ import { Cup } from '../types/enums'
 import { LeaderBoardTimeEntry } from '../types/common'
 
 const App = () => {
-  const [glitchState, setGlitchState] = useState<boolean>(true);
+  const [glitchState, setGlitchState] = useState<boolean>(false);
   const [flapState, setFlapState] = useState<boolean>(false);
   const [cupState, setCupState] = useState<Cup>(Cup.MushroomCup);
   const [top10Data1, setTop10Data1] = useState<LeaderBoardTimeEntry[]>([]);

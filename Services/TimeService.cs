@@ -180,9 +180,12 @@ namespace my_app.Services
             if(glitch && !top15.Any()) {
                 return await GetTop10(track, false, flap);
             }
+
+            //if category is glitch, mix together the fastest ng times on that track from people that don't have a glitch time, and pick out the fastest from the mix
             if(glitch)
             {
-                var ngTops = await connection.QueryAsync<Time>(sqlQuery, new { Track = track, Glitch = false, Flap = flap});
+                var ngQuery = "SELECT TOP 15 * FROM Times WHERE Track = @Track AND Glitch = @Glitch AND Flap = @Flap AND Obsoleted = 0 AND DeletedAt IS NULL AND PlayerId NOT IN @GlitchTimeIds ORDER BY Minutes, Seconds, Milliseconds";
+                var ngTops = await connection.QueryAsync<Time>(ngQuery, new { Track = track, Glitch = false, Flap = flap, GlitchTimeIds = top15.Select(t => t.PlayerId)});
                 top15.AsList().AddRange(ngTops);
                 top15.AsList().Sort(CompareTimes);
             }
@@ -216,7 +219,7 @@ namespace my_app.Services
             return time1.Milliseconds.Equals(time2.Milliseconds) && time1.Seconds.Equals(time2.Seconds) && time1.Minutes.Equals(time2.Minutes);
         }
 
-        private static int CompareTimes(Time time1, Time time2)
+        private static int CompareTimes(Time time2, Time time1)
         {
             //compare by minutes
             if(time2.Minutes > time1.Minutes)
