@@ -195,11 +195,9 @@ namespace my_app.Services
                 times.Add(top15.AsList()[i]);
             }
 
-            var lastPlace = new Digits(times.Last().Minutes, times.Last().Seconds, times.Last().Milliseconds);
-
             for(int i=10; i<15; i++)
             {
-                if(top15.AsList()[i].Milliseconds.Equals(lastPlace.Milliseconds) && top15.AsList()[i].Seconds.Equals(lastPlace.Seconds) &&top15.AsList()[i].Minutes.Equals(lastPlace.Minutes))
+                if(TimesAreEqual(times.Last(), top15.AsList()[i]))
                 {
                     times.Add(top15.AsList()[i]);
                 }
@@ -213,7 +211,12 @@ namespace my_app.Services
             return result;
         }
 
-        private static int CompareTimes(Time time2, Time time1)
+        private static bool TimesAreEqual(Time time1, Time time2)
+        {
+            return time1.Milliseconds.Equals(time2.Milliseconds) && time1.Seconds.Equals(time2.Seconds) && time1.Minutes.Equals(time2.Minutes);
+        }
+
+        private static int CompareTimes(Time time1, Time time2)
         {
             if(time2.Minutes > time1.Minutes)
             {

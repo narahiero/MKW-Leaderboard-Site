@@ -9,7 +9,7 @@ import { Cup } from '../types/enums'
 import { LeaderBoardTimeEntry } from '../types/common'
 
 const App = () => {
-  const [glitchState, setGlitchState] = useState<boolean>(false);
+  const [glitchState, setGlitchState] = useState<boolean>(true);
   const [flapState, setFlapState] = useState<boolean>(false);
   const [cupState, setCupState] = useState<Cup>(Cup.MushroomCup);
   const [top10Data1, setTop10Data1] = useState<LeaderBoardTimeEntry[]>([]);
@@ -29,10 +29,14 @@ const App = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setTop10Data1(await getTop10(cupState * 4, glitchState, flapState));
-      setTop10Data2(await getTop10(cupState * 4 + 1, glitchState, flapState));
-      setTop10Data3(await getTop10(cupState * 4 + 2, glitchState, flapState));
-      setTop10Data4(await getTop10(cupState * 4 + 3, glitchState, flapState));
+      const data1 = await getTop10(cupState * 4, glitchState, flapState);
+      const data2 = await getTop10(cupState * 4 + 1, glitchState, flapState);
+      const data3 = await getTop10(cupState * 4 + 2, glitchState, flapState);
+      const data4 = await getTop10(cupState * 4 + 3, glitchState, flapState);
+      setTop10Data1(data1);
+      setTop10Data2(data2);
+      setTop10Data3(data3);
+      setTop10Data4(data4);
     };
     fetchData();
   }, [cupState, flapState, glitchState]);
