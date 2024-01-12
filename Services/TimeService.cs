@@ -191,6 +191,7 @@ namespace my_app.Services
 
             //return ng if there are no glitch times
             if(filter.Glitch && !tops.Any()) {
+                filter.Glitch = false;
                 return await GetCharts(filter);
             }
 
@@ -204,8 +205,8 @@ namespace my_app.Services
                     ngQuery += "AND p.Country IN @Countries ";
                 }
 
-                ngQuery += "AND t.Obsoleted = 0 AND t.DeletedAt IS NULL ORDER BY t.Minutes, t.Seconds, t.Milliseconds OFFSET @Offset ROWS FETCH NEXT @MaxAmountOfPeople ROWS ONLY";
-                var ngTops = await connection.QueryAsync<Time>(ngQuery, new { filter.Track, filter.Flap, GlitcherIds = await GetAllGlitchersPlayerIds(filter.Track, filter.Flap), Offset = offset, MaxAmountOfPeople = maxAmountOfPeople});
+                ngQuery += "AND t.PlayerId NOT IN @GlitcherIds AND t.Obsoleted = 0 AND t.DeletedAt IS NULL ORDER BY t.Minutes, t.Seconds, t.Milliseconds OFFSET @Offset ROWS FETCH NEXT @MaxAmountOfPeople ROWS ONLY";
+                var ngTops = await connection.QueryAsync<Time>(ngQuery, new { filter.Track, filter.Flap, filter.Countries, GlitcherIds = await GetAllGlitchersPlayerIds(filter.Track, filter.Flap), Offset = offset, MaxAmountOfPeople = maxAmountOfPeople});
                 tops.AsList().AddRange(ngTops);
                 tops.AsList().Sort(CompareTimes);
             }
@@ -215,14 +216,20 @@ namespace my_app.Services
 
             for(int i=0; i<filter.Page.EntriesPerPage; i++)
             {
-                times.Add(tops.AsList()[i]);
+                if(tops.Count() > i)
+                {
+                    times.Add(tops.AsList()[i]);
+                }
             }
 
             for(int i=filter.Page.EntriesPerPage; i<maxAmountOfPeople; i++)
             {
-                if(TimesAreEqual(times.Last(), tops.AsList()[i]))
+                if(tops.Count() > i)
                 {
-                    times.Add(tops.AsList()[i]);
+                    if(TimesAreEqual(times.Last(), tops.AsList()[i]))
+                    {
+                        times.Add(tops.AsList()[i]);
+                    }
                 }
             }
 

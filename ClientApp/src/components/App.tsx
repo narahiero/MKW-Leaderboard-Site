@@ -40,7 +40,7 @@ const App = () => {
         glitch: glitchState,
         flap: flapState,
         countries: regionState,
-        page: { pageNumber: 0, entriesPerPage: 10}
+        page: { pageNumber: 1, entriesPerPage: 10}
       };
       const data1 = await getTop10(baseFilter);
       const data2 = await getTop10({ ...baseFilter, track: baseFilter.track + 1 });
