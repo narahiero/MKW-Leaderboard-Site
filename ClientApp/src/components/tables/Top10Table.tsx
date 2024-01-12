@@ -47,7 +47,12 @@ for (let i = playerIndex - 1; i >= 0; i--) {
 // Adjust rank for ties
 if (tieCount > 0) {
     rank -= tieCount;
-    return `${rank}`;
+    let result = `${rank}`;
+
+    if(rank !== 10) {
+      result += " "; //add extra space to make table width consistent (there will effectively always be 1 double character rank)
+    }
+    return result
 }
 
 return rank.toString();
@@ -86,7 +91,7 @@ const Top10Table: React.FC<Top10TableProps> = ({top10s}) => {
           {top10s.map((entry: LeaderBoardTimeEntry) => (
             <Row key={entry.player.id}>
               <Cell>{calculateRank(entry, top10s)}</Cell>
-              <Cell><img src={`/assets/flags/${Country[entry.player.country]}.png`} alt={Country[entry.player.country]} style={{ maxWidth: '3vh', maxHeight: '3vh', width: 'auto', height: 'auto' }} /></Cell>
+              <Cell><img src={`/assets/flags/${Country[entry.player.country]}.png`} alt={Country[entry.player.country]} style={{ width: '3.5vh', height: '2vh' }} /></Cell>
               <Cell>{entry.player.name}</Cell>
               <Cell>{formatTime(entry.time)}</Cell>
               <Cell>

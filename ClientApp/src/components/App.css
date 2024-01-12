@@ -3,7 +3,6 @@
 .table-container {
   display: flex;
   justify-content: space-around; /* Adjust as needed */
-  margin-top: 20px;
   padding: 2%;
 }
 
@@ -48,7 +47,7 @@ th {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 10vh;
+  height: 8vh;
 }
 
 /* Add the styles for the cool button as before */
@@ -64,4 +63,9 @@ th {
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 8px;
+}
+
+body {
+  transform: scale(0.8);
+  transform-origin: top;
 }

@@ -56,9 +56,9 @@ const App = () => {
 
   return (
     <div>
-    <div>
-      <RegionButtons onButtonClick={handleRegionClick} />
-    </div>
+      <div>
+        <RegionButtons onButtonClick={handleRegionClick} />
+      </div>
       <div>
         <CupButtons onButtonClick={handleCupClick} />
       </div>
