@@ -92,7 +92,7 @@ const Top10Table: React.FC<Top10TableProps> = ({top10s}) => {
             <Row key={entry.player.id}>
               <Cell>{calculateRank(entry, top10s)}</Cell>
               <Cell><img src={`/assets/flags/${Country[entry.player.country]}.png`} alt={Country[entry.player.country]} style={{ width: '3.5vh', height: '2vh' }} /></Cell>
-              <Cell>{entry.player.name}</Cell>
+              <Cell className="nobr">{entry.player.name}</Cell>
               <Cell>{formatTime(entry.time)}</Cell>
               <Cell>
                 {entry.time.ghost && (

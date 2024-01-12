@@ -13,49 +13,49 @@ class RegionButtons extends React.Component<RegionButtonProps> {
     return (
         <div className="button-container">
             <button className="cool-button" onClick={() => onButtonClick(World)}>
-                World
+                <span className="nobr">World</span>
             </button>
             <button className="cool-button" onClick={() => onButtonClick(America)}>
-                America
+                <span className="nobr">America</span>
             </button>
             <button className="cool-button" onClick={() => onButtonClick(LatinAmerica)}>
-                Latin America
+                <span className="nobr">Latin America</span>
             </button>
             <button className="cool-button" onClick={() => onButtonClick(Europe)}>
-                Europe
+                <span className="nobr">Europe</span>
             </button>
             <button className="cool-button" onClick={() => onButtonClick(USA)}>
-                USA
+                <span className="nobr">USA</span>
             </button>
             <button className="cool-button" onClick={() => onButtonClick(Canada)}>
-                Canada
+                <span className="nobr">Canada</span>
             </button>
             <button className="cool-button" onClick={() => onButtonClick(France)}>
-                France
+                <span className="nobr">France</span>
             </button>
             <button className="cool-button" onClick={() => onButtonClick(UKIreland)}>
-                UK & Ireland
+                <span className="nobr">UK & Ireland</span>
             </button>
             <button className="cool-button" onClick={() => onButtonClick(Spain)}>
-                Spain
+                <span className="nobr">Spain</span>
             </button>
             <button className="cool-button" onClick={() => onButtonClick(Portugal)}>
-                Portugal
+                <span className="nobr">Portugal</span>
             </button>
             <button className="cool-button" onClick={() => onButtonClick(Italy)}>
-                Italy
+                <span className="nobr">Italy</span>
             </button>
             <button className="cool-button" onClick={() => onButtonClick(GermanyAustria)}>
-                Germany & Austria
+                <span className="nobr">Germany & Austria</span>
             </button>
             <button className="cool-button" onClick={() => onButtonClick(Benelux)}>
-                Benelux
+                <span className="nobr">Benelux</span>
             </button>
             <button className="cool-button" onClick={() => onButtonClick(Nordic)}>
-                Nordic
+                <span className="nobr">Nordic</span>
             </button>
             <button className="cool-button" onClick={() => onButtonClick(Japan)}>
-                Japan
+                <span className="nobr">Japan</span>
             </button>
         </div>
       );

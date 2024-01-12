@@ -47,7 +47,7 @@ th {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 8vh;
+  height: 11vh;
 }
 
 /* Add the styles for the cool button as before */
@@ -68,4 +68,8 @@ th {
 body {
   transform: scale(0.8);
   transform-origin: top;
+}
+
+.nobr {
+  white-space: nowrap;
 }
