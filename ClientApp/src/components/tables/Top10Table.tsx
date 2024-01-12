@@ -10,18 +10,8 @@ import { LongTrack, Country } from '../../types/enums'
 import { Top10TableProps, LeaderBoardTimeEntry, Time } from '../../types/common'
 
 const calculateRank = (player: LeaderBoardTimeEntry, data: LeaderBoardTimeEntry[]): string => {
-const sortedData = [...data].sort((a, b) => {
-    // Compare times in ascending order
-    if (a.time.minutes !== b.time.minutes) {
-    return a.time.minutes - b.time.minutes;
-    }
-    if (a.time.seconds !== b.time.seconds) {
-    return a.time.seconds - b.time.seconds;
-    }
-    return a.time.milliseconds - b.time.milliseconds;
-});
 
-const playerIndex = sortedData.findIndex((item) => item === player);
+const playerIndex = data.findIndex((item) => item === player);
 
 if (playerIndex === -1) {
     // Player not found in the sorted array
@@ -34,9 +24,7 @@ let rank = playerIndex + 1;
 let tieCount = 0;
 for (let i = playerIndex - 1; i >= 0; i--) {
     if (
-    sortedData[i].time.minutes === player.time.minutes &&
-    sortedData[i].time.seconds === player.time.seconds &&
-    sortedData[i].time.milliseconds === player.time.milliseconds
+      data[i].time.runTime === player.time.runTime
     ) {
     tieCount++;
     } else {
@@ -59,16 +47,23 @@ return rank.toString();
 };
 
 const formatTime = (time: Time): JSX.Element => {
-  const minutesStr = time.minutes.toString();
-  const secondsStr = time.seconds < 10 ? `0${time.seconds}` : time.seconds.toString();
-  const millisecondsStr =
-    time.milliseconds < 10
-      ? `00${time.milliseconds}`
-      : time.milliseconds < 100
-      ? `0${time.milliseconds}`
-      : time.milliseconds.toString();
+  // Convert milliseconds to minutes, seconds, and remaining milliseconds
+  const totalSeconds = Math.floor(time.runTime / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  const remainingMilliseconds = time.runTime % 1000;
 
-  const formattedTime = `${minutesStr}:${secondsStr}.${millisecondsStr}`;
+  // Format the time components
+  const secondsStr = seconds < 10 ? `0${seconds}` : seconds.toString();
+  const millisecondsStr =
+    remainingMilliseconds < 10
+      ? `00${remainingMilliseconds}`
+      : remainingMilliseconds < 100
+      ? `0${remainingMilliseconds}`
+      : remainingMilliseconds.toString();
+
+  // Create the formatted time string
+  const formattedTime = `${minutes}:${secondsStr}.${millisecondsStr}`;
 
   if (time.link) {
     return (

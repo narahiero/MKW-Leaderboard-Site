@@ -185,7 +185,7 @@ namespace my_app.Services
                 sqlQuery += "AND p.Country IN @Countries ";
             }
 
-            sqlQuery += "AND t.Obsoleted = 0 AND t.DeletedAt IS NULL ORDER BY t.Minutes, t.Seconds, t.Milliseconds OFFSET @Offset ROWS FETCH NEXT @MaxAmountOfPeople ROWS ONLY";
+            sqlQuery += "AND t.Obsoleted = 0 AND t.DeletedAt IS NULL ORDER BY t.RunTime OFFSET @Offset ROWS FETCH NEXT @MaxAmountOfPeople ROWS ONLY";
             using var connection = GetConnection();
             var tops = await connection.QueryAsync<Time>(sqlQuery, new { filter.Track, filter.Glitch, filter.Flap, filter.Countries, Offset = offset, MaxAmountOfPeople = maxAmountOfPeople});
 
@@ -205,10 +205,10 @@ namespace my_app.Services
                     ngQuery += "AND p.Country IN @Countries ";
                 }
 
-                ngQuery += "AND t.PlayerId NOT IN @GlitcherIds AND t.Obsoleted = 0 AND t.DeletedAt IS NULL ORDER BY t.Minutes, t.Seconds, t.Milliseconds OFFSET @Offset ROWS FETCH NEXT @MaxAmountOfPeople ROWS ONLY";
+                ngQuery += "AND t.PlayerId NOT IN @GlitcherIds AND t.Obsoleted = 0 AND t.DeletedAt IS NULL ORDER BY t.RunTime OFFSET @Offset ROWS FETCH NEXT @MaxAmountOfPeople ROWS ONLY";
                 var ngTops = await connection.QueryAsync<Time>(ngQuery, new { filter.Track, filter.Flap, filter.Countries, GlitcherIds = await GetAllGlitchersPlayerIds(filter.Track, filter.Flap), Offset = offset, MaxAmountOfPeople = maxAmountOfPeople});
                 tops.AsList().AddRange(ngTops);
-                tops.AsList().Sort(CompareTimes);
+                tops = tops.OrderBy(t => t.RunTime);
             }
 
             var result = new List<LeaderBoardTimeEntry>();
@@ -226,7 +226,7 @@ namespace my_app.Services
             {
                 if(tops.Count() > i)
                 {
-                    if(TimesAreEqual(times.Last(), tops.AsList()[i]))
+                    if(times.Last().RunTime == tops.AsList()[i].RunTime)
                     {
                         times.Add(tops.AsList()[i]);
                     }
@@ -241,80 +241,12 @@ namespace my_app.Services
             return result;
         }
 
-        private static bool TimesAreEqual(Time time1, Time time2)
-        {
-            return time1.Milliseconds.Equals(time2.Milliseconds) && time1.Seconds.Equals(time2.Seconds) && time1.Minutes.Equals(time2.Minutes);
-        }
-
         private async Task<IEnumerable<int>> GetAllGlitchersPlayerIds(Track track, bool flap)
         {
             var glitcherQuery = "SELECT PlayerId FROM Times WHERE Track = @Track AND Glitch = 1 AND Flap = @Flap AND Obsoleted = 0 AND DeletedAt IS NULL";
 
             using var connection = GetConnection();
             return await connection.QueryAsync<int>(glitcherQuery, new { Track = track, Flap = flap});
-        }
-
-        private static int CompareTimes(Time time2, Time time1)
-        {
-            //compare by minutes
-            if(time2.Minutes > time1.Minutes)
-            {
-                return 1;
-            }
-            else if(time1.Minutes > time2.Minutes)
-            {
-                return -1;
-            }
-            //if that is the same, compare by seconds
-            else
-            {
-                if(time2.Seconds > time1.Seconds)
-                {
-                    return 1;
-                }
-                else if(time1.Seconds > time2.Seconds)
-                {
-                    return -1;
-                }
-                //if that is the same, compare by milliseconds
-                else
-                {
-                    if(time2.Milliseconds > time1.Milliseconds)
-                    {
-                        return 1;
-                    }
-                    if(time1.Milliseconds > time2.Milliseconds)
-                    {
-                        return -1;
-                    }
-                    //if that is the same, compare by which time was first
-                    else
-                    {
-                        if(time2.Date < time1.Date)
-                        {
-                            return 1;
-                        }
-                        if(time1.Date < time2.Date)
-                        {
-                            return -1;
-                        }
-                        //if even that is the same, sort by player id (this will always be different)
-                        else
-                        {
-                            if(time2.PlayerId < time1.PlayerId)
-                            {
-                                return 1;
-                            }
-                            if(time1.PlayerId < time2.PlayerId)
-                            {
-                                return -1;
-                            }
-                        }
-                    }
-                }
-            }
-            //failsafe
-            return 1;
         }
     }
 }

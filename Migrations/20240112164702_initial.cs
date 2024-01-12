@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace my_app.Migrations
 {
-    public partial class @base : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -34,7 +34,8 @@ namespace my_app.Migrations
                     Town = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OtherInfo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Discord = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PPProofStatus = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    PPProofStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -48,14 +49,15 @@ namespace my_app.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PlayerId = table.Column<int>(type: "int", nullable: false),
                     Track = table.Column<int>(type: "int", nullable: false),
                     Glitch = table.Column<bool>(type: "bit", nullable: false),
                     Flap = table.Column<bool>(type: "bit", nullable: false),
-                    Minutes = table.Column<int>(type: "int", nullable: false),
-                    Seconds = table.Column<int>(type: "int", nullable: false),
-                    Milliseconds = table.Column<int>(type: "int", nullable: false),
+                    RunTime = table.Column<int>(type: "int", nullable: false),
                     Link = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Ghost = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Ghost = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Obsoleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {

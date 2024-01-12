@@ -6,9 +6,7 @@ export interface Time {
     track: Track;
     glitch: boolean;
     flap: boolean;
-    minutes: number;
-    seconds: number;
-    milliseconds: number;
+    runTime: number;
     link: string;
     ghost: string;
     obsoleted: boolean;

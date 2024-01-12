@@ -103,19 +103,13 @@ namespace my_app.Migrations
                     b.Property<string>("Link")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Milliseconds")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Minutes")
-                        .HasColumnType("int");
-
                     b.Property<bool>("Obsoleted")
                         .HasColumnType("bit");
 
                     b.Property<int>("PlayerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Seconds")
+                    b.Property<int>("RunTime")
                         .HasColumnType("int");
 
                     b.Property<int>("Track")
