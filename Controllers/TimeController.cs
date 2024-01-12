@@ -40,12 +40,12 @@ namespace my_app.Controllers
             }
         }
 
-        [HttpGet("top10/{track}/glitch/{glitch}/flap/{flap}")]
-        public async Task<ActionResult<IEnumerable<LeaderBoardTimeEntry>>> GetTop10(Track track, bool glitch, bool flap)
+        [HttpPost("top10")]
+        public async Task<ActionResult<IEnumerable<LeaderBoardTimeEntry>>> GetTop10([FromBody] TimeFilter filter)
         {
             try
             {
-                var top10 = await _timeService.GetCharts(track, glitch, flap, 0, 10);
+                var top10 = await _timeService.GetCharts(filter);
 
                 if(top10 == null)
                 {
@@ -62,12 +62,12 @@ namespace my_app.Controllers
             }
         }
 
-        [HttpGet("track-charts/{track}/glitch/{glitch}/flap/{flap}/page/{page}")]
-        public async Task<ActionResult<IEnumerable<LeaderBoardTimeEntry>>> GetTrackCharts(Track track, bool glitch, bool flap, int page)
+        [HttpPost("track-charts")]
+        public async Task<ActionResult<IEnumerable<LeaderBoardTimeEntry>>> GetTrackCharts([FromBody] TimeFilter filter)
         {
             try
             {
-                var charts = await _timeService.GetCharts(track, glitch, flap, page*100, 100);
+                var charts = await _timeService.GetCharts(filter);
 
                 if(charts == null)
                 {

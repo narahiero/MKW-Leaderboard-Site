@@ -1,13 +1,14 @@
 import axios from 'axios';
 import { checkResponse } from './helpers';
 import { LeaderBoardTimeEntry } from '../types/common';
-import { Track } from '../types/enums';
+import { TimeFilter } from '../types/filters';
 
 
-export const getTop10 = (track: Track, glitch: boolean, flap: boolean): Promise<LeaderBoardTimeEntry[]> => axios(
-    `/api/time/top10/${track}/glitch/${glitch}/flap/${flap}`,
+export const getTop10 = (filter: TimeFilter): Promise<LeaderBoardTimeEntry[]> => axios(
+    `/api/time/top10`,
     {
-      method: 'GET',
+      method: 'POST',
+      data: JSON.stringify(filter),
       headers: {
         'Content-Type': 'application/json'
       }

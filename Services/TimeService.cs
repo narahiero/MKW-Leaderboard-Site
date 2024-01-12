@@ -169,29 +169,43 @@ namespace my_app.Services
             return await connection.QueryAsync<Time>(sqlQuery, new { PlayerId = playerId, Track = track, Glitch = glitch, Flap = flap});
         }
 
-        public async Task<IEnumerable<LeaderBoardTimeEntry>> GetCharts(Track track, bool glitch, bool flap, int firstPosition, int minAmountOfPeople)
+        public async Task<IEnumerable<LeaderBoardTimeEntry>> GetCharts(TimeFilter filter)
         {
             //TODO - implement pagination logic for top100 charts. What to do if there is a tie between 99th-101st? PP would show times 99-100 as #99 but then show time 101 as #101st on the next page.
             //TODO - charts after top 100 will have logic issues with mixing glitch and no glitch data. figure out how to deal with this
 
             //account for ties (max 5 ties, increase later if needed)
-            var maxAmountOfPeople = minAmountOfPeople + 5;
+            var maxAmountOfPeople = filter.Page.EntriesPerPage + 5;
+            int offset = filter.Page.PageNumber * filter.Page.EntriesPerPage - filter.Page.EntriesPerPage;
 
-            string sqlQuery = "SELECT * FROM Times WHERE Track = @Track AND Glitch = @Glitch AND Flap = @Flap AND Obsoleted = 0 AND DeletedAt IS NULL ORDER BY Minutes, Seconds, Milliseconds OFFSET @FirstPosition ROWS FETCH NEXT @MaxAmountOfPeople ROWS ONLY";
+            var sqlQuery = "SELECT * FROM Times t INNER JOIN Players p ON t.PlayerId = p.Id WHERE t.Track = @Track AND t.Glitch = @Glitch AND t.Flap = @Flap ";
 
+            if(filter.Countries.Any())
+            {
+                sqlQuery += "AND p.Country IN @Countries ";
+            }
+
+            sqlQuery += "AND t.Obsoleted = 0 AND t.DeletedAt IS NULL ORDER BY t.Minutes, t.Seconds, t.Milliseconds OFFSET @Offset ROWS FETCH NEXT @MaxAmountOfPeople ROWS ONLY";
             using var connection = GetConnection();
-            var tops = await connection.QueryAsync<Time>(sqlQuery, new { Track = track, Glitch = glitch, Flap = flap, FirstPosition = firstPosition, MaxAmountOfPeople = maxAmountOfPeople});
+            var tops = await connection.QueryAsync<Time>(sqlQuery, new { filter.Track, filter.Glitch, filter.Flap, filter.Countries, Offset = offset, MaxAmountOfPeople = maxAmountOfPeople});
 
             //return ng if there are no glitch times
-            if(glitch && !tops.Any()) {
-                return await GetCharts(track, false, flap, firstPosition, minAmountOfPeople);
+            if(filter.Glitch && !tops.Any()) {
+                return await GetCharts(filter);
             }
 
             //if category is glitch, mix together the fastest ng times on that track from people that don't have a glitch time, and pick out the fastest from the mix.
-            if(glitch)
+            if(filter.Glitch)
             {
-                var ngQuery = "SELECT * FROM Times WHERE Track = @Track AND Glitch = 0 AND Flap = @Flap AND Obsoleted = 0 AND DeletedAt IS NULL AND PlayerId NOT IN @GlitcherIds ORDER BY Minutes, Seconds, Milliseconds OFFSET @FirstPosition ROWS FETCH NEXT @MaxAmountOfPeople ROWS ONLY";
-                var ngTops = await connection.QueryAsync<Time>(ngQuery, new { Track = track, Flap = flap, GlitcherIds = await GetAllGlitchersPlayerIds(track, flap), FirstPosition = firstPosition, MaxAmountOfPeople = maxAmountOfPeople});
+                var ngQuery = "SELECT * FROM Times t INNER JOIN Players p ON t.PlayerId = p.Id WHERE t.Track = @Track AND t.Glitch = 0 AND t.Flap = @Flap ";
+
+                if(filter.Countries.Any())
+                {
+                    ngQuery += "AND p.Country IN @Countries ";
+                }
+
+                ngQuery += "AND t.Obsoleted = 0 AND t.DeletedAt IS NULL ORDER BY t.Minutes, t.Seconds, t.Milliseconds OFFSET @Offset ROWS FETCH NEXT @MaxAmountOfPeople ROWS ONLY";
+                var ngTops = await connection.QueryAsync<Time>(ngQuery, new { filter.Track, filter.Flap, GlitcherIds = await GetAllGlitchersPlayerIds(filter.Track, filter.Flap), Offset = offset, MaxAmountOfPeople = maxAmountOfPeople});
                 tops.AsList().AddRange(ngTops);
                 tops.AsList().Sort(CompareTimes);
             }
@@ -199,12 +213,12 @@ namespace my_app.Services
             var result = new List<LeaderBoardTimeEntry>();
             var times = new List<Time>();
 
-            for(int i=0; i<minAmountOfPeople; i++)
+            for(int i=0; i<filter.Page.EntriesPerPage; i++)
             {
                 times.Add(tops.AsList()[i]);
             }
 
-            for(int i=minAmountOfPeople; i<maxAmountOfPeople; i++)
+            for(int i=filter.Page.EntriesPerPage; i<maxAmountOfPeople; i++)
             {
                 if(TimesAreEqual(times.Last(), tops.AsList()[i]))
                 {

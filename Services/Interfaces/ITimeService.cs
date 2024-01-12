@@ -21,6 +21,6 @@ namespace my_app.Services.Interfaces
         Task<IEnumerable<Time>> GetNGFlapByPlayerId(int playerId);
         Task<IEnumerable<Time>> GetAll();
         Task<IEnumerable<Time>> GetTimeHistory(int playerId, Track track, bool glitch, bool flap);
-        Task<IEnumerable<LeaderBoardTimeEntry>> GetCharts(Track track, bool glitch, bool flap, int firstPosition, int minAmountOfPeople);
+        Task<IEnumerable<LeaderBoardTimeEntry>> GetCharts(TimeFilter filter);
     }
 }

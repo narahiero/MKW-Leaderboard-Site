@@ -5,13 +5,16 @@ import GlitchButtons from './buttons/GlitchButtons';
 import { getTop10 } from '../client/top10s';
 import FlapButtons from './buttons/FlapButtons';
 import CupButtons from './buttons/CupButtons';
-import { Cup } from '../types/enums'
+import { Country, Cup } from '../types/enums'
 import { LeaderBoardTimeEntry } from '../types/common'
+import RegionButtons from './buttons/RegionButtons';
+import { TimeFilter } from '../types/filters';
 
 const App = () => {
   const [glitchState, setGlitchState] = useState<boolean>(false);
   const [flapState, setFlapState] = useState<boolean>(false);
   const [cupState, setCupState] = useState<Cup>(Cup.MushroomCup);
+  const [regionState, setRegionState] = useState<Country[]>([]);
   const [top10Data1, setTop10Data1] = useState<LeaderBoardTimeEntry[]>([]);
   const [top10Data2, setTop10Data2] = useState<LeaderBoardTimeEntry[]>([]);
   const [top10Data3, setTop10Data3] = useState<LeaderBoardTimeEntry[]>([]);
@@ -26,23 +29,36 @@ const App = () => {
   const handleCupClick = (cup: Cup) => {
     setCupState(cup);
   };
+  const handleRegionClick = (region: Country[]) => {
+    setRegionState(region);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
-      const data1 = await getTop10(cupState * 4, glitchState, flapState);
-      const data2 = await getTop10(cupState * 4 + 1, glitchState, flapState);
-      const data3 = await getTop10(cupState * 4 + 2, glitchState, flapState);
-      const data4 = await getTop10(cupState * 4 + 3, glitchState, flapState);
+      const baseFilter: TimeFilter = {
+        track: cupState * 4,
+        glitch: glitchState,
+        flap: flapState,
+        countries: regionState,
+        page: { pageNumber: 0, entriesPerPage: 10}
+      };
+      const data1 = await getTop10(baseFilter);
+      const data2 = await getTop10({ ...baseFilter, track: baseFilter.track + 1 });
+      const data3 = await getTop10({ ...baseFilter, track: baseFilter.track + 2 });
+      const data4 = await getTop10({ ...baseFilter, track: baseFilter.track + 3 });
       setTop10Data1(data1);
       setTop10Data2(data2);
       setTop10Data3(data3);
       setTop10Data4(data4);
     };
     fetchData();
-  }, [cupState, flapState, glitchState]);
+  }, [cupState, flapState, glitchState, regionState]);
 
   return (
     <div>
+    <div>
+      <RegionButtons onButtonClick={handleRegionClick} />
+    </div>
       <div>
         <CupButtons onButtonClick={handleCupClick} />
       </div>
