@@ -6,14 +6,14 @@ import {
   TableRow as Row,
   TableCell as Cell,
 } from '@mui/material';
-import { LongTrack, Country, Pages } from '../../types/enums'
+import { LongTrack, Country } from '../../types/enums'
 import { Top10TableProps, LeaderBoardTimeEntry } from '../../types/common'
 import { calculateRank, formatTime } from '../../utils/formatters';
 
 const Top10Table: React.FC<Top10TableProps> = ({top10s}) => {
   return (
     <div className="top10-table">
-      <h2><a href={Pages.Charts}>{LongTrack[top10s[0]?.time.track]}</a></h2>
+      <h2>{LongTrack[top10s[0]?.time.track]}</h2>
       <Table>
         <Body>
           {top10s.map((entry: LeaderBoardTimeEntry) => (

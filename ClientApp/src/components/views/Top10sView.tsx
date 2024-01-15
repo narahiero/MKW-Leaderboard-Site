@@ -9,6 +9,7 @@ import { Country, Cup } from '../../types/enums'
 import { LeaderBoardTimeEntry } from '../../types/common'
 import RegionButtons from '../buttons/RegionButtons';
 import { TimeFilter } from '../../types/filters';
+import Navbar from '../common/Navbar';
 
 const Top10sView = () => {
   const [glitchState, setGlitchState] = useState<boolean>(false);
@@ -56,24 +57,27 @@ const Top10sView = () => {
 
   return (
     <div>
-      <div>
-        <RegionButtons onButtonClick={handleRegionClick} />
-      </div>
-      <div>
-        <CupButtons onButtonClick={handleCupClick} />
-      </div>
-      <div>
-        <GlitchButtons onButtonClick={handleGlitchClick} />
-      </div>
-      <div>
-        <FlapButtons onButtonClick={handleFlapClick} />
-      </div>
-      <div className="table-container">
-        <Top10Table top10s={top10Data1} />
-        <Top10Table top10s={top10Data2} />
-        <Top10Table top10s={top10Data3} />
-        <Top10Table top10s={top10Data4} />
-      </div>
+        <Navbar/>
+        <div>
+        <div>
+            <RegionButtons onButtonClick={handleRegionClick} />
+        </div>
+        <div>
+            <CupButtons onButtonClick={handleCupClick} />
+        </div>
+        <div>
+            <GlitchButtons onButtonClick={handleGlitchClick} />
+        </div>
+        <div>
+            <FlapButtons onButtonClick={handleFlapClick} />
+        </div>
+        <div className="table-container">
+            <Top10Table top10s={top10Data1} />
+            <Top10Table top10s={top10Data2} />
+            <Top10Table top10s={top10Data3} />
+            <Top10Table top10s={top10Data4} />
+        </div>
+        </div>
     </div>
   );
 };
