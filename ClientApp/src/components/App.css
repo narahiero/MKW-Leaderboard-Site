@@ -11,6 +11,11 @@
   margin-right: 2%; /* Adjust as needed */
 }
 
+.chart-table {
+  flex: 1;
+  margin-right: 2%; /* Adjust as needed */
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -23,7 +28,7 @@ table {
 }
 
 tr:nth-child(even) {
-  background-color: #f2f2f2; /* Optional: Alternate row background color */
+  background-color: #f2f2f2;
 }
 
 

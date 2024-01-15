@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import './App.css';
-import Top10Table from './tables/Top10Table';
-import GlitchButtons from './buttons/GlitchButtons';
-import { getTop10 } from '../client/top10s';
-import FlapButtons from './buttons/FlapButtons';
-import CupButtons from './buttons/CupButtons';
-import { Country, Cup } from '../types/enums'
-import { LeaderBoardTimeEntry } from '../types/common'
-import RegionButtons from './buttons/RegionButtons';
-import { TimeFilter } from '../types/filters';
+import '../App.css';
+import Top10Table from '../tables/Top10Table';
+import GlitchButtons from '../buttons/GlitchButtons';
+import { getTop10 } from '../../client/top10s';
+import FlapButtons from '../buttons/FlapButtons';
+import CupButtons from '../buttons/CupButtons';
+import { Country, Cup } from '../../types/enums'
+import { LeaderBoardTimeEntry } from '../../types/common'
+import RegionButtons from '../buttons/RegionButtons';
+import { TimeFilter } from '../../types/filters';
 
-const App = () => {
+const Top10sView = () => {
   const [glitchState, setGlitchState] = useState<boolean>(false);
   const [flapState, setFlapState] = useState<boolean>(false);
   const [cupState, setCupState] = useState<Cup>(Cup.MushroomCup);
@@ -78,4 +78,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Top10sView;

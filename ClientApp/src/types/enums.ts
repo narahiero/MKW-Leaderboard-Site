@@ -1,3 +1,8 @@
+export enum Pages {
+    Top10s = '/',
+    Charts = '/charts',
+}
+
 export enum Track {
     LC,
     MMM,

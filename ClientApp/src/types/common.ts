@@ -30,3 +30,7 @@ export interface LeaderBoardTimeEntry {
 export interface Top10TableProps {
     top10s: LeaderBoardTimeEntry[];
 }
+
+export interface ChartTableProps {
+    charts: LeaderBoardTimeEntry[];
+}
