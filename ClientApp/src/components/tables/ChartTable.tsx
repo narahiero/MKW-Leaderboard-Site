@@ -9,7 +9,6 @@ import {
 import { LongTrack, Country } from '../../types/enums'
 import { ChartTableProps, LeaderBoardTimeEntry } from '../../types/common'
 import { calculateRank, formatTime } from '../../utils/formatters';
-import Sidebar from '../common/Sidebar';
 
 const ChartTable: React.FC<ChartTableProps> = ({charts}) => {
   return (
@@ -21,7 +20,7 @@ const ChartTable: React.FC<ChartTableProps> = ({charts}) => {
             <Row key={entry.player.id}>
             <Cell>{calculateRank(entry, charts)}</Cell>
             <Cell><img src={`/assets/flags/${Country[entry.player.country]}.png`} alt={Country[entry.player.country]} style={{ width: '3.5vh', height: '2vh' }} /></Cell>
-            <Cell className="nobr">{entry.player.name}</Cell>
+            <Cell className="nobr"><a href={`/player/${entry.player.id}`}>{entry.player.name}</a></Cell>
             <Cell>{formatTime(entry.time)}</Cell>
             <Cell>
                 {entry.time.ghost && (

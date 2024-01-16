@@ -34,3 +34,7 @@ export interface Top10TableProps {
 export interface ChartTableProps {
     charts: LeaderBoardTimeEntry[];
 }
+
+export interface PlayerTableProps {
+    players: Player[];
+}

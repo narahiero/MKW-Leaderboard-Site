@@ -59,7 +59,7 @@ namespace my_app.Services
 
         public async Task<IEnumerable<Player>> GetAll()
         {
-            string sqlQuery = "SELECT * FROM Players WHERE DeletedAt IS NULL";
+            string sqlQuery = "SELECT * FROM Players WHERE DeletedAt IS NULL ORDER BY Name";
 
             using var connection = GetConnection();
             return await connection.QueryAsync<Player>(sqlQuery);
