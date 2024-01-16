@@ -4,6 +4,7 @@ import ChartsView from './components/views/ChartsView';
 import Top10sView from './components/views/Top10sView';
 import { Pages } from './types/enums';
 import PlayersView from './components/views/PlayersView';
+import PlayerView from './components/views/PlayerView';
 
 const mount = document.getElementById('mount');
 const root = createRoot(mount!);
@@ -15,7 +16,8 @@ type ViewsConfig = {
 const viewsConfig: ViewsConfig = {
   [Pages.Top10s]: Top10sView,
   [Pages.Charts]: ChartsView,
-  [Pages.Players]: PlayersView
+  [Pages.Players]: PlayersView,
+  [Pages.Player]: PlayerView
 };
 
 const AppWithCallbackAfterRender = (): JSX.Element => {
@@ -26,6 +28,15 @@ const AppWithCallbackAfterRender = (): JSX.Element => {
 
   // Get the current URL path
   const currentPath = window.location.pathname;
+
+  // Check if the current path starts with "/player"
+  if (currentPath.startsWith(Pages.Player + "/")) {
+    // Extract the player ID from the URL
+    const playerId = currentPath.split('/')[2]; // Assuming the structure is "/player/{id}"
+
+    // Render the PlayerView component with the player ID
+    return <PlayerView playerId={playerId} />;
+  }
 
   // Find the corresponding component for the current path or use the default view
   const CurrentView = viewsConfig[currentPath as Pages] || viewsConfig[Pages.Top10s];

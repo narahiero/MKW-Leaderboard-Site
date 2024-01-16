@@ -212,3 +212,34 @@ body {
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
+
+.playerinfo-container {
+  text-align: center;
+  margin-bottom: 5vh;
+}
+
+.playerinfo-table {
+  max-width: 600px; /* Adjust the maximum width as needed */
+  width: 100%;
+  margin: 0 auto; /* Center the table horizontally */
+}
+
+.timesheet-container {
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.timesheet-table {
+  width: 100%;
+  /* Add any additional styling for your tables here */
+}
+
+.category-header {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  grid-column: span 2; /* Span across two columns in the grid */
+}

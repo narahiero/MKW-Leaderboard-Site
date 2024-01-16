@@ -39,3 +39,16 @@ export interface ChartTableProps {
 export interface PlayerTableProps {
     players: Player[];
 }
+
+export interface PlayerInfoTableProps {
+    player?: Player;
+}
+
+export interface PlayerViewProps {
+    playerId: string;
+  }
+
+export interface TimeSheetTableProps {
+    times: Time[];
+    header: string;
+}

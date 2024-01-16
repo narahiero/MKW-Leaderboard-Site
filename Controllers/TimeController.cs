@@ -99,100 +99,12 @@ namespace my_app.Controllers
             }
         }
 
-        [HttpGet("timesheet/{playerId}")]
-        public async Task<ActionResult<TimeSheet>> GetFullTimeSheet(int playerId)
+        [HttpPost("timesheet")]
+        public async Task<ActionResult<IEnumerable<Time>>> GetTimeSheet(TimeSheetFilter filter)
         {
             try
             {
-                var time = await _timeService.GetFullTimeSheet(playerId);
-
-                if(time == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(time);
-            }
-            catch (Exception e)
-            {
-                Trace.TraceError(e.Message);
-
-                return InternalServerError();
-            }
-        }
-
-        [HttpGet("timesheet/ng/{playerId}")]
-        public async Task<ActionResult<TimeSheet>> GetNGTimeSheet(int playerId)
-        {
-            try
-            {
-                var time = await _timeService.GetNGTimeSheet(playerId);
-
-                if(time == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(time);
-            }
-            catch (Exception e)
-            {
-                Trace.TraceError(e.Message);
-
-                return InternalServerError();
-            }
-        }
-
-        [HttpGet("timesheet/g/{playerId}")]
-        public async Task<ActionResult<TimeSheet>> GetGTimeSheet(int playerId)
-        {
-            try
-            {
-                var time = await _timeService.GetGTimeSheet(playerId);
-
-                if(time == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(time);
-            }
-            catch (Exception e)
-            {
-                Trace.TraceError(e.Message);
-
-                return InternalServerError();
-            }
-        }
-
-        [HttpGet("timesheet/3lap/{playerId}")]
-        public async Task<ActionResult<TimeSheet>> Get3LapTimeSheet(int playerId)
-        {
-            try
-            {
-                var time = await _timeService.Get3LapTimeSheet(playerId);
-
-                if(time == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(time);
-            }
-            catch (Exception e)
-            {
-                Trace.TraceError(e.Message);
-
-                return InternalServerError();
-            }
-        }
-
-        [HttpGet("timesheet/flap/{playerId}")]
-        public async Task<ActionResult<TimeSheet>> GetFlapTimeSheet(int playerId)
-        {
-            try
-            {
-                var time = await _timeService.GetFlapTimeSheet(playerId);
+                var time = await _timeService.GetTimeSheet(filter);
 
                 if(time == null)
                 {

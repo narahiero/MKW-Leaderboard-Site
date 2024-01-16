@@ -80,71 +80,6 @@ namespace my_app.Services
             return await connection.QueryFirstOrDefaultAsync<Time>(sqlQuery, new { Id = id });
         }
 
-        public async Task<TimeSheet> GetFullTimeSheet(int playerId)
-        {
-            return new TimeSheet(playerId, await GetNGByPlayerId(playerId), await GetGByPlayerId(playerId), await GetNGFlapByPlayerId(playerId), await GetGFlapByPlayerId(playerId));
-        }
-
-        public async Task<TimeSheet> GetNGTimeSheet(int playerId)
-        {
-            return new TimeSheet(playerId, await GetNGByPlayerId(playerId), new List<Time>(), await GetNGFlapByPlayerId(playerId), new List<Time>());
-        }
-
-        public async Task<TimeSheet> GetGTimeSheet(int playerId)
-        {
-            return new TimeSheet(playerId, new List<Time>(), await GetGByPlayerId(playerId), new List<Time>(), await GetGFlapByPlayerId(playerId));
-        }
-
-        public async Task<TimeSheet> Get3LapTimeSheet(int playerId)
-        {
-            return new TimeSheet(playerId, await GetNGByPlayerId(playerId), await GetGByPlayerId(playerId), new List<Time>(), new List<Time>());
-        }
-
-        public async Task<TimeSheet> GetFlapTimeSheet(int playerId)
-        {
-            return new TimeSheet(playerId, new List<Time>(), new List<Time>(), await GetNGFlapByPlayerId(playerId), await GetGFlapByPlayerId(playerId));
-        }
-
-        public async Task<IEnumerable<Time>> GetNGByPlayerId(int playerId)
-        {
-            string sqlQuery = "SELECT * FROM Times WHERE PlayerId = @PlayerId AND Glitch = 0 AND Flap = 0 AND Obsoleted = 0";
-
-            using var connection = GetConnection();
-            return await connection.QueryAsync<Time>(sqlQuery, new { PlayerId = playerId });
-        }
-
-        public async Task<IEnumerable<Time>> GetAllByPlayerId(int playerId)
-        {
-            string sqlQuery = "SELECT * FROM Times WHERE PlayerId = @PlayerId AND Glitch = 0 AND Flap = 0 AND Obsoleted = 0";
-
-            using var connection = GetConnection();
-            return await connection.QueryAsync<Time>(sqlQuery, new { PlayerId = playerId });
-        }
-
-        public async Task<IEnumerable<Time>> GetGByPlayerId(int playerId)
-        {
-            string sqlQuery = "SELECT * FROM Times WHERE PlayerId = @PlayerId AND Glitch = 1 AND Flap = 0 AND Obsoleted = 0";
-
-            using var connection = GetConnection();
-            return await connection.QueryAsync<Time>(sqlQuery, new { PlayerId = playerId });
-        }
-
-        public async Task<IEnumerable<Time>> GetNGFlapByPlayerId(int playerId)
-        {
-            string sqlQuery = "SELECT * FROM Times WHERE PlayerId = @PlayerId AND Glitch = 0 AND Flap = 1 AND Obsoleted = 0";
-
-            using var connection = GetConnection();
-            return await connection.QueryAsync<Time>(sqlQuery, new { PlayerId = playerId });
-        }
-
-        public async Task<IEnumerable<Time>> GetGFlapByPlayerId(int playerId)
-        {
-            string sqlQuery = "SELECT * FROM Times WHERE PlayerId = @PlayerId AND Glitch = 1 AND Flap = 1 AND Obsoleted = 0";
-
-            using var connection = GetConnection();
-            return await connection.QueryAsync<Time>(sqlQuery, new { PlayerId = playerId });
-        }
-
         public async Task<IEnumerable<Time>> GetAll()
         {
             string sqlQuery = "SELECT * FROM Times WHERE DeletedAt IS NULL AND Obsoleted = 0";
@@ -238,6 +173,21 @@ namespace my_app.Services
             sqlQuery += "AND t.Obsoleted = 0 AND t.DeletedAt IS NULL) SELECT COUNT(*) FROM RankedTimes WHERE row_num = 1";
             using var connection = GetConnection();
             return await connection.QueryFirstOrDefaultAsync<int>(sqlQuery, new { filter.Track, filter.Flap, filter.Countries});
+        }
+
+        public async Task<IEnumerable<Time>> GetTimeSheet(TimeSheetFilter filter)
+        {
+            var sqlQuery = "WITH RankedTimes AS (SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Track ORDER BY RunTime) AS row_num FROM Times WHERE Flap = @Flap AND PlayerId = @PlayerId AND Obsoleted = 0 AND DeletedAt IS NULL ";
+
+            if(!filter.Glitch)
+            {
+                sqlQuery += "AND Glitch = 0";
+            }
+
+            sqlQuery += ") SELECT * FROM RankedTimes WHERE row_num = 1 ORDER BY Track";
+            using var connection = GetConnection();
+            return await connection.QueryAsync<Time>(sqlQuery, new { filter.Flap, filter.PlayerId });
+
         }
     }
 }

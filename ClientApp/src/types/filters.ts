@@ -12,3 +12,9 @@ export interface Page {
     pageNumber: number;
     entriesPerPage: number
 }
+
+export interface TimeSheetFilter {
+    playerId: number;
+    glitch: boolean;
+    flap: boolean;
+}
