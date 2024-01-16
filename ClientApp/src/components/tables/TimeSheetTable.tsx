@@ -6,34 +6,46 @@ import {
   TableRow as Row,
   TableCell as Cell,
 } from '@mui/material';
-import { LongTrack } from '../../types/enums'
+import { LongTrack } from '../../types/enums';
 import { formatTime } from '../../utils/formatters';
-import { Time, TimeSheetTableProps } from '../../types/common';
+import { TimeSheetTableProps } from '../../types/common';
 
-const TimeSheetTable: React.FC<TimeSheetTableProps> = ({times, header}) => {
-  if(times.length === 0) {
-    return null;
-  }
+const TimeSheetTable: React.FC<TimeSheetTableProps> = ({ times, header }) => {
   return (
     <div className="chart-table">
-    <Table>
+    <h2 className="category-header">{header}</h2>
+      <Table>
+        <th>Track</th>
+        <th>Time</th>
+        <th>Ghost</th>
         <Body>
-        <h3 className="category-header">{header}</h3>
-        {times.map((time: Time) => (
-            <Row key={time.id}>
-            <Cell className="nobr">{LongTrack[time.track]}</Cell>
-            <Cell>{formatTime(time)}</Cell>
-            <Cell>
-                {time.ghost && (
-                <a href={time.ghost} target="_blank" rel="noopener noreferrer">
-                    <img src="/assets/ghost.png" alt="Ghost" style={{ width: '20px', height: '20px' }} />
-                </a>
-                )}
-            </Cell>
-            </Row>
-        ))}
+          {Object.keys(LongTrack).filter(key => typeof LongTrack[key as any] === 'string').map((trackKey) => {
+            const index = parseInt(trackKey, 10);
+            const timeEntry = times.find((time) => time.track === index);
+            return (
+              <Row key={index}>
+                <Cell className="nobr">{LongTrack[index]}</Cell>
+                <Cell>{timeEntry ? formatTime(timeEntry) : 'NT'}</Cell>
+                <Cell>
+                  {timeEntry && timeEntry.ghost && (
+                    <a
+                      href={timeEntry.ghost}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <img
+                        src="/assets/ghost.png"
+                        alt="Ghost"
+                        style={{ width: '20px', height: '20px' }}
+                      />
+                    </a>
+                  )}
+                </Cell>
+              </Row>
+            );
+          })}
         </Body>
-    </Table>
+      </Table>
     </div>
   );
 };

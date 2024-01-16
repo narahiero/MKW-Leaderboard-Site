@@ -40,7 +40,7 @@ thead {
 th, td {
   padding: 12px;
   text-align: left;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 2px solid #ddd;
 }
 
 th {
@@ -238,8 +238,4 @@ body {
 
 .category-header {
   text-align: center;
-  margin-bottom: 10px;
-  font-size: 18px;
-  font-weight: bold;
-  grid-column: span 2; /* Span across two columns in the grid */
 }

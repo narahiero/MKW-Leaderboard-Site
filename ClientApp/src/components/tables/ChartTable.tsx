@@ -15,6 +15,11 @@ const ChartTable: React.FC<ChartTableProps> = ({charts, page}) => {
     <div className="chart-table">
     <h2>{LongTrack[charts[0]?.time.track]}</h2>
     <Table>
+        <th>Rank</th>
+        <th>Country</th>
+        <th>Player</th>
+        <th>Time</th>
+        <th>Ghost</th>
         <Body>
         {charts.map((entry: LeaderBoardTimeEntry) => (
             <Row key={entry.player.id}>

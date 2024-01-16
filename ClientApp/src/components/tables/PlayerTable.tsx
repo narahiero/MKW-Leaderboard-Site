@@ -14,6 +14,8 @@ const PlayerTable: React.FC<PlayerTableProps> = ({players}) => {
     <div className="player-table">
     <h2>Players</h2>
     <Table>
+        <th>Country</th>
+        <th>Player</th>
         <Body>
         {players.map((player: Player) => (
             <Row key={player.id}>

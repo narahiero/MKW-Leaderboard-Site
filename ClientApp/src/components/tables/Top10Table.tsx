@@ -15,6 +15,11 @@ const Top10Table: React.FC<Top10TableProps> = ({top10s}) => {
     <div className="top10-table">
       <h2>{LongTrack[top10s[0]?.time.track]}</h2>
       <Table>
+        <th>Rank</th>
+        <th>Country</th>
+        <th>Player</th>
+        <th>Time</th>
+        <th>Ghost</th>
         <Body>
           {top10s.map((entry: LeaderBoardTimeEntry) => (
             <Row key={entry.player.id}>

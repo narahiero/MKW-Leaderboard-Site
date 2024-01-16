@@ -40,6 +40,7 @@ export enum Track {
     rBC
 }
 
+
 export enum LongTrack {
     "Luigi Circuit",
     "Moo Moo Meadows",
@@ -72,7 +73,7 @@ export enum LongTrack {
     "SNES Mario Circuit 3",
     "DS Peach Gardens",
     "GCN DK Mountain",
-    "N64 Bowser's Castle",
+    "N64 Bowser's Castle"
 }
 
 export enum Cup {
