@@ -70,6 +70,22 @@ th {
   border-radius: 8px;
 }
 
+/* Add the styles for the cool button as before */
+.cool-button-active {
+  background-color: #0F3325;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+
 body {
   transform: scale(0.8);
   transform-origin: top;
@@ -117,7 +133,7 @@ body {
 }
 
 .sidebar button {
-  background-color: #555;
+  background-color: #4caf50;
   color: #fff;
   border: none;
   padding: 10px;
@@ -128,11 +144,11 @@ body {
 }
 
 .sidebar button:hover {
-  background-color: #777;
+  background-color: #0F3325;
 }
 
 .sidebar li.active button {
-  background-color: #4caf50
+  background-color: #0F3325
 }
 
 .sidebar {
@@ -171,11 +187,11 @@ body {
 }
 
 .pagination button:hover {
-  background-color: #45a049;
+  background-color: #0F3325;
 }
 
 .pagination button.active {
-  background-color: #45a049;
+  background-color: #0F3325;
 }
 
 .pagination button:disabled {
