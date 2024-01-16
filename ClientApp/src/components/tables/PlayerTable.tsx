@@ -11,7 +11,7 @@ import { Player, PlayerTableProps } from '../../types/common';
 
 const PlayerTable: React.FC<PlayerTableProps> = ({players}) => {
   return (
-    <div className="chart-table">
+    <div className="player-table">
     <h2>Players</h2>
     <Table>
         <Body>
