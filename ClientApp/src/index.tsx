@@ -26,21 +26,14 @@ const AppWithCallbackAfterRender = (): JSX.Element => {
     return <h1>No mountpoint found!</h1>;
   }
 
-  // Get the current URL path
   const currentPath = window.location.pathname;
 
-  // Check if the current path starts with "/player"
   if (currentPath.startsWith(Pages.Player + "/")) {
-    // Extract the player ID from the URL
-    const playerId = currentPath.split('/')[2]; // Assuming the structure is "/player/{id}"
-
-    // Render the PlayerView component with the player ID
+    const playerId = currentPath.split('/')[2];
     return <PlayerView playerId={playerId} />;
   }
 
-  // Find the corresponding component for the current path or use the default view
   const CurrentView = viewsConfig[currentPath as Pages] || viewsConfig[Pages.Top10s];
-
   return <CurrentView />;
 };
 
