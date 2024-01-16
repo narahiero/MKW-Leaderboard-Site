@@ -84,6 +84,21 @@ namespace my_app.Controllers
             }
         }
 
+        [HttpPost("track-charts-quantity")]
+        public async Task<ActionResult<IEnumerable<LeaderBoardTimeEntry>>> GetTrackChartsQuantity([FromBody] TimeFilter filter)
+        {
+            try
+            {
+                return Ok(await _timeService.GetChartsQuantity(filter));
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(e.Message);
+
+                return InternalServerError();
+            }
+        }
+
         [HttpGet("timesheet/{playerId}")]
         public async Task<ActionResult<TimeSheet>> GetFullTimeSheet(int playerId)
         {

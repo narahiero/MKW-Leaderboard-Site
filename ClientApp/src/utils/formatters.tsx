@@ -33,7 +33,7 @@ export const formatTime = (time: Time): JSX.Element => {
 
 
 
-export const calculateRank = (player: LeaderBoardTimeEntry, data: LeaderBoardTimeEntry[]): string => {
+export const calculateRank = (player: LeaderBoardTimeEntry, data: LeaderBoardTimeEntry[], page: number): string => {
 
 const playerIndex = data.findIndex((item) => item === player);
 
@@ -42,7 +42,7 @@ if (playerIndex === -1) {
     return "N/A";
 }
 
-let rank = playerIndex + 1;
+let rank = playerIndex + 1 + ((page-1)*100);
 
 // Check for ties by finding the number of players with the same time
 let tieCount = 0;

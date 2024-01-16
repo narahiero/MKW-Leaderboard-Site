@@ -22,5 +22,6 @@ namespace my_app.Services.Interfaces
         Task<IEnumerable<Time>> GetAll();
         Task<IEnumerable<Time>> GetTimeHistory(int playerId, Track track, bool glitch, bool flap);
         Task<IEnumerable<LeaderBoardTimeEntry>> GetCharts(TimeFilter filter);
+        Task<int> GetChartsQuantity(TimeFilter filter);
     }
 }

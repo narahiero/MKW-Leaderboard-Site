@@ -171,45 +171,25 @@ namespace my_app.Services
 
         public async Task<IEnumerable<LeaderBoardTimeEntry>> GetCharts(TimeFilter filter)
         {
-            //TODO - implement pagination logic for top100 charts. What to do if there is a tie between 99th-101st? PP would show times 99-100 as #99 but then show time 101 as #101st on the next page.
-            //TODO - charts after top 100 will have logic issues with mixing glitch and no glitch data. figure out how to deal with this
-
-            //account for ties (max 5 ties, increase later if needed)
+           //account for ties (max 5 ties, increase later if needed)
             var maxAmountOfPeople = filter.Page.EntriesPerPage + 5;
             int offset = filter.Page.PageNumber * filter.Page.EntriesPerPage - filter.Page.EntriesPerPage;
 
-            var sqlQuery = "SELECT * FROM Times t INNER JOIN Players p ON t.PlayerId = p.Id WHERE t.Track = @Track AND t.Glitch = @Glitch AND t.Flap = @Flap ";
+            var sqlQuery = "WITH RankedTimes AS (SELECT t.*, ROW_NUMBER() OVER (PARTITION BY t.PlayerId ORDER BY t.RunTime) AS row_num FROM Times t INNER JOIN Players p ON t.PlayerId = p.Id WHERE t.Track = @Track AND t.Flap = @Flap ";
+
+            if(!filter.Glitch)
+            {
+                sqlQuery += "AND t.Glitch = 0 ";
+            }
 
             if(filter.Countries.Any())
             {
                 sqlQuery += "AND p.Country IN @Countries ";
             }
 
-            sqlQuery += "AND t.Obsoleted = 0 AND t.DeletedAt IS NULL ORDER BY t.RunTime OFFSET @Offset ROWS FETCH NEXT @MaxAmountOfPeople ROWS ONLY";
+            sqlQuery += "AND t.Obsoleted = 0 AND t.DeletedAt IS NULL) SELECT * FROM RankedTimes WHERE row_num = 1 ORDER BY RunTime OFFSET @Offset ROWS FETCH NEXT @MaxAmountOfPeople ROWS ONLY";
             using var connection = GetConnection();
-            var tops = await connection.QueryAsync<Time>(sqlQuery, new { filter.Track, filter.Glitch, filter.Flap, filter.Countries, Offset = offset, MaxAmountOfPeople = maxAmountOfPeople});
-
-            //return ng if there are no glitch times
-            if(filter.Glitch && !tops.Any()) {
-                filter.Glitch = false;
-                return await GetCharts(filter);
-            }
-
-            //if category is glitch, mix together the fastest ng times on that track from people that don't have a glitch time, and pick out the fastest from the mix.
-            if(filter.Glitch)
-            {
-                var ngQuery = "SELECT * FROM Times t INNER JOIN Players p ON t.PlayerId = p.Id WHERE t.Track = @Track AND t.Glitch = 0 AND t.Flap = @Flap ";
-
-                if(filter.Countries.Any())
-                {
-                    ngQuery += "AND p.Country IN @Countries ";
-                }
-
-                ngQuery += "AND t.PlayerId NOT IN @GlitcherIds AND t.Obsoleted = 0 AND t.DeletedAt IS NULL ORDER BY t.RunTime OFFSET @Offset ROWS FETCH NEXT @MaxAmountOfPeople ROWS ONLY";
-                var ngTops = await connection.QueryAsync<Time>(ngQuery, new { filter.Track, filter.Flap, filter.Countries, GlitcherIds = await GetAllGlitchersPlayerIds(filter.Track, filter.Flap), Offset = offset, MaxAmountOfPeople = maxAmountOfPeople});
-                tops.AsList().AddRange(ngTops);
-                tops = tops.OrderBy(t => t.RunTime);
-            }
+            var tops = await connection.QueryAsync<Time>(sqlQuery, new { filter.Track, filter.Flap, filter.Countries, Offset = offset, MaxAmountOfPeople = maxAmountOfPeople});
 
             var result = new List<LeaderBoardTimeEntry>();
             var times = new List<Time>();
@@ -241,12 +221,23 @@ namespace my_app.Services
             return result;
         }
 
-        private async Task<IEnumerable<int>> GetAllGlitchersPlayerIds(Track track, bool flap)
+        public async Task<int> GetChartsQuantity(TimeFilter filter)
         {
-            var glitcherQuery = "SELECT PlayerId FROM Times WHERE Track = @Track AND Glitch = 1 AND Flap = @Flap AND Obsoleted = 0 AND DeletedAt IS NULL";
+            var sqlQuery = "WITH RankedTimes AS (SELECT t.*, ROW_NUMBER() OVER (PARTITION BY t.PlayerId ORDER BY t.RunTime) AS row_num FROM Times t INNER JOIN Players p ON t.PlayerId = p.Id WHERE t.Track = @Track AND t.Flap = @Flap ";
 
+            if(!filter.Glitch)
+            {
+                sqlQuery += "AND t.Glitch = 0 ";
+            }
+
+            if(filter.Countries.Any())
+            {
+                sqlQuery += "AND p.Country IN @Countries ";
+            }
+
+            sqlQuery += "AND t.Obsoleted = 0 AND t.DeletedAt IS NULL) SELECT COUNT(*) FROM RankedTimes WHERE row_num = 1";
             using var connection = GetConnection();
-            return await connection.QueryAsync<int>(glitcherQuery, new { Track = track, Flap = flap});
+            return await connection.QueryFirstOrDefaultAsync<int>(sqlQuery, new { filter.Track, filter.Flap, filter.Countries});
         }
     }
 }

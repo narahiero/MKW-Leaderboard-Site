@@ -33,6 +33,7 @@ export interface Top10TableProps {
 
 export interface ChartTableProps {
     charts: LeaderBoardTimeEntry[];
+    page: number;
 }
 
 export interface PlayerTableProps {

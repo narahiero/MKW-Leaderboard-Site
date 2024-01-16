@@ -148,3 +148,51 @@ body {
   padding: 20px;
   margin-left: 15%; /* Adjust to include the width of the sidebar */
 }
+
+/* Pagination Styles */
+.pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  justify-content: center;
+  font-family: 'Arial', sans-serif;
+}
+
+.pagination button {
+  margin: 0 5px;
+  display: inline-block;
+  background-color: #4caf50;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pagination button:hover {
+  background-color: #45a049;
+}
+
+.pagination button.active {
+  background-color: #45a049;
+}
+
+.pagination button:disabled {
+  background-color: #ddd;
+  color: #999;
+  cursor: not-allowed;
+}
+
+/* Previous and Next Buttons */
+.pagination button.pagination-previous,
+.pagination button.pagination-next {
+  margin: 0 5px;
+  display: inline-block;
+  background-color: #4caf50;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}

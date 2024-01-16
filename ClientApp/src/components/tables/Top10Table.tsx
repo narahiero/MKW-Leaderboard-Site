@@ -18,7 +18,7 @@ const Top10Table: React.FC<Top10TableProps> = ({top10s}) => {
         <Body>
           {top10s.map((entry: LeaderBoardTimeEntry) => (
             <Row key={entry.player.id}>
-              <Cell>{calculateRank(entry, top10s)}</Cell>
+              <Cell>{calculateRank(entry, top10s, 1)}</Cell>
               <Cell><img src={`/assets/flags/${Country[entry.player.country]}.png`} alt={Country[entry.player.country]} style={{ width: '3.5vh', height: '2vh' }} /></Cell>
               <Cell className="nobr"><a href={`/player/${entry.player.id}`}>{entry.player.name}</a></Cell>
               <Cell>{formatTime(entry.time)}</Cell>
