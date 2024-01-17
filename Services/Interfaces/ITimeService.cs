@@ -13,6 +13,6 @@ namespace my_app.Services.Interfaces
         Task<IEnumerable<Time>> GetTimeHistory(int playerId, Track track, bool glitch, bool flap);
         Task<IEnumerable<LeaderBoardTimeEntry>> GetCharts(TimeFilter filter);
         Task<int> GetChartsQuantity(TimeFilter filter);
-        Task<IEnumerable<Time>> GetTimeSheet(TimeSheetFilter filter);
+        Task<TimeSheet> GetTimeSheet(TimeSheetFilter filter);
     }
 }

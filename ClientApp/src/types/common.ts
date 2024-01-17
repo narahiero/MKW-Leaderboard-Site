@@ -13,6 +13,12 @@ export interface Time {
     rank: number;
 }
 
+export interface TimeSheet {
+    times: Time[];
+    af: number;
+    totalTime: number;
+}
+
 export interface Player {
     id: number;
     name: string;
@@ -50,6 +56,6 @@ export interface PlayerViewProps {
   }
 
 export interface TimeSheetTableProps {
-    times: Time[];
+    timesheet: TimeSheet | undefined;
     header: string;
 }

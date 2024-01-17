@@ -100,7 +100,7 @@ namespace my_app.Controllers
         }
 
         [HttpPost("timesheet")]
-        public async Task<ActionResult<IEnumerable<Time>>> GetTimeSheet(TimeSheetFilter filter)
+        public async Task<ActionResult<TimeSheet>> GetTimeSheet(TimeSheetFilter filter)
         {
             try
             {

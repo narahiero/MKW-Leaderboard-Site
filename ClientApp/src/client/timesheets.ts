@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { checkResponse } from './helpers';
-import { Time } from '../types/common';
+import { TimeSheet } from '../types/common';
 import { TimeSheetFilter } from '../types/filters';
 
-export const getTimeSheet = (filter: TimeSheetFilter): Promise<Time[]> => axios(
+export const getTimeSheet = (filter: TimeSheetFilter): Promise<TimeSheet> => axios(
     `/api/time/timesheet`,
     {
       method: 'POST',

@@ -11,7 +11,7 @@ namespace my_app.Models
 
         }
 
-        public Time(DateTime date, int playerId, Track track, bool glitch, bool flap, int runTime, string link, string ghost, string rank) {
+        public Time(DateTime date, int playerId, Track track, bool glitch, bool flap, int runTime, string link, string ghost, int rank) {
             Date = date;
             PlayerId = playerId;
             Track = track;
@@ -51,6 +51,6 @@ namespace my_app.Models
         public DateTime? DeletedAt { get; set; }
 
         [NotMapped]
-        public string Rank { get; set; }
+        public int Rank { get; set; }
     }
 }

@@ -31,6 +31,28 @@ export const formatTime = (time: Time): JSX.Element => {
   }
 };
 
+export const formatTotalTime = (totalTime: number): JSX.Element => {
+  // Convert milliseconds to minutes, seconds, and remaining milliseconds
+  const totalSeconds = Math.floor(totalTime / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  const remainingMilliseconds = totalTime % 1000;
+
+  // Format the time components
+  const secondsStr = seconds < 10 ? `0${seconds}` : seconds.toString();
+  const millisecondsStr =
+    remainingMilliseconds < 10
+      ? `00${remainingMilliseconds}`
+      : remainingMilliseconds < 100
+      ? `0${remainingMilliseconds}`
+      : remainingMilliseconds.toString();
+
+  // Create the formatted time string
+  const formattedTime = `${minutes}:${secondsStr}.${millisecondsStr}`;
+
+  return <span>{formattedTime}</span>;
+};
+
 
 
 export const calculateRank = (player: LeaderBoardTimeEntry, data: LeaderBoardTimeEntry[], page: number): string => {

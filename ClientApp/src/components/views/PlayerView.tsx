@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Player, PlayerViewProps, Time } from '../../types/common';
+import { Player, PlayerViewProps, TimeSheet } from '../../types/common';
 import '../App.css';
 import Navbar from '../common/Navbar';
 import { getTimeSheet } from '../../client/timesheets';
@@ -10,10 +10,10 @@ import PlayerInfoTable from '../tables/PlayerInfoTable';
 
 const PlayerView: React.FC<PlayerViewProps> = ({ playerId }) => {
   const [playerState, setPlayerState] = useState<Player>();
-  const [ng3LapTimeSheet, setNG3LapTimeSheet] = useState<Time[]>([]);
-  const [g3LapTimeSheet, setG3LapTimeSheet] = useState<Time[]>([]);
-  const [ngFlapTimeSheet, setNGFlapTimeSheet] = useState<Time[]>([]);
-  const [gFlapTimeSheet, setGFlapTimeSheet] = useState<Time[]>([]);
+  const [ng3LapTimeSheet, setNG3LapTimeSheet] = useState<TimeSheet>();
+  const [g3LapTimeSheet, setG3LapTimeSheet] = useState<TimeSheet>();
+  const [ngFlapTimeSheet, setNGFlapTimeSheet] = useState<TimeSheet>();
+  const [gFlapTimeSheet, setGFlapTimeSheet] = useState<TimeSheet>();
   useEffect(() => {
     const fetchData = async () => {
       const numericPlayerId = parseInt(playerId, 10);
@@ -62,10 +62,10 @@ const PlayerView: React.FC<PlayerViewProps> = ({ playerId }) => {
         <PlayerInfoTable player={playerState} />
       </div>
       <div className="timesheet-container">
-        <TimeSheetTable times={ng3LapTimeSheet} header="Non-SC - 3Lap"/>
-        <TimeSheetTable times={g3LapTimeSheet} header="Unrestricted - 3Lap"/>
-        <TimeSheetTable times={ngFlapTimeSheet} header="Non-SC - Flap"/>
-        <TimeSheetTable times={gFlapTimeSheet} header="Unrestricted - Flap"/>
+        <TimeSheetTable timesheet={ng3LapTimeSheet} header="Non-SC - 3Lap"/>
+        <TimeSheetTable timesheet={g3LapTimeSheet} header="Unrestricted - 3Lap"/>
+        <TimeSheetTable timesheet={ngFlapTimeSheet} header="Non-SC - Flap"/>
+        <TimeSheetTable timesheet={gFlapTimeSheet} header="Unrestricted - Flap"/>
       </div>
     </div>
   );

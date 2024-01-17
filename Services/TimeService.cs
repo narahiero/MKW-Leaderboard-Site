@@ -175,7 +175,7 @@ namespace my_app.Services
             return await connection.QueryFirstOrDefaultAsync<int>(sqlQuery, new { filter.Track, filter.Flap, filter.Countries});
         }
 
-        public async Task<IEnumerable<Time>> GetTimeSheet(TimeSheetFilter filter)
+        public async Task<TimeSheet> GetTimeSheet(TimeSheetFilter filter)
         {
             var sqlQuery = "SELECT * FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY Track ORDER BY RunTime) AS Rank FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Track ORDER BY RunTime) AS row_num FROM Times WHERE Flap = @Flap AND Obsoleted = 0 AND DeletedAt IS NULL ";
 
@@ -186,7 +186,23 @@ namespace my_app.Services
 
             sqlQuery += ") AS RankedTimes WHERE row_num = 1 ) AS FinalRankedTimes WHERE PlayerId = @PlayerId ORDER BY Track;";
             using var connection = GetConnection();
-            return await connection.QueryAsync<Time>(sqlQuery, new { filter.Flap, filter.PlayerId });
+            var times = await connection.QueryAsync<Time>(sqlQuery, new { filter.Flap, filter.PlayerId });
+
+            return new TimeSheet(times, CalculateAF(times), CalculateTotalTime(times));
+        }
+
+        private static double CalculateAF(IEnumerable<Time> times)
+        {
+            var ranks = times.Select(t => t.Rank);
+
+            return ranks.Average();
+        }
+
+        private static long CalculateTotalTime(IEnumerable<Time> times)
+        {
+            var ranks = times.Select(t => t.RunTime);
+
+            return ranks.Sum();
         }
     }
 }

@@ -7,10 +7,13 @@ import {
   TableCell as Cell,
 } from '@mui/material';
 import { LongTrack } from '../../types/enums';
-import { formatTime } from '../../utils/formatters';
+import { formatTime, formatTotalTime } from '../../utils/formatters';
 import { TimeSheetTableProps } from '../../types/common';
 
-const TimeSheetTable: React.FC<TimeSheetTableProps> = ({ times, header }) => {
+const TimeSheetTable: React.FC<TimeSheetTableProps> = ({ timesheet, header }) => {
+  if(!timesheet) {
+    return null;
+  }
   return (
     <div className="chart-table">
     <h2 className="category-header">{header}</h2>
@@ -22,7 +25,7 @@ const TimeSheetTable: React.FC<TimeSheetTableProps> = ({ times, header }) => {
         <Body>
           {Object.keys(LongTrack).filter(key => typeof LongTrack[key as any] === 'string').map((trackKey) => {
             const index = parseInt(trackKey, 10);
-            const timeEntry = times.find((time) => time.track === index);
+            const timeEntry = timesheet.times.find((time) => time.track === index);
             return (
               <Row key={index}>
                 <Cell className="nobr">{LongTrack[index]}</Cell>
@@ -47,6 +50,10 @@ const TimeSheetTable: React.FC<TimeSheetTableProps> = ({ times, header }) => {
             );
           })}
         </Body>
+        <th>Totals</th>
+        <th>{formatTotalTime(timesheet.totalTime)}</th>
+        <th></th>
+        <th>{timesheet.af}</th>
       </Table>
     </div>
   );
