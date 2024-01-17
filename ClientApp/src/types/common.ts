@@ -10,6 +10,7 @@ export interface Time {
     link: string;
     ghost: string;
     obsoleted: boolean;
+    rank: number;
 }
 
 export interface Player {

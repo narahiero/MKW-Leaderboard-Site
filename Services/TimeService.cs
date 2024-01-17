@@ -177,17 +177,16 @@ namespace my_app.Services
 
         public async Task<IEnumerable<Time>> GetTimeSheet(TimeSheetFilter filter)
         {
-            var sqlQuery = "WITH RankedTimes AS (SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Track ORDER BY RunTime) AS row_num FROM Times WHERE Flap = @Flap AND PlayerId = @PlayerId AND Obsoleted = 0 AND DeletedAt IS NULL ";
+            var sqlQuery = "SELECT * FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY Track ORDER BY RunTime) AS Rank FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Track ORDER BY RunTime) AS row_num FROM Times WHERE Flap = @Flap AND Obsoleted = 0 AND DeletedAt IS NULL ";
 
             if(!filter.Glitch)
             {
                 sqlQuery += "AND Glitch = 0";
             }
 
-            sqlQuery += ") SELECT * FROM RankedTimes WHERE row_num = 1 ORDER BY Track";
+            sqlQuery += ") AS RankedTimes WHERE row_num = 1 ) AS FinalRankedTimes WHERE PlayerId = @PlayerId ORDER BY Track;";
             using var connection = GetConnection();
             return await connection.QueryAsync<Time>(sqlQuery, new { filter.Flap, filter.PlayerId });
-
         }
     }
 }

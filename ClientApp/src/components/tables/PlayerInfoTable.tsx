@@ -27,7 +27,7 @@ const PlayerInfoTable: React.FC<PlayerInfoTableProps> = ({player}) => {
                 <Cell>{player.discord}</Cell>
             </Row>
             <Row>
-                <Cell>Other Info</Cell>
+                <Cell>Info</Cell>
                 <Cell>{player.otherInfo}</Cell>
             </Row>
         </Body>

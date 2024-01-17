@@ -18,6 +18,7 @@ const TimeSheetTable: React.FC<TimeSheetTableProps> = ({ times, header }) => {
         <th>Track</th>
         <th>Time</th>
         <th>Ghost</th>
+        <th>Rank</th>
         <Body>
           {Object.keys(LongTrack).filter(key => typeof LongTrack[key as any] === 'string').map((trackKey) => {
             const index = parseInt(trackKey, 10);
@@ -41,6 +42,7 @@ const TimeSheetTable: React.FC<TimeSheetTableProps> = ({ times, header }) => {
                     </a>
                   )}
                 </Cell>
+                <Cell>{timeEntry ? timeEntry.rank : '-'}</Cell>
               </Row>
             );
           })}

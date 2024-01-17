@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using my_app.Models.Enums;
 
 namespace my_app.Models
@@ -10,7 +11,7 @@ namespace my_app.Models
 
         }
 
-        public Time(DateTime date, int playerId, Track track, bool glitch, bool flap, int runTime, string link, string ghost) {
+        public Time(DateTime date, int playerId, Track track, bool glitch, bool flap, int runTime, string link, string ghost, string rank) {
             Date = date;
             PlayerId = playerId;
             Track = track;
@@ -19,6 +20,7 @@ namespace my_app.Models
             RunTime = runTime;
             Link = link;
             Ghost = ghost;
+            Rank = rank;
         }
 
         public int Id { get; set; }
@@ -47,5 +49,8 @@ namespace my_app.Models
         public bool Obsoleted { get; set; }
 
         public DateTime? DeletedAt { get; set; }
+
+        [NotMapped]
+        public string Rank { get; set; }
     }
 }
