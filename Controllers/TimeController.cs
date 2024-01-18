@@ -121,6 +121,36 @@ namespace my_app.Controllers
             }
         }
 
+        [HttpPost("total-af")]
+        public async Task<ActionResult<double>> GetTotalAF(TimeSheetFilter filter)
+        {
+            try
+            {
+                return Ok(await _timeService.GetTotalAF(filter));
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(e.Message);
+
+                return InternalServerError();
+            }
+        }
+
+        [HttpPost("total-total-time")]
+        public async Task<ActionResult<long>> GetTotalTotalTime(TimeSheetFilter filter)
+        {
+            try
+            {
+                return Ok(await _timeService.GetTotalTotalTime(filter));
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(e.Message);
+
+                return InternalServerError();
+            }
+        }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Time>>> GetAll()
         {

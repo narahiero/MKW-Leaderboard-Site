@@ -4,6 +4,7 @@ using my_app.Services.Interfaces;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using my_app.Models.Enums;
+using System.Linq;
 
 namespace my_app.Services
 {
@@ -187,15 +188,69 @@ namespace my_app.Services
             sqlQuery += ") AS RankedTimes WHERE row_num = 1 ) AS FinalRankedTimes WHERE PlayerId = @PlayerId ORDER BY Track;";
             using var connection = GetConnection();
             var times = await connection.QueryAsync<Time>(sqlQuery, new { filter.Flap, filter.PlayerId });
+            long totalTime = 0;
 
-            return new TimeSheet(times, CalculateAF(times), CalculateTotalTime(times));
+            //only return totalTime if player has set a run on every track
+            if(await GetTimeCount(filter) == 32)
+            {
+                totalTime = CalculateTotalTime(times);
+            }
+
+            return new TimeSheet(times, CalculateAF(times), totalTime);
+        }
+
+        public async Task<double> GetTotalAF(TimeSheetFilter filter)
+        {
+            if(!await PlayerHasFullTimeSheet(filter)) {
+                return 0;
+            }
+
+            var sqlQuery = "SELECT ROUND(AVG(CAST(Rank AS FLOAT)), 4) FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY Track, Flap ORDER BY RunTime) AS Rank FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Flap, Track ORDER BY RunTime) AS row_num FROM Times WHERE Obsoleted = 0 AND DeletedAt IS NULL ";
+
+            if(!filter.Glitch)
+            {
+                sqlQuery += "AND Glitch = 0";
+            }
+
+            sqlQuery += ") AS RankedTimes WHERE row_num = 1 ) AS FinalRankedTimes WHERE PlayerId = @PlayerId;";
+            using var connection = GetConnection();
+            var af = await connection.QueryFirstOrDefaultAsync<double>(sqlQuery, new { filter.PlayerId });
+
+            return Math.Round(af, 4); //round to 4 decimals
+        }
+
+        public async Task<long> GetTotalTotalTime(TimeSheetFilter filter)
+        {
+            if(!await PlayerHasFullTimeSheet(filter)) {
+                return 0;
+            }
+
+            var sqlQuery = "SELECT SUM(RunTime) FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Flap, Track ORDER BY RunTime) AS row_num FROM Times WHERE Obsoleted = 0 AND DeletedAt IS NULL AND PlayerId = @PlayerId";
+
+            if(!filter.Glitch)
+            {
+                sqlQuery += " AND Glitch = 0";
+            }
+
+            sqlQuery += ") AS RankedTimes WHERE row_num = 1;";
+            using var connection = GetConnection();
+            return await connection.QueryFirstOrDefaultAsync<long>(sqlQuery, new { filter.PlayerId });
+        }
+
+        private async Task<bool> PlayerHasFullTimeSheet(TimeSheetFilter filter)
+        {
+            var count = await GetTimeCount(filter);
+            filter.Flap = !filter.Flap;
+            var otherCount = await GetTimeCount(filter);
+
+            return count == 32 && otherCount == 32;
         }
 
         private static double CalculateAF(IEnumerable<Time> times)
         {
             var ranks = times.Select(t => t.Rank);
 
-            return ranks.Average();
+            return Math.Round(ranks.Average(), 4); //round to 4 decimals
         }
 
         private static long CalculateTotalTime(IEnumerable<Time> times)
@@ -203,6 +258,20 @@ namespace my_app.Services
             var ranks = times.Select(t => t.RunTime);
 
             return ranks.Sum();
+        }
+
+        private async Task<int> GetTimeCount(TimeSheetFilter filter)
+        {
+            var sqlQuery = "SELECT COUNT(*) FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Track ORDER BY RunTime) AS row_num FROM Times WHERE Flap = @Flap AND Obsoleted = 0 AND DeletedAt IS NULL AND PlayerId = @PlayerId";
+
+            if(!filter.Glitch)
+            {
+                sqlQuery += " AND Glitch = 0";
+            }
+
+            sqlQuery += ") AS RankedTimes WHERE row_num = 1;";
+            using var connection = GetConnection();
+            return await connection.QueryFirstOrDefaultAsync<int>(sqlQuery, new { filter.Flap, filter.PlayerId });
         }
     }
 }

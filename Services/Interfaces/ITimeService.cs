@@ -14,5 +14,7 @@ namespace my_app.Services.Interfaces
         Task<IEnumerable<LeaderBoardTimeEntry>> GetCharts(TimeFilter filter);
         Task<int> GetChartsQuantity(TimeFilter filter);
         Task<TimeSheet> GetTimeSheet(TimeSheetFilter filter);
+        Task<double> GetTotalAF(TimeSheetFilter filter);
+        Task<long> GetTotalTotalTime(TimeSheetFilter filter);
     }
 }

@@ -58,4 +58,7 @@ export interface PlayerViewProps {
 export interface TimeSheetTableProps {
     timesheet: TimeSheet | undefined;
     header: string;
+    footer: string;
+    totalAF: number;
+    totalTotalTime: number;
 }

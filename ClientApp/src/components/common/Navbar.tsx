@@ -16,7 +16,7 @@ const Navbar = () => {
         Charts
       </a>
       <a href="/players" className={activeLink === '/players' ? 'active' : ''} onClick={() => handleLinkClick('/players')}>
-        Players
+        Players A-Z
       </a>
     </div>
   );

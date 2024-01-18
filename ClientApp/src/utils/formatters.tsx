@@ -53,8 +53,6 @@ export const formatTotalTime = (totalTime: number): JSX.Element => {
   return <span>{formattedTime}</span>;
 };
 
-
-
 export const calculateRank = (player: LeaderBoardTimeEntry, data: LeaderBoardTimeEntry[], page: number): string => {
 
 const playerIndex = data.findIndex((item) => item === player);

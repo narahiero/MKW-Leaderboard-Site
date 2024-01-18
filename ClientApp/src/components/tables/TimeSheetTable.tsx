@@ -10,7 +10,7 @@ import { LongTrack } from '../../types/enums';
 import { formatTime, formatTotalTime } from '../../utils/formatters';
 import { TimeSheetTableProps } from '../../types/common';
 
-const TimeSheetTable: React.FC<TimeSheetTableProps> = ({ timesheet, header }) => {
+const TimeSheetTable: React.FC<TimeSheetTableProps> = ({ timesheet, header, footer, totalAF, totalTotalTime }) => {
   if(!timesheet) {
     return null;
   }
@@ -54,6 +54,16 @@ const TimeSheetTable: React.FC<TimeSheetTableProps> = ({ timesheet, header }) =>
         <th>{formatTotalTime(timesheet.totalTime)}</th>
         <th></th>
         <th>{timesheet.af}</th>
+        {totalAF !== 0 && totalTotalTime !== 0 && (
+        <><Row>
+            <th></th><th></th><th></th><th></th>
+          </Row><Row>
+              <th><h2>Total ({footer})</h2></th>
+              <th>{formatTotalTime(totalTotalTime)}</th>
+              <th></th>
+              <th><h1>{totalAF}</h1></th>
+            </Row></>
+      )}
       </Table>
     </div>
   );
