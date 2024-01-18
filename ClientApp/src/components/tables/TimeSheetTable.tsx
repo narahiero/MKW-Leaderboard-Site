@@ -58,7 +58,7 @@ const TimeSheetTable: React.FC<TimeSheetTableProps> = ({ timesheet, header, foot
         <><Row>
             <th></th><th></th><th></th><th></th>
           </Row><Row>
-              <th><h2>Total ({footer})</h2></th>
+              <th><h2>Overall ({footer})</h2></th>
               <th>{formatTotalTime(totalTotalTime)}</th>
               <th></th>
               <th><h1>{totalAF}</h1></th>
