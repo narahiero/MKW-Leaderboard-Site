@@ -16,6 +16,16 @@
   margin-right: 2%; /* Adjust as needed */
 }
 
+.af-table {
+  flex: 1;
+  margin-right: 2%; /* Adjust as needed */
+}
+
+.total-time-table {
+  flex: 1;
+  margin-right: 2%; /* Adjust as needed */
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -159,7 +169,7 @@ body {
   overflow: auto;
 }
 
-.content-container {
+.chart-button-container {
   flex-grow: 1;
   padding: 20px;
   margin-left: 15%; /* Adjust to include the width of the sidebar */
@@ -238,4 +248,15 @@ body {
 
 .category-header {
   text-align: center;
+}
+
+.all-box-label {
+  position: absolute;
+  font-size: 18px; /* Increased font size, adjust as needed */
+}
+
+.all-box {
+  position: absolute;
+  height: 15px; /* Increased size, adjust as needed */
+  width: 15px; /* Increased size, adjust as needed */
 }

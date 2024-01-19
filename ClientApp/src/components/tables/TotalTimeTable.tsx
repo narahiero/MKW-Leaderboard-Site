@@ -7,25 +7,25 @@ import {
   TableCell as Cell,
 } from '@mui/material';
 import { Country } from '../../types/enums'
-import { AFChartRow, AFTableProps } from '../../types/common'
-import { calculateAFRank } from '../../utils/formatters';
+import { TotalTimeChartRow, TotalTimeTableProps } from '../../types/common'
+import { calculateTotalTimeRank, formatTotalTime } from '../../utils/formatters';
 
-const AFTable: React.FC<AFTableProps> = ({charts}) => {
+const TotalTimeTable: React.FC<TotalTimeTableProps> = ({charts}) => {
   return (
-    <div className="af-table">
-    <h2>AF</h2>
+    <div className="total-time-table">
+    <h2>Total Time</h2>
     <Table>
         <th>Rank</th>
         <th>Country</th>
         <th>Player</th>
-        <th>Score</th>
+        <th>Total</th>
         <Body>
-        {charts.map((row: AFChartRow) => (
+        {charts.map((row: TotalTimeChartRow) => (
             <Row key={row.playerId}>
-            <Cell>{calculateAFRank(row, charts)}</Cell>
+            <Cell>{calculateTotalTimeRank(row, charts)}</Cell>
             <Cell><img src={`/assets/flags/${Country[row.country]}.png`} alt={Country[row.country]} style={{ width: '3.5vh', height: '2vh' }} /></Cell>
             <Cell className="nobr"><a href={`/player/${row.playerId}`}>{row.name}</a></Cell>
-            <Cell>{row.af.toFixed(4)}</Cell>
+            <Cell>{formatTotalTime(row.totalTime)}</Cell>
             </Row>
         ))}
         </Body>
@@ -34,4 +34,4 @@ const AFTable: React.FC<AFTableProps> = ({charts}) => {
   );
 };
 
-export default AFTable;
+export default TotalTimeTable;

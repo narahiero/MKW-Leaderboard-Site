@@ -3,23 +3,23 @@ using my_app.Models.Enums;
 
 namespace my_app.Models
 {
-    public class AFChartRow
+    public class TotalTimeChartRow
     {
 
-        public AFChartRow() {
+        public TotalTimeChartRow() {
             Name = "";
         }
 
-        public AFChartRow(int playerId, string name, Country country, double af) {
+        public TotalTimeChartRow(int playerId, string name, Country country, long totalTime) {
             PlayerId = playerId;
             Name = name;
             Country = country;
-            AF = af;
+            TotalTime = totalTime;
         }
 
         public int PlayerId  { get; set; }
         public string Name  { get; set; }
         public Country Country  { get; set; }
-        public double AF { get; set; }
+        public long TotalTime { get; set; }
     }
 }

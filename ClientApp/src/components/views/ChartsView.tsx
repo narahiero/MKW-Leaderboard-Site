@@ -60,7 +60,7 @@ const ChartsView = () => {
       <div className="sidebar">
         <Sidebar onTrackSelect={handleTrackSelect} />
       </div>
-      <div className="content-container">
+      <div className="chart-button-container">
         <div>
           <GlitchButtons onButtonClick={handleGlitchClick} />
         </div>

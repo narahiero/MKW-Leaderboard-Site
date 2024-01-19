@@ -1,19 +1,19 @@
 import React from 'react';
 import { FlapOverallButtonState } from '../../types/enums';
 
-interface FlapButtonsOverallProps {
+interface FlapButtonsOverallTotalTimeProps {
   onButtonClick: (buttonType: FlapOverallButtonState) => void;
 }
 
-interface FlapButtonsOverallState {
+interface FlapButtonsOverallTotalTimeState {
   activeButton: FlapOverallButtonState | null;
 }
 
-class FlapButtonsOverall extends React.Component<FlapButtonsOverallProps, FlapButtonsOverallState> {
-  constructor(props: FlapButtonsOverallProps) {
+class FlapButtonsOverallTotalTime extends React.Component<FlapButtonsOverallTotalTimeProps, FlapButtonsOverallTotalTimeState> {
+  constructor(props: FlapButtonsOverallTotalTimeProps) {
     super(props);
     this.state = {
-      activeButton: FlapOverallButtonState.Overall,
+      activeButton: FlapOverallButtonState.ThreeLapOnly,
     };
   }
 
@@ -27,12 +27,6 @@ class FlapButtonsOverall extends React.Component<FlapButtonsOverallProps, FlapBu
 
     return (
       <div className="button-container">
-      <button
-        className={`cool-button ${activeButton === FlapOverallButtonState.Overall ? 'cool-button-active' : ''}`}
-        onClick={() => this.handleButtonClick(FlapOverallButtonState.Overall)}
-      >
-        Overall
-      </button>
         <button
           className={`cool-button ${activeButton === FlapOverallButtonState.ThreeLapOnly ? 'cool-button-active' : ''}`}
           onClick={() => this.handleButtonClick(FlapOverallButtonState.ThreeLapOnly)}
@@ -45,9 +39,15 @@ class FlapButtonsOverall extends React.Component<FlapButtonsOverallProps, FlapBu
         >
           Flap only
         </button>
+        <button
+          className={`cool-button ${activeButton === FlapOverallButtonState.Overall ? 'cool-button-active' : ''}`}
+          onClick={() => this.handleButtonClick(FlapOverallButtonState.Overall)}
+        >
+          Overall
+        </button>
       </div>
     );
   }
 }
 
-export default FlapButtonsOverall;
+export default FlapButtonsOverallTotalTime;

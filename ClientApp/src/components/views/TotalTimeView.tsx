@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { AFChartRow } from '../../types/common';
+import { TotalTimeChartRow } from '../../types/common';
 import '../App.css';
 import Navbar from '../common/Navbar';
-import AFTable from '../tables/AFTable';
-import { getAFCharts } from '../../client/charts';
-import FlapButtonsOverall from '../buttons/FlapButtonsOverall';
+import { getTotalTimeCharts } from '../../client/charts';
 import GlitchButtons from '../buttons/GlitchButtons';
 import { FlapOverallButtonState } from '../../types/enums';
 import { PlayerChartFilter } from '../../types/filters';
+import TotalTimeTable from '../tables/TotalTimeTable';
+import FlapButtonsOverallTotalTime from '../buttons/FlapButtonsOverallTotalTime';
 
-const AFView = () => {
+const TotalTimeView = () => {
   const [glitchState, setGlitchState] = useState<boolean>(false);
-  const [flapOverallState, setFlapOverallState] = useState<FlapOverallButtonState>(FlapOverallButtonState.Overall);
+  const [flapOverallState, setFlapOverallState] = useState<FlapOverallButtonState>(FlapOverallButtonState.ThreeLapOnly);
   const [allButtonState, setAllButtonState] = useState<boolean>(false);
-  const [charts, setCharts] = useState<AFChartRow[]>([]);
+  const [charts, setCharts] = useState<TotalTimeChartRow[]>([]);
 
   const handleGlitchClick = (buttonType: boolean) => {
     setGlitchState(buttonType);
@@ -28,6 +28,7 @@ const AFView = () => {
   };
 
   useEffect(() => {
+    console.log(flapOverallState);
     const filter: PlayerChartFilter = {
         glitch: glitchState,
         threeLap: flapOverallState === FlapOverallButtonState.Overall || flapOverallState === FlapOverallButtonState.ThreeLapOnly,
@@ -35,7 +36,7 @@ const AFView = () => {
         all: allButtonState,
     }
     const fetchData = async () => {
-      const fetchedCharts = await getAFCharts(filter);
+      const fetchedCharts = await getTotalTimeCharts(filter);
       setCharts(fetchedCharts);
     };
 
@@ -47,10 +48,10 @@ const AFView = () => {
       <Navbar />
       <div>
         <div>
-            <GlitchButtons onButtonClick={handleGlitchClick} />
+          <GlitchButtons onButtonClick={handleGlitchClick} />
         </div>
         <div>
-            <FlapButtonsOverall onButtonClick={handleFlapOverallClick} />
+          <FlapButtonsOverallTotalTime onButtonClick={handleFlapOverallClick} />
         </div>
         <div className="button-container">
             <label className="all-box-label">
@@ -60,10 +61,10 @@ const AFView = () => {
         </div>
       </div>
       <div className="table-container">
-        <AFTable charts={charts} />
+        <TotalTimeTable charts={charts} />
       </div>
     </div>
   );
 };
 
-export default AFView;
+export default TotalTimeView;

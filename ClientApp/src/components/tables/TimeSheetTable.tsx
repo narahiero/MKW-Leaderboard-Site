@@ -53,7 +53,7 @@ const TimeSheetTable: React.FC<TimeSheetTableProps> = ({ timesheet, header, foot
         <th>Totals</th>
         <th>{formatTotalTime(timesheet.totalTime)}</th>
         <th></th>
-        <th>{timesheet.af}</th>
+        <th>{timesheet.af.toFixed(4)}</th>
         {totalAF !== 0 && totalTotalTime !== 0 && (
         <><Row>
             <th></th><th></th><th></th><th></th>
@@ -61,7 +61,7 @@ const TimeSheetTable: React.FC<TimeSheetTableProps> = ({ timesheet, header, foot
               <th><h2>Overall ({footer})</h2></th>
               <th>{formatTotalTime(totalTotalTime)}</th>
               <th></th>
-              <th><h1>{totalAF}</h1></th>
+              <th><h1>{totalAF.toFixed(4)}</h1></th>
             </Row></>
       )}
       </Table>

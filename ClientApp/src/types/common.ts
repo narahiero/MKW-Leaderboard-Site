@@ -36,6 +36,13 @@ export interface AFChartRow {
     af: number;
 }
 
+export interface TotalTimeChartRow {
+    playerId: number;
+    name: string;
+    country: Country;
+    totalTime: number;
+}
+
 export interface LeaderBoardTimeEntry {
     time: Time;
     player: Player;
@@ -72,4 +79,8 @@ export interface TimeSheetTableProps {
 
 export interface AFTableProps {
     charts: AFChartRow[]
+}
+
+export interface TotalTimeTableProps {
+    charts: TotalTimeChartRow[]
 }

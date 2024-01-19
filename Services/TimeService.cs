@@ -246,18 +246,59 @@ namespace my_app.Services
                 sqlQuery += " TOP 100";
             }
 
-            sqlQuery += " p.Id, p.Name, p.Country, ROUND(AVG(CAST(Rank AS FLOAT)), 4) FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY Track, Flap ORDER BY RunTime) AS Rank FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Flap, Track ORDER BY RunTime) AS row_num FROM Times WHERE Obsoleted = 0 AND DeletedAt IS NULL ";
+            sqlQuery += " p.Id, p.Name, p.Country, ROUND(AVG(CAST(Rank AS FLOAT)), 4) AS AF FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY Track, Flap ORDER BY RunTime) AS Rank FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Flap, Track ORDER BY RunTime) AS row_num FROM Times WHERE Obsoleted = 0 AND DeletedAt IS NULL ";
+
+            if(filter.ThreeLap && !filter.Flap)
+            {
+                sqlQuery += "AND Flap = 0 ";
+            }
+            else if(!filter.ThreeLap && filter.Flap)
+            {
+                sqlQuery += "AND Flap = 1 ";
+            }
 
             if(!filter.Glitch)
             {
-                sqlQuery += "AND Glitch = 0";
+                sqlQuery += "AND Glitch = 0 ";
             }
 
-            sqlQuery += ") AS RankedTimes WHERE row_num = 1 ) AS FinalRankedTimes frt INNER JOIN Players p ON frt.PlayerId = p.Id WHERE frt.PlayerId IN + (";
-            sqlQuery += GetFullTimeSheetersQuery(filter) + ") ORDER BY ROUND(AVG(CAST(Rank AS FLOAT)), 4)";
+            sqlQuery += ") AS RankedTimes WHERE row_num = 1 ) AS frt INNER JOIN Players p ON frt.PlayerId = p.Id WHERE frt.PlayerId IN (";
+            sqlQuery += GetFullTimeSheetersQuery(filter) + ") GROUP BY p.Id, p.Name, p.Country ORDER BY ROUND(AVG(CAST(Rank AS FLOAT)), 4)";
 
             using var connection = GetConnection();
             return await connection.QueryAsync<AFChartRow>(sqlQuery);
+        }
+
+        public async Task<IEnumerable<TotalTimeChartRow>> GetTotalTimeCharts(PlayerChartFilter filter)
+        {
+            var sqlQuery = "SELECT";
+
+            if(!filter.All)
+            {
+                sqlQuery += " TOP 100";
+            }
+
+            sqlQuery += " p.Id, p.Name, p.Country, SUM(rt.RunTime) AS TotalTime FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Flap, Track ORDER BY RunTime) AS row_num FROM Times WHERE Obsoleted = 0 AND DeletedAt IS NULL ";
+
+            if(filter.ThreeLap && !filter.Flap)
+            {
+                sqlQuery += "AND Flap = 0 ";
+            }
+            else if(!filter.ThreeLap && filter.Flap)
+            {
+                sqlQuery += "AND Flap = 1 ";
+            }
+
+            if(!filter.Glitch)
+            {
+                sqlQuery += "AND Glitch = 0 ";
+            }
+
+            sqlQuery += ") AS rt INNER JOIN Players p ON rt.PlayerId = p.Id WHERE rt.row_num = 1 AND rt.PlayerId IN (";
+            sqlQuery += GetFullTimeSheetersQuery(filter) + ") GROUP BY p.Id, p.Name, p.Country ORDER BY SUM(rt.RunTime)";
+
+            using var connection = GetConnection();
+            return await connection.QueryAsync<TotalTimeChartRow>(sqlQuery);
         }
 
         private async Task<bool> PlayerHasFullTimeSheet(TimeSheetFilter filter)
@@ -305,7 +346,7 @@ namespace my_app.Services
             }
 
             var timeCount = 64; //if asking for both flap and 3lap, complete timesheet is 64. If just flap or 3lap, it's 32.
-            var sqlQuery = "SELECT PlayerId FROM (SELECT PlayerId, COUNT(*) AS time_count FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Track ORDER BY RunTime) AS row_num FROM Times WHERE Obsoleted = 0 AND DeletedAt IS NULL";
+            var sqlQuery = "SELECT PlayerId FROM (SELECT PlayerId, COUNT(*) AS time_count FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Flap, Track ORDER BY RunTime) AS row_num FROM Times WHERE Obsoleted = 0 AND DeletedAt IS NULL";
 
             if(filter.ThreeLap && !filter.Flap)
             {
@@ -323,7 +364,7 @@ namespace my_app.Services
                 sqlQuery += " AND Glitch = 0";
             }
 
-            sqlQuery += ") AS RankedTimes WHERE row_num = 1) WHERE time_count = " + timeCount;
+            sqlQuery += ") AS RankedTimes WHERE row_num = 1 GROUP BY PlayerId) as frt WHERE time_count = " + timeCount;
             return sqlQuery;
         }
     }

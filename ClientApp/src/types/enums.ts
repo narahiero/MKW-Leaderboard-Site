@@ -1,9 +1,10 @@
 export enum Pages {
     Top10s = '/',
-    Charts = '/charts',
+    AFCharts = '/af',
+    TotalTimeCharts = '/total-time',
+    TrackCharts = '/charts',
     Players = '/players',
-    Player = '/player',
-    AFCharts = '/af'
+    Player = '/player'
 }
 
 export enum Track {

@@ -166,6 +166,21 @@ namespace my_app.Controllers
             }
         }
 
+        [HttpPost("total-time-charts")]
+        public async Task<ActionResult<IEnumerable<TotalTimeChartRow>>> GetTotalTimeCharts(PlayerChartFilter filter)
+        {
+            try
+            {
+                return Ok(await _timeService.GetTotalTimeCharts(filter));
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(e.Message);
+
+                return InternalServerError();
+            }
+        }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Time>>> GetAll()
         {
