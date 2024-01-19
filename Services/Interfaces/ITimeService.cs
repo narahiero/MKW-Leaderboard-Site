@@ -16,5 +16,6 @@ namespace my_app.Services.Interfaces
         Task<TimeSheet> GetTimeSheet(TimeSheetFilter filter);
         Task<double> GetTotalAF(TimeSheetFilter filter);
         Task<long> GetTotalTotalTime(TimeSheetFilter filter);
+        Task<IEnumerable<AFChartRow>> GetAFCharts(PlayerChartFilter filter);
     }
 }

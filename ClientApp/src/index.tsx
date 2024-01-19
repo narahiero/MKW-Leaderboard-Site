@@ -5,6 +5,7 @@ import Top10sView from './components/views/Top10sView';
 import { Pages } from './types/enums';
 import PlayersView from './components/views/PlayersView';
 import PlayerView from './components/views/PlayerView';
+import AFView from './components/views/AFView';
 
 const mount = document.getElementById('mount');
 const root = createRoot(mount!);
@@ -17,7 +18,8 @@ const viewsConfig: ViewsConfig = {
   [Pages.Top10s]: Top10sView,
   [Pages.Charts]: ChartsView,
   [Pages.Players]: PlayersView,
-  [Pages.Player]: PlayerView
+  [Pages.Player]: PlayerView,
+  [Pages.AFCharts]: AFView
 };
 
 const AppWithCallbackAfterRender = (): JSX.Element => {

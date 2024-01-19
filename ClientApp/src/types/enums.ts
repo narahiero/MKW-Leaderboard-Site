@@ -2,7 +2,8 @@ export enum Pages {
     Top10s = '/',
     Charts = '/charts',
     Players = '/players',
-    Player = '/player'
+    Player = '/player',
+    AFCharts = '/af'
 }
 
 export enum Track {
@@ -338,4 +339,10 @@ export enum Country {
         YE,
         ZM,
         ZW
+}
+
+export enum FlapOverallButtonState {
+    Overall,
+    ThreeLapOnly,
+    FlapOnly
 }

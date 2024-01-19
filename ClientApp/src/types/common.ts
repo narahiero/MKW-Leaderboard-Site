@@ -29,6 +29,13 @@ export interface Player {
     ppProofStatus: string;
 }
 
+export interface AFChartRow {
+    playerId: number;
+    name: string;
+    country: Country;
+    af: number;
+}
+
 export interface LeaderBoardTimeEntry {
     time: Time;
     player: Player;
@@ -53,7 +60,7 @@ export interface PlayerInfoTableProps {
 
 export interface PlayerViewProps {
     playerId: string;
-  }
+}
 
 export interface TimeSheetTableProps {
     timesheet: TimeSheet | undefined;
@@ -61,4 +68,8 @@ export interface TimeSheetTableProps {
     footer: string;
     totalAF: number;
     totalTotalTime: number;
+}
+
+export interface AFTableProps {
+    charts: AFChartRow[]
 }

@@ -18,3 +18,10 @@ export interface TimeSheetFilter {
     glitch: boolean;
     flap: boolean;
 }
+
+export interface PlayerChartFilter {
+    glitch: boolean;
+    threeLap: boolean;
+    flap: boolean;
+    all: boolean;
+}

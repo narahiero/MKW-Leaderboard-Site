@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { checkResponse } from './helpers';
-import { LeaderBoardTimeEntry } from '../types/common';
-import { TimeFilter } from '../types/filters';
+import { AFChartRow, LeaderBoardTimeEntry } from '../types/common';
+import { PlayerChartFilter, TimeFilter } from '../types/filters';
 
 export const getCharts = (filter: TimeFilter): Promise<LeaderBoardTimeEntry[]> => axios(
     `/api/time/track-charts`,
@@ -17,6 +17,18 @@ export const getCharts = (filter: TimeFilter): Promise<LeaderBoardTimeEntry[]> =
 
 export const getChartsQuantity = (filter: TimeFilter): Promise<number> => axios(
     `/api/time/track-charts-quantity`,
+    {
+      method: 'POST',
+      data: JSON.stringify(filter),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+).then(checkResponse)
+.then(e => e.data);
+
+export const getAFCharts = (filter: PlayerChartFilter): Promise<AFChartRow[]> => axios(
+    `/api/time/af-charts`,
     {
       method: 'POST',
       data: JSON.stringify(filter),

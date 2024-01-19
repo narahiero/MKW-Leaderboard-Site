@@ -237,6 +237,29 @@ namespace my_app.Services
             return await connection.QueryFirstOrDefaultAsync<long>(sqlQuery, new { filter.PlayerId });
         }
 
+        public async Task<IEnumerable<AFChartRow>> GetAFCharts(PlayerChartFilter filter)
+        {
+            var sqlQuery = "SELECT";
+
+            if(!filter.All)
+            {
+                sqlQuery += " TOP 100";
+            }
+
+            sqlQuery += " p.Id, p.Name, p.Country, ROUND(AVG(CAST(Rank AS FLOAT)), 4) FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY Track, Flap ORDER BY RunTime) AS Rank FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Flap, Track ORDER BY RunTime) AS row_num FROM Times WHERE Obsoleted = 0 AND DeletedAt IS NULL ";
+
+            if(!filter.Glitch)
+            {
+                sqlQuery += "AND Glitch = 0";
+            }
+
+            sqlQuery += ") AS RankedTimes WHERE row_num = 1 ) AS FinalRankedTimes frt INNER JOIN Players p ON frt.PlayerId = p.Id WHERE frt.PlayerId IN + (";
+            sqlQuery += GetFullTimeSheetersQuery(filter) + ") ORDER BY ROUND(AVG(CAST(Rank AS FLOAT)), 4)";
+
+            using var connection = GetConnection();
+            return await connection.QueryAsync<AFChartRow>(sqlQuery);
+        }
+
         private async Task<bool> PlayerHasFullTimeSheet(TimeSheetFilter filter)
         {
             var count = await GetTimeCount(filter);
@@ -272,6 +295,36 @@ namespace my_app.Services
             sqlQuery += ") AS RankedTimes WHERE row_num = 1;";
             using var connection = GetConnection();
             return await connection.QueryFirstOrDefaultAsync<int>(sqlQuery, new { filter.Flap, filter.PlayerId });
+        }
+
+        private static string GetFullTimeSheetersQuery(PlayerChartFilter filter)
+        {
+            if(!filter.ThreeLap && !filter.Flap)
+            {
+                return "";
+            }
+
+            var timeCount = 64; //if asking for both flap and 3lap, complete timesheet is 64. If just flap or 3lap, it's 32.
+            var sqlQuery = "SELECT PlayerId FROM (SELECT PlayerId, COUNT(*) AS time_count FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Track ORDER BY RunTime) AS row_num FROM Times WHERE Obsoleted = 0 AND DeletedAt IS NULL";
+
+            if(filter.ThreeLap && !filter.Flap)
+            {
+                sqlQuery += " AND Flap = 0";
+                timeCount = 32;
+            }
+            else if(!filter.ThreeLap && filter.Flap)
+            {
+                sqlQuery += " AND Flap = 1";
+                timeCount = 32;
+            }
+
+            if(!filter.Glitch)
+            {
+                sqlQuery += " AND Glitch = 0";
+            }
+
+            sqlQuery += ") AS RankedTimes WHERE row_num = 1) WHERE time_count = " + timeCount;
+            return sqlQuery;
         }
     }
 }

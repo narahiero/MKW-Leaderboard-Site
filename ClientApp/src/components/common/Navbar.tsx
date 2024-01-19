@@ -12,6 +12,9 @@ const Navbar = () => {
       <a href="/" className={activeLink === '/' ? 'active' : ''} onClick={() => handleLinkClick('/')}>
         Top 10s
       </a>
+      <a href="/af" className={activeLink === '/af' ? 'active' : ''} onClick={() => handleLinkClick('/af')}>
+        Rankings (AF)
+      </a>
       <a href="/charts" className={activeLink === '/charts' ? 'active' : ''} onClick={() => handleLinkClick('/charts')}>
         Charts
       </a>

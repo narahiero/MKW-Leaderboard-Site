@@ -151,6 +151,21 @@ namespace my_app.Controllers
             }
         }
 
+        [HttpPost("af-charts")]
+        public async Task<ActionResult<IEnumerable<AFChartRow>>> GetAFCharts(PlayerChartFilter filter)
+        {
+            try
+            {
+                return Ok(await _timeService.GetAFCharts(filter));
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(e.Message);
+
+                return InternalServerError();
+            }
+        }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Time>>> GetAll()
         {
