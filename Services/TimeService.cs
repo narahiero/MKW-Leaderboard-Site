@@ -178,7 +178,7 @@ namespace my_app.Services
 
         public async Task<TimeSheet> GetTimeSheet(TimeSheetFilter filter)
         {
-            var sqlQuery = "SELECT * FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY Track ORDER BY RunTime) AS Rank FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Track ORDER BY RunTime) AS row_num FROM Times WHERE Flap = @Flap AND Obsoleted = 0 AND DeletedAt IS NULL ";
+            var sqlQuery = "SELECT * FROM ( SELECT *, DENSE_RANK() OVER (PARTITION BY Track ORDER BY RunTime) AS Rank FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Track ORDER BY RunTime) AS row_num FROM Times WHERE Flap = @Flap AND Obsoleted = 0 AND DeletedAt IS NULL ";
 
             if(!filter.Glitch)
             {
@@ -205,7 +205,7 @@ namespace my_app.Services
                 return 0;
             }
 
-            var sqlQuery = "SELECT ROUND(AVG(CAST(Rank AS FLOAT)), 4) FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY Track, Flap ORDER BY RunTime) AS Rank FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Flap, Track ORDER BY RunTime) AS row_num FROM Times WHERE Obsoleted = 0 AND DeletedAt IS NULL ";
+            var sqlQuery = "SELECT ROUND(AVG(CAST(Rank AS FLOAT)), 4) FROM ( SELECT *, DENSE_RANK() OVER (PARTITION BY Track, Flap ORDER BY RunTime) AS Rank FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Flap, Track ORDER BY RunTime) AS row_num FROM Times WHERE Obsoleted = 0 AND DeletedAt IS NULL ";
 
             if(!filter.Glitch)
             {
@@ -246,7 +246,7 @@ namespace my_app.Services
                 sqlQuery += " TOP 100";
             }
 
-            sqlQuery += " p.Id, p.Name, p.Country, ROUND(AVG(CAST(Rank AS FLOAT)), 4) AS AF FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY Track, Flap ORDER BY RunTime) AS Rank FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Flap, Track ORDER BY RunTime) AS row_num FROM Times WHERE Obsoleted = 0 AND DeletedAt IS NULL ";
+            sqlQuery += " p.Id, p.Name, p.Country, ROUND(AVG(CAST(Rank AS FLOAT)), 4) AS AF FROM ( SELECT *, DENSE_RANK() OVER (PARTITION BY Track, Flap ORDER BY RunTime) AS Rank FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Flap, Track ORDER BY RunTime) AS row_num FROM Times WHERE Obsoleted = 0 AND DeletedAt IS NULL ";
 
             if(filter.ThreeLap && !filter.Flap)
             {
@@ -303,7 +303,7 @@ namespace my_app.Services
 
         public async Task<IEnumerable<LeaderboardChartRow>> GetLeaderboardCharts(LeaderboardChartFilter filter)
         {
-            var sqlQuery = "SELECT frt.PlayerId, frt.Name, frt.Country, SUM(11 - frt.Rank) AS Tally FROM ( SELECT rt.*, ROW_NUMBER() OVER (PARTITION BY rt.Track, rt.Flap ORDER BY rt.RunTime) AS Rank FROM (SELECT t.*, p.Name, p.Country, ROW_NUMBER() OVER (PARTITION BY t.PlayerId, t.Track, t.Flap ORDER BY t.RunTime) AS row_num FROM Times t INNER JOIN Players p ON t.PlayerId = p.Id WHERE 1=1 ";
+            var sqlQuery = "SELECT frt.PlayerId, frt.Name, frt.Country, SUM(11 - frt.Rank) AS Tally FROM ( SELECT rt.*, DENSE_RANK() OVER (PARTITION BY rt.Track, rt.Flap ORDER BY rt.RunTime) AS Rank FROM (SELECT t.*, p.Name, p.Country, ROW_NUMBER() OVER (PARTITION BY t.PlayerId, t.Track, t.Flap ORDER BY t.RunTime) AS row_num FROM Times t INNER JOIN Players p ON t.PlayerId = p.Id WHERE 1=1 ";
 
             if(!filter.Glitch)
             {
@@ -331,7 +331,7 @@ namespace my_app.Services
 
         public async Task<IEnumerable<LeaderboardChartRow>> GetRecordHoldersChart(LeaderboardChartFilter filter)
         {
-            var sqlQuery = "SELECT frt.PlayerId, frt.Name, frt.Country, SUM(11 - frt.Rank) AS Tally FROM ( SELECT rt.*, ROW_NUMBER() OVER (PARTITION BY rt.Track, rt.Flap ORDER BY rt.RunTime) AS Rank FROM (SELECT t.*, p.Name, p.Country, ROW_NUMBER() OVER (PARTITION BY t.PlayerId, t.Track, t.Flap ORDER BY t.RunTime) AS row_num FROM Times t INNER JOIN Players p ON t.PlayerId = p.Id WHERE 1=1 ";
+            var sqlQuery = "SELECT frt.PlayerId, frt.Name, frt.Country, SUM(11 - frt.Rank) AS Tally FROM ( SELECT rt.*, DENSE_RANK() OVER (PARTITION BY rt.Track, rt.Flap ORDER BY rt.RunTime) AS Rank FROM (SELECT t.*, p.Name, p.Country, ROW_NUMBER() OVER (PARTITION BY t.PlayerId, t.Track, t.Flap ORDER BY t.RunTime) AS row_num FROM Times t INNER JOIN Players p ON t.PlayerId = p.Id WHERE 1=1 ";
 
             if(!filter.Glitch)
             {
