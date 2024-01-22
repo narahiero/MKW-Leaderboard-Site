@@ -34,8 +34,8 @@ const LeaderboardChartsView = () => {
     }
     const fetchData = async () => {
       const leaderboardCharts = await getLeaderboardCharts(filter);
-      const recordHolderCharts = await getRecordHolderCharts(filter);
       setLeaderboardCharts(leaderboardCharts);
+      const recordHolderCharts = await getRecordHolderCharts(filter);
       setRecordHolderCharts(recordHolderCharts);
     };
 
