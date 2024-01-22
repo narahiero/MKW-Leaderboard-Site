@@ -6,9 +6,8 @@ import {
   TableRow as Row,
   TableCell as Cell,
 } from '@mui/material';
-import { Country } from '../../types/enums'
-import { TotalTimeChartRow, TotalTimeTableProps } from '../../types/common'
-import { calculateTotalTimeRank, formatTotalTime } from '../../utils/formatters';
+import { calculateTotalTimeRank, formatTotalTime } from '../../utils';
+import { TotalTimeTableProps, TotalTimeChartRow, Country } from '../../types';
 
 const TotalTimeTable: React.FC<TotalTimeTableProps> = ({charts}) => {
   return (

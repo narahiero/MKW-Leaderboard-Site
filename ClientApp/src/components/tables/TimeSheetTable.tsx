@@ -6,9 +6,8 @@ import {
   TableRow as Row,
   TableCell as Cell,
 } from '@mui/material';
-import { LongTrack } from '../../types/enums';
-import { formatTime, formatTotalTime } from '../../utils/formatters';
-import { TimeSheetTableProps } from '../../types/common';
+import { TimeSheetTableProps, LongTrack } from '../../types';
+import { formatTime, formatTotalTime } from '../../utils';
 
 const TimeSheetTable: React.FC<TimeSheetTableProps> = ({ timesheet, header, footer, totalAF, totalTotalTime }) => {
   if(!timesheet) {

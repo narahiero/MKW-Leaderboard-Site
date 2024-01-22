@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { TotalTimeChartRow } from '../../types/common';
 import '../App.css';
-import Navbar from '../common/Navbar';
-import { getTotalTimeCharts } from '../../client/charts';
-import GlitchButtons from '../buttons/GlitchButtons';
-import { FlapOverallButtonState } from '../../types/enums';
-import { PlayerChartFilter } from '../../types/filters';
-import TotalTimeTable from '../tables/TotalTimeTable';
-import FlapButtonsOverallTotalTime from '../buttons/FlapButtonsOverallTotalTime';
+import { Navbar } from '../common';
+import { getTotalTimeCharts } from '../../client';
+import { TotalTimeTable } from '../tables';
+import { FlapOverallButtonState, TotalTimeChartRow, PlayerChartFilter } from '../../types';
+import { GlitchButtons, FlapButtonsOverallTotalTime } from '../buttons';
 
 const TotalTimeView = () => {
   const [glitchState, setGlitchState] = useState<boolean>(false);

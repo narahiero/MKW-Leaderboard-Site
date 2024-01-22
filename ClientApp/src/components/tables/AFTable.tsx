@@ -6,9 +6,8 @@ import {
   TableRow as Row,
   TableCell as Cell,
 } from '@mui/material';
-import { Country } from '../../types/enums'
-import { AFChartRow, AFTableProps } from '../../types/common'
-import { calculateAFRank } from '../../utils/formatters';
+import { calculateAFRank } from '../../utils';
+import { AFTableProps, AFChartRow, Country } from '../../types';
 
 const AFTable: React.FC<AFTableProps> = ({charts}) => {
   return (

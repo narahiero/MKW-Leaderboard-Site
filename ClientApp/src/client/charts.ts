@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { checkResponse } from './helpers';
-import { AFChartRow, LeaderBoardTimeEntry, TotalTimeChartRow } from '../types/common';
-import { PlayerChartFilter, TimeFilter } from '../types/filters';
+import { TimeFilter, LeaderBoardTimeEntry, PlayerChartFilter, AFChartRow, TotalTimeChartRow } from '../types';
 
 export const getCharts = (filter: TimeFilter): Promise<LeaderBoardTimeEntry[]> => axios(
     `/api/time/track-charts`,

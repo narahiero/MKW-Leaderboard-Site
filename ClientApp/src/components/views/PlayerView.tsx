@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Player, PlayerViewProps, TimeSheet } from '../../types/common';
 import '../App.css';
-import Navbar from '../common/Navbar';
-import { getTimeSheet, getTotalAF, getTotalTotalTime } from '../../client/timesheets';
-import { TimeSheetFilter } from '../../types/filters';
-import TimeSheetTable from '../tables/TimeSheetTable';
-import { getPlayer } from '../../client/players';
-import PlayerInfoTable from '../tables/PlayerInfoTable';
+import { Navbar } from '../common';
+import { getTimeSheet, getTotalAF, getTotalTotalTime, getPlayer } from '../../client';
+import { TimeSheetTable, PlayerInfoTable } from '../tables';
+import { PlayerViewProps, Player, TimeSheet, TimeSheetFilter } from '../../types';
 
 const PlayerView: React.FC<PlayerViewProps> = ({ playerId }) => {
   const [playerState, setPlayerState] = useState<Player>();

@@ -1,5 +1,5 @@
 import React from 'react'
-import { AFChartRow, LeaderBoardTimeEntry, Time, TotalTimeChartRow } from "../types/common";
+import { AFChartRow, LeaderBoardTimeEntry, Time, TotalTimeChartRow } from "../types";
 
 export const formatTime = (time: Time): JSX.Element => {
   // Convert milliseconds to minutes, seconds, and remaining milliseconds

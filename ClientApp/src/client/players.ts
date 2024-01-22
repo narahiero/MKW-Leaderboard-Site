@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { checkResponse } from './helpers';
-import { Player } from '../types/common';
+import { Player } from '../types';
 
 export const getPlayers = (): Promise<Player[]> => axios(
     `/api/player`,

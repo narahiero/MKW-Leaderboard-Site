@@ -1,12 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import ChartsView from './components/views/ChartsView';
-import Top10sView from './components/views/Top10sView';
-import { Pages } from './types/enums';
-import PlayersView from './components/views/PlayersView';
-import PlayerView from './components/views/PlayerView';
-import AFView from './components/views/AFView';
-import TotalTimeView from './components/views/TotalTimeView';
+import { Top10sView, AFView, TotalTimeView, ChartsView, PlayersView, PlayerView } from './components/views';
+import { Pages } from './types';
 
 const mount = document.getElementById('mount');
 const root = createRoot(mount!);

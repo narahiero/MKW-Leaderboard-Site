@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { checkResponse } from './helpers';
-import { LeaderBoardTimeEntry } from '../types/common';
-import { TimeFilter } from '../types/filters';
+import { TimeFilter, LeaderBoardTimeEntry } from '../types';
 
 
 export const getTop10 = (filter: TimeFilter): Promise<LeaderBoardTimeEntry[]> => axios(

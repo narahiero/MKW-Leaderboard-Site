@@ -1,5 +1,5 @@
 import React from 'react';
-import { Cup } from '../../types/enums';
+import { Cup } from '../../types';
 
 interface CupButtonProps {
   onButtonClick: (cup: Cup) => void;

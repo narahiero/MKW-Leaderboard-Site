@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlapOverallButtonState } from '../../types/enums';
+import { FlapOverallButtonState } from '../../types';
 
 interface FlapButtonsOverallProps {
   onButtonClick: (buttonType: FlapOverallButtonState) => void;

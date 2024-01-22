@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { getPlayers } from '../../client/players';
+import { getPlayers } from '../../client';
 import { Player } from '../../types/common';
 import '../App.css';
-import Navbar from '../common/Navbar';
-import PlayerTable from '../tables/PlayerTable';
+import { Navbar } from '../common';
+import { PlayerTable } from '../tables';
 
 const PlayersView = () => {
   const [players, setPlayers] = useState<Player[]>([]);

@@ -1,6 +1,6 @@
 // Sidebar component
 import React, { useState } from 'react';
-import { LongTrack, Track } from '../../types/enums';
+import { LongTrack, Track } from '../../types';
 import '../App.css';
 
 interface SidebarProps {

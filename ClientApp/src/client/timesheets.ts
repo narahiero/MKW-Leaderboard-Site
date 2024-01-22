@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { checkResponse } from './helpers';
-import { TimeSheet } from '../types/common';
-import { TimeSheetFilter } from '../types/filters';
+import { TimeSheetFilter, TimeSheet } from '../types';
 
 export const getTimeSheet = (filter: TimeSheetFilter): Promise<TimeSheet> => axios(
     `/api/time/timesheet`,

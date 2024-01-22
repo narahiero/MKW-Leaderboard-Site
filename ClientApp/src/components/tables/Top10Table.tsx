@@ -6,9 +6,8 @@ import {
   TableRow as Row,
   TableCell as Cell,
 } from '@mui/material';
-import { LongTrack, Country } from '../../types/enums'
-import { Top10TableProps, LeaderBoardTimeEntry } from '../../types/common'
-import { calculateRank, formatTime } from '../../utils/formatters';
+import { calculateRank, formatTime } from '../../utils';
+import { Top10TableProps, LongTrack, LeaderBoardTimeEntry, Country } from '../../types';
 
 const Top10Table: React.FC<Top10TableProps> = ({top10s}) => {
   return (

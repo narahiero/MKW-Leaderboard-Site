@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { AFChartRow } from '../../types/common';
 import '../App.css';
-import Navbar from '../common/Navbar';
-import AFTable from '../tables/AFTable';
-import { getAFCharts } from '../../client/charts';
-import FlapButtonsOverall from '../buttons/FlapButtonsOverall';
-import GlitchButtons from '../buttons/GlitchButtons';
-import { FlapOverallButtonState } from '../../types/enums';
-import { PlayerChartFilter } from '../../types/filters';
+import { Navbar } from '../common';
+import { AFTable } from '../tables';
+import { getAFCharts } from '../../client';
+import { FlapOverallButtonState, AFChartRow, PlayerChartFilter } from '../../types';
+import { GlitchButtons, FlapButtonsOverall } from '../buttons';
 
 const AFView = () => {
   const [glitchState, setGlitchState] = useState<boolean>(false);

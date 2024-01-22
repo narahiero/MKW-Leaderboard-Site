@@ -6,8 +6,7 @@ import {
   TableRow as Row,
   TableCell as Cell,
 } from '@mui/material';
-import { Country } from '../../types/enums'
-import { PlayerInfoTableProps } from '../../types/common';
+import { PlayerInfoTableProps, Country } from '../../types';
 
 const PlayerInfoTable: React.FC<PlayerInfoTableProps> = ({player}) => {
   if(!player) {

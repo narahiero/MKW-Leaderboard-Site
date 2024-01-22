@@ -1,22 +1,5 @@
 import React from 'react';
-import {
-  America,
-  Europe,
-  LatinAmerica,
-  USA,
-  Canada,
-  France,
-  UKIreland,
-  Spain,
-  Portugal,
-  Italy,
-  GermanyAustria,
-  Benelux,
-  Nordic,
-  Japan,
-  World,
-} from '../../types/regionMap';
-import { Country } from '../../types/enums';
+import { Country, World, America, LatinAmerica, Europe, USA, Canada, France, UKIreland, Spain, Portugal, Italy, GermanyAustria, Benelux, Nordic, Japan } from '../../types';
 
 interface RegionButtonProps {
   onButtonClick: (region: Country[]) => void;

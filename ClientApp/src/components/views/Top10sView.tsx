@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import '../App.css';
-import Top10Table from '../tables/Top10Table';
-import GlitchButtons from '../buttons/GlitchButtons';
-import { getTop10 } from '../../client/top10s';
-import FlapButtons from '../buttons/FlapButtons';
-import CupButtons from '../buttons/CupButtons';
-import { Country, Cup } from '../../types/enums'
-import { LeaderBoardTimeEntry } from '../../types/common'
-import RegionButtons from '../buttons/RegionButtons';
-import { TimeFilter } from '../../types/filters';
-import Navbar from '../common/Navbar';
+import { getTop10 } from '../../client';
+import { Navbar } from '../common';
+import { Top10Table } from '../tables';
+import { Cup, Country, LeaderBoardTimeEntry, TimeFilter } from '../../types';
+import { RegionButtons, CupButtons, GlitchButtons, FlapButtons } from '../buttons';
 
 const Top10sView = () => {
   const [glitchState, setGlitchState] = useState<boolean>(false);

@@ -1,16 +1,11 @@
 // Import necessary dependencies and components
 import React, { useEffect, useState } from 'react';
 import '../App.css';
-import { Track } from '../../types/enums';
-import { LeaderBoardTimeEntry } from '../../types/common';
-import { TimeFilter } from '../../types/filters';
-import ChartTable from '../tables/ChartTable';
-import { getCharts, getChartsQuantity } from '../../client/charts';
-import GlitchButtons from '../buttons/GlitchButtons';
-import FlapButtons from '../buttons/FlapButtons';
-import Navbar from '../common/Navbar';
-import Sidebar from '../common/Sidebar';
-import Pagination from '../common/Pagination'; // Import Pagination component
+import { ChartTable } from '../tables';
+import { getCharts, getChartsQuantity } from '../../client';
+import { Navbar, Sidebar, Pagination } from '../common';
+import { Track, LeaderBoardTimeEntry, TimeFilter } from '../../types';
+import { GlitchButtons, FlapButtons } from '../buttons';
 
 const ChartsView = () => {
   const [glitchState, setGlitchState] = useState<boolean>(false);
