@@ -8,7 +8,7 @@ import { LeaderboardChartTable, RecordHolderTable } from '../tables';
 
 const LeaderboardChartsView = () => {
   const [glitchState, setGlitchState] = useState<boolean>(false);
-  const [flapOverallState, setFlapOverallState] = useState<FlapOverallButtonState>(FlapOverallButtonState.Overall);
+  const [flapOverallState, setFlapOverallState] = useState<FlapOverallButtonState>(FlapOverallButtonState.ThreeLapOnly);
   const [regionState, setRegionState] = useState<Country[]>([]);
   const [leaderboardCharts, setLeaderboardCharts] = useState<LeaderboardChartRow[]>([]);
   const [recordHolderCharts, setRecordHolderCharts] = useState<LeaderboardChartRow[]>([]);
