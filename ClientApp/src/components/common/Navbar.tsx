@@ -9,8 +9,11 @@ const Navbar = () => {
 
   return (
     <div className="navbar">
-      <a href="/" className={activeLink === '/' ? 'active' : ''} onClick={() => handleLinkClick('/')}>
+      <a href="/top10" className={activeLink === '/top10' ? 'active' : ''} onClick={() => handleLinkClick('/top10')}>
         Top 10s
+      </a>
+      <a href="/top10rankings" className={activeLink === '/top10rankings' ? 'active' : ''} onClick={() => handleLinkClick('/top10rankings')}>
+        Rankings (Top 10s)
       </a>
       <a href="/af" className={activeLink === '/af' ? 'active' : ''} onClick={() => handleLinkClick('/af')}>
         Rankings (AF)

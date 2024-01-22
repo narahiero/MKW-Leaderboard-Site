@@ -5,6 +5,8 @@ import PlayerTable from "./PlayerTable";
 import TimeSheetTable from "./TimeSheetTable";
 import Top10Table from "./Top10Table";
 import TotalTimeTable from "./TotalTimeTable";
+import LeaderboardChartTable from "./LeaderboardChartTable";
+import RecordHolderTable from "./RecordHolderTable";
 
 export {
     AFTable,
@@ -13,5 +15,7 @@ export {
     PlayerTable,
     TimeSheetTable,
     Top10Table,
-    TotalTimeTable
+    TotalTimeTable,
+    LeaderboardChartTable,
+    RecordHolderTable
 }

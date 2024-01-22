@@ -181,6 +181,36 @@ namespace my_app.Controllers
             }
         }
 
+        [HttpPost("leaderboard-charts")]
+        public async Task<ActionResult<IEnumerable<LeaderboardChartRow>>> GetLeaderboardCharts(LeaderboardChartFilter filter)
+        {
+            try
+            {
+                return Ok(await _timeService.GetLeaderboardCharts(filter));
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(e.Message);
+
+                return InternalServerError();
+            }
+        }
+
+        [HttpPost("record-holder-charts")]
+        public async Task<ActionResult<IEnumerable<LeaderboardChartRow>>> GetRecordHolderCharts(LeaderboardChartFilter filter)
+        {
+            try
+            {
+                return Ok(await _timeService.GetRecordHoldersChart(filter));
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(e.Message);
+
+                return InternalServerError();
+            }
+        }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Time>>> GetAll()
         {

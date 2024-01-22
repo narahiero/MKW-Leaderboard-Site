@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { checkResponse } from './helpers';
-import { TimeFilter, LeaderBoardTimeEntry, PlayerChartFilter, AFChartRow, TotalTimeChartRow } from '../types';
+import { TimeFilter, LeaderBoardTimeEntry, PlayerChartFilter, AFChartRow, TotalTimeChartRow, LeaderboardChartFilter, LeaderboardChartRow } from '../types';
 
 export const getCharts = (filter: TimeFilter): Promise<LeaderBoardTimeEntry[]> => axios(
     `/api/time/track-charts`,
@@ -47,5 +47,29 @@ export const getTotalTimeCharts = (filter: PlayerChartFilter): Promise<TotalTime
         'Content-Type': 'application/json'
       }
     }
+).then(checkResponse)
+.then(e => e.data);
+
+export const getLeaderboardCharts = (filter: LeaderboardChartFilter): Promise<LeaderboardChartRow[]> => axios(
+    `/api/time/leaderboard-charts`,
+    {
+      method: 'POST',
+      data: JSON.stringify(filter),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+).then(checkResponse)
+.then(e => e.data);
+
+export const getRecordHolderCharts = (filter: LeaderboardChartFilter): Promise<LeaderboardChartRow[]> => axios(
+  `/api/time/record-holder-charts`,
+  {
+    method: 'POST',
+    data: JSON.stringify(filter),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
 ).then(checkResponse)
 .then(e => e.data);

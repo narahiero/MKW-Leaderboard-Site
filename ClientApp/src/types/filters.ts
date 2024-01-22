@@ -25,3 +25,10 @@ export interface PlayerChartFilter {
     flap: boolean;
     all: boolean;
 }
+
+export interface LeaderboardChartFilter {
+    glitch: boolean;
+    threeLap: boolean;
+    flap: boolean;
+    countries: Country[];
+}

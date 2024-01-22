@@ -4,6 +4,7 @@ import PlayersView from "./PlayersView";
 import PlayerView from "./PlayerView";
 import Top10sView from "./Top10sView";
 import TotalTimeView from "./TotalTimeView";
+import LeaderboardChartsView from "./LeaderboardChartsView";
 
 export {
     AFView,
@@ -11,5 +12,6 @@ export {
     PlayersView,
     PlayerView,
     Top10sView,
-    TotalTimeView
+    TotalTimeView,
+    LeaderboardChartsView
 }

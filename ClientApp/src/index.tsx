@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { Top10sView, AFView, TotalTimeView, ChartsView, PlayersView, PlayerView } from './components/views';
+import { Top10sView, AFView, TotalTimeView, ChartsView, PlayersView, PlayerView, LeaderboardChartsView } from './components/views';
 import { Pages } from './types';
 
 const mount = document.getElementById('mount');
@@ -12,6 +12,7 @@ type ViewsConfig = {
 
 const viewsConfig: ViewsConfig = {
   [Pages.Top10s]: Top10sView,
+  [Pages.Leaderboards]: LeaderboardChartsView,
   [Pages.AFCharts]: AFView,
   [Pages.TotalTimeCharts]: TotalTimeView,
   [Pages.TrackCharts]: ChartsView,
