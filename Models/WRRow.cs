@@ -8,6 +8,8 @@ namespace my_app.Models
 
         public WRRow() {
             Name = "";
+            Link = "";
+            Ghost = "";
         }
 
         public WRRow(int playerId, string name, Country country, Track track, int runTime, string link, string ghost) {

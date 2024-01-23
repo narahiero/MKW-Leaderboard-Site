@@ -239,14 +239,14 @@ namespace my_app.Services
 
         public async Task<IEnumerable<AFChartRow>> GetAFCharts(PlayerChartFilter filter)
         {
-            var sqlQuery = "SELECT";
+            var sqlQuery = "SELECT g.Id, p.Name, p.Country, g.AF FROM Players p INNER JOIN ( SELECT";
 
             if(!filter.All)
             {
                 sqlQuery += " TOP 100";
             }
 
-            sqlQuery += " p.Id, p.Name, p.Country, ROUND(AVG(CAST(Rank AS FLOAT)), 4) AS AF FROM ( SELECT *, DENSE_RANK() OVER (PARTITION BY Track, Flap ORDER BY RunTime) AS Rank FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Flap, Track ORDER BY RunTime) AS row_num FROM Times WHERE Obsoleted = 0 AND DeletedAt IS NULL ";
+            sqlQuery += " p.Id, ROUND(AVG(CAST(Rank AS FLOAT)), 4) AS AF FROM ( SELECT *, DENSE_RANK() OVER (PARTITION BY Track, Flap ORDER BY RunTime) AS Rank FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Flap, Track ORDER BY RunTime) AS row_num FROM Times WHERE Obsoleted = 0 AND DeletedAt IS NULL ";
 
             if(filter.ThreeLap && !filter.Flap)
             {
@@ -262,8 +262,14 @@ namespace my_app.Services
                 sqlQuery += "AND Glitch = 0 ";
             }
 
-            sqlQuery += ") AS RankedTimes WHERE row_num = 1 ) AS frt INNER JOIN Players p ON frt.PlayerId = p.Id WHERE frt.PlayerId IN (";
-            sqlQuery += GetFullTimeSheetersQuery(filter) + ") GROUP BY p.Id, p.Name, p.Country ORDER BY ROUND(AVG(CAST(Rank AS FLOAT)), 4)";
+            sqlQuery += ") AS RankedTimes WHERE row_num = 1 ) AS frt INNER JOIN Players p ON frt.PlayerId = p.Id WHERE frt.PlayerId IN (" + GetFullTimeSheetersQuery(filter) + ") GROUP BY p.Id ORDER BY ROUND(AVG(CAST(Rank AS FLOAT)), 4)";
+
+            if(filter.All)
+            {
+                sqlQuery += "OFFSET 0 ROWS"; //weird SQL thing where you need to specify an offset to use ORDER BY without using TOP (i am confused)
+            }
+
+            sqlQuery += ") g ON g.Id = p.Id ORDER BY g.AF";
 
             using var connection = GetConnection();
             return await connection.QueryAsync<AFChartRow>(sqlQuery);
@@ -271,14 +277,14 @@ namespace my_app.Services
 
         public async Task<IEnumerable<TotalTimeChartRow>> GetTotalTimeCharts(PlayerChartFilter filter)
         {
-            var sqlQuery = "SELECT";
+            var sqlQuery = "SELECT g.Id, p.Name, p.Country, g.TotalTime FROM Players p INNER JOIN (SELECT";
 
             if(!filter.All)
             {
                 sqlQuery += " TOP 100";
             }
 
-            sqlQuery += " p.Id, p.Name, p.Country, SUM(rt.RunTime) AS TotalTime FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Flap, Track ORDER BY RunTime) AS row_num FROM Times WHERE Obsoleted = 0 AND DeletedAt IS NULL ";
+            sqlQuery += " p.Id, SUM(rt.RunTime) AS TotalTime FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Flap, Track ORDER BY RunTime) AS row_num FROM Times WHERE Obsoleted = 0 AND DeletedAt IS NULL ";
 
             if(filter.ThreeLap && !filter.Flap)
             {
@@ -294,8 +300,14 @@ namespace my_app.Services
                 sqlQuery += "AND Glitch = 0 ";
             }
 
-            sqlQuery += ") AS rt INNER JOIN Players p ON rt.PlayerId = p.Id WHERE rt.row_num = 1 AND rt.PlayerId IN (";
-            sqlQuery += GetFullTimeSheetersQuery(filter) + ") GROUP BY p.Id, p.Name, p.Country ORDER BY SUM(rt.RunTime)";
+            sqlQuery += ") AS rt INNER JOIN Players p ON rt.PlayerId = p.Id WHERE rt.row_num = 1 AND rt.PlayerId IN (" + GetFullTimeSheetersQuery(filter) + ") GROUP BY p.Id ORDER BY SUM(rt.RunTime)";
+
+            if(filter.All)
+            {
+                sqlQuery += "OFFSET 0 ROWS"; //weird SQL thing where you need to specify an offset to use ORDER BY (i am confused)
+            }
+
+            sqlQuery += ") g ON g.Id = p.Id ORDER BY g.TotalTime";
 
             using var connection = GetConnection();
             return await connection.QueryAsync<TotalTimeChartRow>(sqlQuery);
@@ -303,7 +315,7 @@ namespace my_app.Services
 
         public async Task<IEnumerable<LeaderboardChartRow>> GetLeaderboardCharts(LeaderboardChartFilter filter)
         {
-            var sqlQuery = "SELECT frt.PlayerId, frt.Name, frt.Country, SUM(11 - frt.Rank) AS Tally FROM ( SELECT rt.PlayerId, rt.Name, rt.Country, DENSE_RANK() OVER (PARTITION BY rt.Track, rt.Flap ORDER BY rt.RunTime) AS Rank FROM (SELECT t.Track, t.Flap, t.RunTime, t.PlayerId, p.Name, p.Country, ROW_NUMBER() OVER (PARTITION BY t.PlayerId, t.Track, t.Flap ORDER BY t.RunTime) AS row_num FROM Times t INNER JOIN Players p ON t.PlayerId = p.Id WHERE 1=1 ";
+            var sqlQuery = "SELECT g.PlayerId, p.Name, p.Country, g.Tally FROM Players p INNER JOIN (SELECT frt.PlayerId, SUM(11 - frt.Rank) AS Tally FROM ( SELECT rt.PlayerId, rt.Name, rt.Country, DENSE_RANK() OVER (PARTITION BY rt.Track, rt.Flap ORDER BY rt.RunTime) AS Rank FROM (SELECT t.Track, t.Flap, t.RunTime, t.PlayerId, p.Name, p.Country, ROW_NUMBER() OVER (PARTITION BY t.PlayerId, t.Track, t.Flap ORDER BY t.RunTime) AS row_num FROM Times t INNER JOIN Players p ON t.PlayerId = p.Id WHERE 1=1 ";
 
             if(!filter.Glitch)
             {
@@ -324,14 +336,14 @@ namespace my_app.Services
                 sqlQuery += "AND p.Country IN @Countries ";
             }
 
-            sqlQuery += "AND t.DeletedAt IS NULL AND t.Obsoleted = 0) AS rt WHERE rt.row_num = 1 ) AS frt WHERE frt.Rank <= 10 GROUP BY frt.PlayerId, frt.Name, frt.Country ORDER BY SUM(11 - frt.Rank) DESC;";
+            sqlQuery += "AND t.DeletedAt IS NULL AND t.Obsoleted = 0) AS rt WHERE rt.row_num = 1 ) AS frt WHERE frt.Rank <= 10 GROUP BY frt.PlayerId ORDER BY SUM(11 - frt.Rank) DESC OFFSET 0 ROWS) g ON g.PlayerId = p.Id ORDER BY g.Tally DESC;";
             using var connection = GetConnection();
             return await connection.QueryAsync<LeaderboardChartRow>(sqlQuery, new { filter.Countries });
         }
 
         public async Task<IEnumerable<LeaderboardChartRow>> GetRecordHoldersChart(LeaderboardChartFilter filter)
         {
-            var sqlQuery = "SELECT frt.PlayerId, frt.Name, frt.Country, COUNT(frt.Rank) AS Tally FROM ( SELECT rt.PlayerId, rt.Name, rt.Country, DENSE_RANK() OVER (PARTITION BY rt.Track, rt.Flap ORDER BY rt.RunTime) AS Rank FROM (SELECT t.Track, t.Flap, t.RunTime, t.PlayerId, p.Name, p.Country, ROW_NUMBER() OVER (PARTITION BY t.PlayerId, t.Track, t.Flap ORDER BY t.RunTime) AS row_num FROM Times t INNER JOIN Players p ON t.PlayerId = p.Id WHERE 1=1 ";
+            var sqlQuery = "SELECT g.PlayerId, p.Name, p.Country, g.Tally FROM Players p INNER JOIN (SELECT frt.PlayerId, COUNT(frt.Rank) AS Tally FROM ( SELECT rt.PlayerId, rt.Name, rt.Country, DENSE_RANK() OVER (PARTITION BY rt.Track, rt.Flap ORDER BY rt.RunTime) AS Rank FROM (SELECT t.Track, t.Flap, t.RunTime, t.PlayerId, p.Name, p.Country, ROW_NUMBER() OVER (PARTITION BY t.PlayerId, t.Track, t.Flap ORDER BY t.RunTime) AS row_num FROM Times t INNER JOIN Players p ON t.PlayerId = p.Id WHERE 1=1 ";
 
             if(!filter.Glitch)
             {
@@ -352,7 +364,7 @@ namespace my_app.Services
                 sqlQuery += "AND p.Country IN @Countries ";
             }
 
-            sqlQuery += "AND t.DeletedAt IS NULL AND t.Obsoleted = 0) AS rt WHERE rt.row_num = 1 ) AS frt WHERE frt.Rank = 1 GROUP BY frt.PlayerId, frt.Name, frt.Country ORDER BY COUNT(frt.Rank) DESC;";
+            sqlQuery += "AND t.DeletedAt IS NULL AND t.Obsoleted = 0) AS rt WHERE rt.row_num = 1 ) AS frt WHERE frt.Rank = 1 GROUP BY frt.PlayerId ORDER BY COUNT(frt.Rank) DESC OFFSET 0 ROWS) g ON g.PlayerId = p.Id ORDER BY g.Tally DESC;";
             using var connection = GetConnection();
             return await connection.QueryAsync<LeaderboardChartRow>(sqlQuery, new { filter.Countries });
         }
