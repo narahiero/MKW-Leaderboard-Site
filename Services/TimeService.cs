@@ -239,7 +239,7 @@ namespace my_app.Services
 
         public async Task<IEnumerable<AFChartRow>> GetAFCharts(PlayerChartFilter filter)
         {
-            var sqlQuery = "SELECT g.Id, p.Name, p.Country, g.AF FROM Players p INNER JOIN ( SELECT";
+            var sqlQuery = "SELECT g.Id AS PlayerId, p.Name, p.Country, g.AF FROM Players p INNER JOIN ( SELECT";
 
             if(!filter.All)
             {
@@ -277,7 +277,7 @@ namespace my_app.Services
 
         public async Task<IEnumerable<TotalTimeChartRow>> GetTotalTimeCharts(PlayerChartFilter filter)
         {
-            var sqlQuery = "SELECT g.Id, p.Name, p.Country, g.TotalTime FROM Players p INNER JOIN (SELECT";
+            var sqlQuery = "SELECT g.Id AS PlayerId, p.Name, p.Country, g.TotalTime FROM Players p INNER JOIN (SELECT";
 
             if(!filter.All)
             {

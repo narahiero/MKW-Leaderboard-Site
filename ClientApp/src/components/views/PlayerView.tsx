@@ -18,9 +18,9 @@ const PlayerView: React.FC<PlayerViewProps> = ({ playerId }) => {
   useEffect(() => {
     const fetchData = async () => {
       const numericPlayerId = parseInt(playerId, 10);
-      if (!isNaN(numericPlayerId)) {
-        const player = await getPlayer(numericPlayerId);
-        setPlayerState(player);
+
+      if (isNaN(numericPlayerId)) {
+        return;
       }
 
       const ng3lapfilter: TimeSheetFilter = {
@@ -43,18 +43,20 @@ const PlayerView: React.FC<PlayerViewProps> = ({ playerId }) => {
         glitch: true,
         flap: true
       };
+      const player = await getPlayer(numericPlayerId);
       const ng3lap = await getTimeSheet(ng3lapfilter);
       const g3lap = await getTimeSheet(g3lapfilter);
+      setPlayerState(player);
+      setG3LapTimeSheet(g3lap);
+      setNG3LapTimeSheet(ng3lap);
       const ngflap = await getTimeSheet(ngflapfilter);
       const gflap = await getTimeSheet(gflapfilter);
+      setNGFlapTimeSheet(ngflap);
+      setGFlapTimeSheet(gflap);
       const totalNGAF = await getTotalAF(ng3lapfilter);
       const totalGAF = await getTotalAF(g3lapfilter);
       const totalNGTotalTime = await getTotalTotalTime(ng3lapfilter);
       const totalGTotalTime = await getTotalTotalTime(g3lapfilter);
-      setNG3LapTimeSheet(ng3lap);
-      setG3LapTimeSheet(g3lap);
-      setNGFlapTimeSheet(ngflap);
-      setGFlapTimeSheet(gflap);
       setTotalNGAF(totalNGAF);
       setTotalGAF(totalGAF);
       setTotalNGTotalTime(totalNGTotalTime);
