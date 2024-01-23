@@ -32,3 +32,9 @@ export interface LeaderboardChartFilter {
     flap: boolean;
     countries: Country[];
 }
+
+export interface WRFilter {
+    glitch: boolean;
+    flap: boolean;
+    countries: Country[];
+}

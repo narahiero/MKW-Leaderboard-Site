@@ -211,6 +211,37 @@ namespace my_app.Controllers
             }
         }
 
+        [HttpPost("record-holder-charts-wr-filter")]
+        public async Task<ActionResult<IEnumerable<LeaderboardChartRow>>> GetRecordHolderCharts(WRFilter wrFilter)
+        {
+            try
+            {
+                var filter = new LeaderboardChartFilter(wrFilter.Glitch, wrFilter.Flap == false, wrFilter.Flap == true, wrFilter.Countries);
+                return Ok(await _timeService.GetRecordHoldersChart(filter));
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(e.Message);
+
+                return InternalServerError();
+            }
+        }
+
+        [HttpPost("wrs")]
+        public async Task<ActionResult<IEnumerable<WRRow>>> GetWorldRecords(WRFilter filter)
+        {
+            try
+            {
+                return Ok(await _timeService.GetWorldRecords(filter));
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(e.Message);
+
+                return InternalServerError();
+            }
+        }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Time>>> GetAll()
         {

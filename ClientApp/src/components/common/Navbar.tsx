@@ -12,6 +12,9 @@ const Navbar = () => {
       <a href="/top10" className={activeLink === '/top10' ? 'active' : ''} onClick={() => handleLinkClick('/top10')}>
         Top 10s
       </a>
+      <a href="/wr" className={activeLink === '/wr' ? 'active' : ''} onClick={() => handleLinkClick('/wr')}>
+        World Records
+      </a>
       <a href="/top10rankings" className={activeLink === '/top10rankings' ? 'active' : ''} onClick={() => handleLinkClick('/top10rankings')}>
         Rankings (Top 10s)
       </a>

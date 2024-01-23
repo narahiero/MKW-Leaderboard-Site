@@ -50,6 +50,16 @@ export interface LeaderboardChartRow {
     tally: number;
 }
 
+export interface WRRow {
+    playerId: number;
+    name: string;
+    country: Country;
+    track: Track;
+    runTime: number;
+    link: string;
+    ghost: string;
+}
+
 export interface LeaderBoardTimeEntry {
     time: Time;
     player: Player;
@@ -94,4 +104,8 @@ export interface TotalTimeTableProps {
 
 export interface LeaderboardChartProps {
     charts: LeaderboardChartRow[]
+}
+
+export interface WRChartProps {
+    charts: WRRow[]
 }

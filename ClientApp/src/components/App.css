@@ -26,6 +26,11 @@
   margin-right: 2%; /* Adjust as needed */
 }
 
+.wr-table {
+  flex: 1;
+  margin-right: 2%; /* Adjust as needed */
+}
+
 table {
   width: 100%;
   border-collapse: collapse;

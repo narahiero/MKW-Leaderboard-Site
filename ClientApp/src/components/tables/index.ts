@@ -7,6 +7,7 @@ import Top10Table from "./Top10Table";
 import TotalTimeTable from "./TotalTimeTable";
 import LeaderboardChartTable from "./LeaderboardChartTable";
 import RecordHolderTable from "./RecordHolderTable";
+import WRCharts from "./WRCharts";
 
 export {
     AFTable,
@@ -17,5 +18,6 @@ export {
     Top10Table,
     TotalTimeTable,
     LeaderboardChartTable,
-    RecordHolderTable
+    RecordHolderTable,
+    WRCharts
 }

@@ -28,7 +28,7 @@ const TimeSheetTable: React.FC<TimeSheetTableProps> = ({ timesheet, header, foot
             return (
               <Row key={index}>
                 <Cell className="nobr">{LongTrack[index]}</Cell>
-                <Cell>{timeEntry ? formatTime(timeEntry) : 'NT'}</Cell>
+                <Cell>{timeEntry ? formatTime(timeEntry.runTime, timeEntry.link) : 'NT'}</Cell>
                 <Cell>
                   {timeEntry && timeEntry.ghost && (
                     <a

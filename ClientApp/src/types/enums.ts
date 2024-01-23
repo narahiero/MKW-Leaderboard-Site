@@ -1,5 +1,6 @@
 export enum Pages {
     Top10s = '/top10',
+    WorldRecords = '/wr',
     Leaderboards = '/top10rankings',
     AFCharts = '/af',
     TotalTimeCharts = '/total-time',

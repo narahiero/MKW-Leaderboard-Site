@@ -25,7 +25,7 @@ const ChartTable: React.FC<ChartTableProps> = ({charts, page}) => {
             <Cell>{calculateRank(entry, charts, page)}</Cell>
             <Cell><img src={`/assets/flags/${Country[entry.player.country]}.png`} alt={Country[entry.player.country]} style={{ width: '3.5vh', height: '2vh' }} /></Cell>
             <Cell className="nobr"><a href={`/player/${entry.player.id}`}>{entry.player.name}</a></Cell>
-            <Cell>{formatTime(entry.time)}</Cell>
+            <Cell>{formatTime(entry.time.runTime, entry.time.link)}</Cell>
             <Cell>
                 {entry.time.ghost && (
                 <a href={entry.time.ghost} target="_blank" rel="noopener noreferrer">

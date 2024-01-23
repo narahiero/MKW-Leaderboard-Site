@@ -1,12 +1,17 @@
 import React from 'react'
-import { AFChartRow, LeaderBoardTimeEntry, LeaderboardChartRow, Time, TotalTimeChartRow } from "../types";
+import { AFChartRow, LeaderBoardTimeEntry, LeaderboardChartRow, TotalTimeChartRow } from "../types";
 
-export const formatTime = (time: Time): JSX.Element => {
+export const formatTime = (runTime: number | null, link: string | null): JSX.Element | null => {
+
+  if(!runTime) {
+    return null;
+  }
+
   // Convert milliseconds to minutes, seconds, and remaining milliseconds
-  const totalSeconds = Math.floor(time.runTime / 1000);
+  const totalSeconds = Math.floor(runTime / 1000);
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
-  const remainingMilliseconds = time.runTime % 1000;
+  const remainingMilliseconds = runTime % 1000;
 
   // Format the time components
   const secondsStr = seconds < 10 ? `0${seconds}` : seconds.toString();
@@ -20,9 +25,9 @@ export const formatTime = (time: Time): JSX.Element => {
   // Create the formatted time string
   const formattedTime = `${minutes}:${secondsStr}.${millisecondsStr}`;
 
-  if (time.link) {
+  if (link) {
     return (
-      <a href={`${time.link}`} target="_blank" rel="noopener noreferrer">
+      <a href={`${link}`} target="_blank" rel="noopener noreferrer">
         {formattedTime}
       </a>
     );

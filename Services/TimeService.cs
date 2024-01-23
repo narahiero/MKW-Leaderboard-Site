@@ -357,6 +357,25 @@ namespace my_app.Services
             return await connection.QueryAsync<LeaderboardChartRow>(sqlQuery, new { filter.Countries });
         }
 
+        public async Task<IEnumerable<WRRow>> GetWorldRecords(WRFilter filter)
+        {
+            var sqlQuery = "SELECT frt.PlayerId, frt.Name, frt.Country, frt.Track, frt.RunTime, frt.Link, frt.Ghost FROM (SELECT rt.*, DENSE_RANK() OVER (PARTITION BY rt.Track ORDER BY rt.RunTime) AS Rank FROM (SELECT t.*, p.Name, p.Country, ROW_NUMBER() OVER (PARTITION BY t.PlayerId, t.Track, t.Flap ORDER BY t.RunTime) AS row_num FROM Times t INNER JOIN Players p ON t.PlayerId = p.Id WHERE Flap = @Flap";
+
+            if(!filter.Glitch)
+            {
+                sqlQuery += " AND t.Glitch = 0";
+            }
+
+            if(filter.Countries.Any())
+            {
+                sqlQuery += " AND p.Country IN @Countries";
+            }
+
+            sqlQuery += " AND t.DeletedAt IS NULL AND t.Obsoleted = 0) AS rt WHERE row_num = 1) AS frt WHERE frt.Rank = 1 ORDER BY frt.Track";
+            using var connection = GetConnection();
+            return await connection.QueryAsync<WRRow>(sqlQuery, new { filter.Countries, filter.Flap });
+        }
+
         private async Task<bool> PlayerHasFullTimeSheet(TimeSheetFilter filter)
         {
             var count = await GetTimeCount(filter);

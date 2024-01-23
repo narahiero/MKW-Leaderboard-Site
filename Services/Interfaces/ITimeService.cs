@@ -20,5 +20,6 @@ namespace my_app.Services.Interfaces
         Task<IEnumerable<TotalTimeChartRow>> GetTotalTimeCharts(PlayerChartFilter filter);
         Task<IEnumerable<LeaderboardChartRow>> GetLeaderboardCharts(LeaderboardChartFilter filter);
         Task<IEnumerable<LeaderboardChartRow>> GetRecordHoldersChart(LeaderboardChartFilter filter);
+        Task<IEnumerable<WRRow>> GetWorldRecords(WRFilter filter);
     }
 }

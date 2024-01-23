@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { checkResponse } from './helpers';
-import { TimeFilter, LeaderBoardTimeEntry, PlayerChartFilter, AFChartRow, TotalTimeChartRow, LeaderboardChartFilter, LeaderboardChartRow } from '../types';
+import { TimeFilter, LeaderBoardTimeEntry, PlayerChartFilter, AFChartRow, TotalTimeChartRow, LeaderboardChartFilter, LeaderboardChartRow, WRFilter, WRRow } from '../types';
 
 export const getCharts = (filter: TimeFilter): Promise<LeaderBoardTimeEntry[]> => axios(
     `/api/time/track-charts`,
@@ -64,6 +64,30 @@ export const getLeaderboardCharts = (filter: LeaderboardChartFilter): Promise<Le
 
 export const getRecordHolderCharts = (filter: LeaderboardChartFilter): Promise<LeaderboardChartRow[]> => axios(
   `/api/time/record-holder-charts`,
+  {
+    method: 'POST',
+    data: JSON.stringify(filter),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+).then(checkResponse)
+.then(e => e.data);
+
+export const getRecordHolderChartsByWRFilter = (filter: WRFilter): Promise<LeaderboardChartRow[]> => axios(
+  `/api/time/record-holder-charts-wr-filter`,
+  {
+    method: 'POST',
+    data: JSON.stringify(filter),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+).then(checkResponse)
+.then(e => e.data);
+
+export const getWorldRecords = (filter: WRFilter): Promise<WRRow[]> => axios(
+  `/api/time/wrs`,
   {
     method: 'POST',
     data: JSON.stringify(filter),
