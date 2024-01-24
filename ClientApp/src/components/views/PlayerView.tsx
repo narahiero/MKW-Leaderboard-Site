@@ -3,7 +3,7 @@ import '../App.css';
 import { Navbar } from '../common';
 import { getTimeSheet, getTotalAF, getTotalTotalTime, getPlayer } from '../../client';
 import { TimeSheetTable, PlayerInfoTable } from '../tables';
-import { PlayerViewProps, Player, TimeSheet, TimeSheetFilter } from '../../types';
+import { PlayerViewProps, Player, TimeSheet, TimeSheetFilter, Pages } from '../../types';
 
 const PlayerView: React.FC<PlayerViewProps> = ({ playerId }) => {
   const [playerState, setPlayerState] = useState<Player>();
@@ -68,7 +68,7 @@ const PlayerView: React.FC<PlayerViewProps> = ({ playerId }) => {
 
   return (
     <div>
-      <Navbar />
+      <Navbar url={Pages.Player}/>
       <div className="playerinfo-container">
         <PlayerInfoTable player={playerState} />
       </div>

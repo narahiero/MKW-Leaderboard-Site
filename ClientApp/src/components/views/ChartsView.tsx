@@ -4,7 +4,7 @@ import '../App.css';
 import { ChartTable } from '../tables';
 import { getCharts, getChartsQuantity } from '../../client';
 import { Navbar, Sidebar, Pagination } from '../common';
-import { Track, LeaderBoardTimeEntry, TimeFilter } from '../../types';
+import { Track, LeaderBoardTimeEntry, TimeFilter, Pages } from '../../types';
 import { GlitchButtons, FlapButtons } from '../buttons';
 
 const ChartsView = () => {
@@ -51,7 +51,7 @@ const ChartsView = () => {
 
   return (
     <div>
-      <Navbar />
+      <Navbar url={Pages.TrackCharts}/>
       <div className="sidebar">
         <Sidebar onTrackSelect={handleTrackSelect} />
       </div>

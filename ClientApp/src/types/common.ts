@@ -1,4 +1,4 @@
-import { Country, Track } from "./enums";
+import { Country, Pages, Track } from "./enums";
 
 export interface Time {
     id: number;
@@ -108,4 +108,8 @@ export interface LeaderboardChartProps {
 
 export interface WRChartProps {
     charts: WRRow[]
+}
+
+export interface NavbarProps {
+    url: Pages
 }

@@ -3,7 +3,7 @@ import '../App.css';
 import { Navbar } from '../common';
 import { getTotalTimeCharts } from '../../client';
 import { TotalTimeTable } from '../tables';
-import { FlapOverallButtonState, TotalTimeChartRow, PlayerChartFilter } from '../../types';
+import { FlapOverallButtonState, TotalTimeChartRow, PlayerChartFilter, Pages } from '../../types';
 import { GlitchButtons, FlapButtonsOverallTotalTime } from '../buttons';
 
 const TotalTimeView = () => {
@@ -25,7 +25,6 @@ const TotalTimeView = () => {
   };
 
   useEffect(() => {
-    console.log(flapOverallState);
     const filter: PlayerChartFilter = {
         glitch: glitchState,
         threeLap: flapOverallState === FlapOverallButtonState.Overall || flapOverallState === FlapOverallButtonState.ThreeLapOnly,
@@ -42,7 +41,7 @@ const TotalTimeView = () => {
 
   return (
     <div>
-      <Navbar />
+      <Navbar url={Pages.TotalTimeCharts} />
       <div>
         <div>
           <GlitchButtons onButtonClick={handleGlitchClick} />

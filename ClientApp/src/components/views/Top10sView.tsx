@@ -3,7 +3,7 @@ import '../App.css';
 import { getTop10 } from '../../client';
 import { Navbar } from '../common';
 import { Top10Table } from '../tables';
-import { Cup, Country, LeaderBoardTimeEntry, TimeFilter } from '../../types';
+import { Cup, Country, LeaderBoardTimeEntry, TimeFilter, Pages } from '../../types';
 import { RegionButtons, CupButtons, GlitchButtons, FlapButtons } from '../buttons';
 
 const Top10sView = () => {
@@ -52,7 +52,7 @@ const Top10sView = () => {
 
   return (
     <div>
-        <Navbar/>
+        <Navbar url={Pages.Top10s}/>
         <div>
         <div>
             <RegionButtons onButtonClick={handleRegionClick} />

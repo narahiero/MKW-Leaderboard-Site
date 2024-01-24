@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../App.css';
 import { Navbar } from '../common';
 import { getRecordHolderChartsByWRFilter, getWorldRecords } from '../../client';
-import { Country, LeaderboardChartRow, WRFilter, WRRow } from '../../types';
+import { Country, LeaderboardChartRow, Pages, WRFilter, WRRow } from '../../types';
 import { GlitchButtons, RegionButtons, FlapButtons } from '../buttons';
 import { WRCharts, RecordHolderTable } from '../tables';
 
@@ -43,7 +43,7 @@ const LeaderboardChartsView = () => {
 
   return (
     <div>
-      <Navbar />
+      <Navbar url={Pages.WorldRecords} />
       <div>
         <div>
             <RegionButtons onButtonClick={handleRegionClick} />

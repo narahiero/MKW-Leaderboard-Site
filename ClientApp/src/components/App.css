@@ -128,8 +128,11 @@ body {
 
 /* Change color on hover */
 .navbar a:hover {
-  background-color: #ddd; /* Light grey background on hover */
-  color: #000000; /* Black text color on hover */
+  background-color: #0F3325;
+}
+
+.navbar a.active {
+  background-color: #0F3325;
 }
 
 .sidebar h2 {

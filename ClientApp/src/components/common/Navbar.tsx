@@ -1,33 +1,28 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { NavbarProps, Pages } from '../../types';
 
-const Navbar = () => {
-  const [activeLink, setActiveLink] = useState('/');
-
-  const handleLinkClick = (link: React.SetStateAction<string>) => {
-    setActiveLink(link);
-  };
-
+const Navbar: React.FC<NavbarProps> = ({ url }) => {
   return (
     <div className="navbar">
-      <a href="/top10" className={activeLink === '/top10' ? 'active' : ''} onClick={() => handleLinkClick('/top10')}>
+      <a href="/top10" className={url === Pages.Top10s ? 'active' : ''}>
         Top 10s
       </a>
-      <a href="/records" className={activeLink === '/records' ? 'active' : ''} onClick={() => handleLinkClick('/records')}>
+      <a href="/records" className={url === Pages.WorldRecords ? 'active' : ''}>
         Records
       </a>
-      <a href="/top10rankings" className={activeLink === '/top10rankings' ? 'active' : ''} onClick={() => handleLinkClick('/top10rankings')}>
+      <a href="/top10rankings" className={url === Pages.Leaderboards ? 'active' : ''}>
         Rankings (Top 10s)
       </a>
-      <a href="/af" className={activeLink === '/af' ? 'active' : ''} onClick={() => handleLinkClick('/af')}>
+      <a href="/af" className={url === Pages.AFCharts ? 'active' : ''}>
         Rankings (AF)
       </a>
-      <a href="/total-time" className={activeLink === '/total-time' ? 'active' : ''} onClick={() => handleLinkClick('/total-time')}>
+      <a href="/total-time" className={url === Pages.TotalTimeCharts ? 'active' : ''}>
         Total Times
       </a>
-      <a href="/charts" className={activeLink === '/charts' ? 'active' : ''} onClick={() => handleLinkClick('/charts')}>
+      <a href="/charts" className={url === Pages.TrackCharts ? 'active' : ''}>
         Charts
       </a>
-      <a href="/players" className={activeLink === '/players' ? 'active' : ''} onClick={() => handleLinkClick('/players')}>
+      <a href="/players" className={url === Pages.Players ? 'active' : ''}>
         Players A-Z
       </a>
     </div>
