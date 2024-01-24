@@ -37,6 +37,9 @@ export const formatTime = (runTime: number | null, link: string | null): JSX.Ele
 };
 
 export const formatTotalTime = (totalTime: number): JSX.Element => {
+  if(totalTime === 0) {
+    return <span></span>
+  }
   // Convert milliseconds to minutes, seconds, and remaining milliseconds
   const totalSeconds = Math.floor(totalTime / 1000);
   const minutes = Math.floor(totalSeconds / 60);
