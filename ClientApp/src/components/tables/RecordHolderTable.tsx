@@ -13,7 +13,7 @@ const RecordHolderTable: React.FC<LeaderboardChartProps> = ({charts}) => {
   return (
     <div className="record-holder-table">
     <h2>Record holder rankings</h2>
-    <h3><i>Rankings based on amount of records held.</i></h3>
+    <h3>Rankings based on amount of records held.</h3>
     <Table>
         <th>Rank</th>
         <th>Country</th>

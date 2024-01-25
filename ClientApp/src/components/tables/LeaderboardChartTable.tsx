@@ -13,7 +13,7 @@ const LeaderboardChartTable: React.FC<LeaderboardChartProps> = ({charts}) => {
   return (
     <div className="leaderboard-chart-table">
     <h2>Point rankings</h2>
-    <h3><i>1st place is worth 10 points, 2nd place worth 9 points etc.</i></h3>
+    <h3>1st place is worth 10 points, 2nd place worth 9 points etc.</h3>
     <Table>
         <th>Rank</th>
         <th>Country</th>

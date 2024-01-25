@@ -13,6 +13,7 @@ const AFTable: React.FC<AFTableProps> = ({charts}) => {
   return (
     <div className="af-table">
     <h2>AF</h2>
+    <h3>This ranking displays the Average Finish, meaning the average of every individual position on each given category. You must have finished a run on every category to qualify for these rankings.</h3>
     <Table>
         <th>Rank</th>
         <th>Country</th>

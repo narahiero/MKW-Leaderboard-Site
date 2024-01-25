@@ -13,6 +13,7 @@ const WRCharts: React.FC<WRChartProps> = ({charts}) => {
   return (
     <div className="wr-table">
       <h2>Records</h2>
+      <h3>The best times finished on each category for the given region.</h3>
       <Table>
         <th>Track</th>
         <th>Country</th>

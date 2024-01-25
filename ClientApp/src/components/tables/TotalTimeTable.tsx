@@ -13,6 +13,7 @@ const TotalTimeTable: React.FC<TotalTimeTableProps> = ({charts}) => {
   return (
     <div className="total-time-table">
     <h2>Total Time</h2>
+    <h3>This ranking displays the sum of times on each given category. You must have finished a run on every category to qualify for these rankings.</h3>
     <Table>
         <th>Rank</th>
         <th>Country</th>

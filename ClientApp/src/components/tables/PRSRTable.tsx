@@ -13,6 +13,7 @@ const PRSRTable: React.FC<PRSRTableProps> = ({charts}) => {
   return (
     <div className="prsr-table">
     <h2>PRWR</h2>
+    <h3>This ranking displays the percentage of the average of the player's ratio between the WR and the player's PR on each given category. You must have finished a run on every category to qualify for these rankings.</h3>
     <Table>
         <th>Rank</th>
         <th>Country</th>
