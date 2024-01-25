@@ -19,6 +19,9 @@ const Navbar: React.FC<NavbarProps> = ({ url }) => {
       <a href="/total-time" className={url === Pages.TotalTimeCharts ? 'active' : ''}>
         Total Times
       </a>
+      <a href="/prwr" className={url === Pages.PRSRCharts ? 'active' : ''}>
+        PRWR
+      </a>
       <a href="/charts" className={url === Pages.TrackCharts ? 'active' : ''}>
         Charts
       </a>

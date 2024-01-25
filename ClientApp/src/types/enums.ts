@@ -4,6 +4,7 @@ export enum Pages {
     Leaderboards = '/top10rankings',
     AFCharts = '/af',
     TotalTimeCharts = '/total-time',
+    PRSRCharts = '/prwr',
     TrackCharts = '/charts',
     Players = '/players',
     Player = '/player',

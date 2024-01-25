@@ -151,6 +151,21 @@ namespace my_app.Controllers
             }
         }
 
+        [HttpPost("total-prsr")]
+        public async Task<ActionResult<long>> GetTotalPRSR(TimeSheetFilter filter)
+        {
+            try
+            {
+                return Ok(await _timeService.GetTotalPRSR(filter));
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(e.Message);
+
+                return InternalServerError();
+            }
+        }
+
         [HttpPost("af-charts")]
         public async Task<ActionResult<IEnumerable<AFChartRow>>> GetAFCharts(PlayerChartFilter filter)
         {
@@ -172,6 +187,21 @@ namespace my_app.Controllers
             try
             {
                 return Ok(await _timeService.GetTotalTimeCharts(filter));
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(e.Message);
+
+                return InternalServerError();
+            }
+        }
+
+        [HttpPost("prwr-charts")]
+        public async Task<ActionResult<IEnumerable<AFChartRow>>> GetPRSRCharts(PlayerChartFilter filter)
+        {
+            try
+            {
+                return Ok(await _timeService.GetPRSRCharts(filter));
             }
             catch (Exception e)
             {

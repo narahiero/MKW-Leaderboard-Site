@@ -6,6 +6,7 @@ import Top10sView from "./Top10sView";
 import TotalTimeView from "./TotalTimeView";
 import LeaderboardChartsView from "./LeaderboardChartsView";
 import WRView from "./WRView";
+import PRSRView from "./PRSRView";
 
 export {
     AFView,
@@ -15,5 +16,6 @@ export {
     Top10sView,
     TotalTimeView,
     LeaderboardChartsView,
-    WRView
+    WRView,
+    PRSRView
 }

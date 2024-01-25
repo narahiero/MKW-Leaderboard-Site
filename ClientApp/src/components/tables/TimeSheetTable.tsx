@@ -9,7 +9,7 @@ import {
 import { TimeSheetTableProps, LongTrack } from '../../types';
 import { formatTime, formatTotalTime } from '../../utils';
 
-const TimeSheetTable: React.FC<TimeSheetTableProps> = ({ timesheet, header, footer, totalAF, totalTotalTime }) => {
+const TimeSheetTable: React.FC<TimeSheetTableProps> = ({ timesheet, header, footer, totalAF, totalTotalTime, totalPRSR }) => {
   if(!timesheet) {
     return null;
   }
@@ -21,6 +21,7 @@ const TimeSheetTable: React.FC<TimeSheetTableProps> = ({ timesheet, header, foot
         <th>Time</th>
         <th>Ghost</th>
         <th>Rank</th>
+        <th>PRSR</th>
         <Body>
           {Object.keys(LongTrack).filter(key => typeof LongTrack[key as any] === 'string').map((trackKey) => {
             const index = parseInt(trackKey, 10);
@@ -45,6 +46,7 @@ const TimeSheetTable: React.FC<TimeSheetTableProps> = ({ timesheet, header, foot
                   )}
                 </Cell>
                 <Cell>{timeEntry ? timeEntry.rank : '-'}</Cell>
+                <Cell>{timeEntry ? `${(timeEntry.prsr * 100).toFixed(2)}%` : '-'}</Cell>
               </Row>
             );
           })}
@@ -53,14 +55,16 @@ const TimeSheetTable: React.FC<TimeSheetTableProps> = ({ timesheet, header, foot
         <th>{formatTotalTime(timesheet.totalTime)}</th>
         <th></th>
         <th>{timesheet.af.toFixed(4)}</th>
-        {totalAF !== 0 && totalTotalTime !== 0 && (
+        <th>{timesheet.prsr !== 0 ? `${(timesheet.prsr*100).toFixed(2)}%` : ''}</th>
+        {totalAF !== 0 && totalTotalTime !== 0 && totalPRSR !== 0 && (
         <><Row>
-            <th></th><th></th><th></th><th></th>
+            <th></th><th></th><th></th><th></th><th></th>
           </Row><Row>
               <th><h2>Overall ({footer})</h2></th>
               <th>{formatTotalTime(totalTotalTime)}</th>
               <th></th>
               <th><h1>{totalAF.toFixed(4)}</h1></th>
+              <th>{(totalPRSR*100).toFixed(4)}%</th>
             </Row></>
       )}
       </Table>

@@ -8,6 +8,7 @@ import TotalTimeTable from "./TotalTimeTable";
 import LeaderboardChartTable from "./LeaderboardChartTable";
 import RecordHolderTable from "./RecordHolderTable";
 import WRCharts from "./WRCharts";
+import PRSRTable from "./PRSRTable";
 
 export {
     AFTable,
@@ -19,5 +20,6 @@ export {
     TotalTimeTable,
     LeaderboardChartTable,
     RecordHolderTable,
-    WRCharts
+    WRCharts,
+    PRSRTable
 }

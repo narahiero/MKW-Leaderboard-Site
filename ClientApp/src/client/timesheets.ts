@@ -37,3 +37,15 @@ export const getTotalTotalTime = (filter: TimeSheetFilter): Promise<number> => a
     }
 ).then(checkResponse)
 .then(e => e.data);
+
+export const getTotalPRSR = (filter: TimeSheetFilter): Promise<number> => axios(
+    `/api/time/total-prsr`,
+    {
+      method: 'POST',
+      data: JSON.stringify(filter),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+).then(checkResponse)
+.then(e => e.data);

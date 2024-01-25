@@ -178,25 +178,36 @@ namespace my_app.Services
 
         public async Task<TimeSheet> GetTimeSheet(TimeSheetFilter filter)
         {
-            var sqlQuery = "SELECT * FROM ( SELECT *, DENSE_RANK() OVER (PARTITION BY Track ORDER BY RunTime) AS Rank FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Track ORDER BY RunTime) AS row_num FROM Times WHERE Flap = @Flap AND Obsoleted = 0 AND DeletedAt IS NULL ";
+            var sqlQuery = "SELECT frt.*, ROUND(CAST(wr.WRTime AS FLOAT)/ frt.RunTime, 4) AS PRSR FROM (SELECT rt.*, DENSE_RANK() OVER (PARTITION BY Track ORDER BY RunTime) AS Rank FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Track ORDER BY RunTime) AS row_num FROM Times WHERE Flap = @Flap AND Obsoleted = 0 AND DeletedAt IS NULL ";
 
             if(!filter.Glitch)
             {
                 sqlQuery += "AND Glitch = 0";
             }
 
-            sqlQuery += ") AS RankedTimes WHERE row_num = 1 ) AS FinalRankedTimes WHERE PlayerId = @PlayerId ORDER BY Track;";
+            sqlQuery += ") AS rt WHERE row_num = 1) AS frt INNER JOIN (SELECT Track, MIN(RunTime) AS WRtime FROM Times WHERE Obsoleted = 0 AND DeletedAt IS NULL AND Flap = @Flap ";
+
+            if(!filter.Glitch)
+            {
+                sqlQuery += "AND Glitch = 0 ";
+            }
+
+            sqlQuery += "GROUP BY Track) wr ON wr.Track = frt.Track WHERE frt.row_num = 1 AND frt.PlayerId = @PlayerId ORDER BY frt.Track";
+
             using var connection = GetConnection();
             var times = await connection.QueryAsync<Time>(sqlQuery, new { filter.Flap, filter.PlayerId });
-            long totalTime = 0;
 
-            //only return totalTime if player has set a run on every track
+            long totalTime = 0;
+            double prsr = 0;
+
+            //only return totalTime and prsr if player has set a run on every track
             if(await GetTimeCount(filter) == 32)
             {
                 totalTime = CalculateTotalTime(times);
+                prsr = times.Select(t => t.PRSR).Average();
             }
 
-            return new TimeSheet(times, CalculateAF(times), totalTime);
+            return new TimeSheet(times, CalculateAF(times), totalTime, prsr);
         }
 
         public async Task<double> GetTotalAF(TimeSheetFilter filter)
@@ -235,6 +246,32 @@ namespace my_app.Services
             sqlQuery += ") AS RankedTimes WHERE row_num = 1;";
             using var connection = GetConnection();
             return await connection.QueryFirstOrDefaultAsync<long>(sqlQuery, new { filter.PlayerId });
+        }
+
+        public async Task<double> GetTotalPRSR(TimeSheetFilter filter)
+        {
+            if(!await PlayerHasFullTimeSheet(filter)) {
+                return 0;
+            }
+
+            var sqlQuery = "SELECT (AVG(PRSR)) FROM (SELECT rt.*, ROUND(CAST(wr.WRTime AS FLOAT)/ rt.RunTime, 4) AS PRSR FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Flap, Track ORDER BY RunTime) AS row_num FROM Times WHERE Obsoleted = 0 AND DeletedAt IS NULL AND PlayerId = @PlayerId";
+
+            if(!filter.Glitch)
+            {
+                sqlQuery += " AND Glitch = 0";
+            }
+
+            sqlQuery += ") AS rt INNER JOIN (SELECT * FROM ( SELECT Track, Flap, RunTime AS WRTime, ROW_NUMBER() OVER (PARTITION BY Flap, Track ORDER BY RunTime) AS row_num FROM Times WHERE Obsoleted = 0 AND DeletedAt IS NULL";
+
+            if(!filter.Glitch)
+            {
+                sqlQuery += " AND Glitch = 0";
+            }
+
+            sqlQuery += ") AS RankedWRs WHERE row_num = 1) wr ON wr.Track = rt.Track WHERE rt.row_num = 1 AND rt.Flap = wr.Flap) prsr";
+
+            using var connection = GetConnection();
+            return await connection.QueryFirstOrDefaultAsync<double>(sqlQuery, new { filter.PlayerId });
         }
 
         public async Task<IEnumerable<AFChartRow>> GetAFCharts(PlayerChartFilter filter)
@@ -311,6 +348,60 @@ namespace my_app.Services
 
             using var connection = GetConnection();
             return await connection.QueryAsync<TotalTimeChartRow>(sqlQuery);
+        }
+
+        public async Task<IEnumerable<PRSRChartRow>> GetPRSRCharts(PlayerChartFilter filter)
+        {
+            var sqlQuery = "SELECT g.PlayerId, p.Name, p.Country, g.PRSR FROM Players p INNER JOIN (SELECT";
+
+            if(!filter.All)
+            {
+                sqlQuery += " TOP 100";
+            }
+
+            sqlQuery += " frt.PlayerId, AVG(PRSR) AS PRSR FROM (SELECT rt.*, ROUND(CAST(wr.WRTime AS FLOAT)/ rt.RunTime, 4) AS PRSR FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Flap, Track ORDER BY RunTime) AS row_num FROM Times WHERE Obsoleted = 0 AND DeletedAt IS NULL ";
+
+            if(filter.ThreeLap && !filter.Flap)
+            {
+                sqlQuery += "AND Flap = 0 ";
+            }
+            else if(!filter.ThreeLap && filter.Flap)
+            {
+                sqlQuery += "AND Flap = 1 ";
+            }
+
+            if(!filter.Glitch)
+            {
+                sqlQuery += "AND Glitch = 0 ";
+            }
+
+            sqlQuery += ") AS rt INNER JOIN (SELECT * FROM ( SELECT Track, Flap, RunTime AS WRTime, ROW_NUMBER() OVER (PARTITION BY Flap, Track ORDER BY RunTime) AS row_num FROM Times WHERE Obsoleted = 0 AND DeletedAt IS NULL ";
+
+            if(filter.ThreeLap && !filter.Flap)
+            {
+                sqlQuery += "AND Flap = 0 ";
+            }
+            else if(!filter.ThreeLap && filter.Flap)
+            {
+                sqlQuery += "AND Flap = 1 ";
+            }
+
+            if(!filter.Glitch)
+            {
+                sqlQuery += "AND Glitch = 0 ";
+            }
+
+            sqlQuery += ") AS RankedWRs WHERE row_num = 1) wr ON wr.Track = rt.Track WHERE rt.row_num = 1 AND rt.Flap = wr.Flap) frt WHERE frt.PlayerId IN (" + GetFullTimeSheetersQuery(filter) + ") GROUP BY frt.PlayerId ORDER BY AVG(PRSR) DESC ";
+
+            if(filter.All)
+            {
+                sqlQuery += "OFFSET 0 ROWS"; //weird SQL thing where you need to specify an offset to use ORDER BY (i am confused)
+            }
+
+            sqlQuery += ") g ON g.PlayerId = p.Id ORDER BY g.PRSR DESC";
+
+            using var connection = GetConnection();
+            return await connection.QueryAsync<PRSRChartRow>(sqlQuery);
         }
 
         public async Task<IEnumerable<LeaderboardChartRow>> GetLeaderboardCharts(LeaderboardChartFilter filter)

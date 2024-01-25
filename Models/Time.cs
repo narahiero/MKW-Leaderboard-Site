@@ -52,5 +52,8 @@ namespace my_app.Models
 
         [NotMapped]
         public int Rank { get; set; }
+
+        [NotMapped]
+        public double PRSR { get; set; }
     }
 }

@@ -11,12 +11,14 @@ export interface Time {
     ghost: string;
     obsoleted: boolean;
     rank: number;
+    prsr: number;
 }
 
 export interface TimeSheet {
     times: Time[];
     af: number;
     totalTime: number;
+    prsr: number;
 }
 
 export interface Player {
@@ -34,6 +36,13 @@ export interface AFChartRow {
     name: string;
     country: Country;
     af: number;
+}
+
+export interface PRSRChartRow {
+    playerId: number;
+    name: string;
+    country: Country;
+    prsr: number;
 }
 
 export interface TotalTimeChartRow {
@@ -92,10 +101,15 @@ export interface TimeSheetTableProps {
     footer: string;
     totalAF: number;
     totalTotalTime: number;
+    totalPRSR: number;
 }
 
 export interface AFTableProps {
     charts: AFChartRow[]
+}
+
+export interface PRSRTableProps {
+    charts: PRSRChartRow[]
 }
 
 export interface TotalTimeTableProps {

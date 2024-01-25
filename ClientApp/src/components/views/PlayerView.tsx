@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../App.css';
 import { Navbar } from '../common';
-import { getTimeSheet, getTotalAF, getTotalTotalTime, getPlayer } from '../../client';
+import { getTimeSheet, getTotalAF, getTotalTotalTime, getPlayer, getTotalPRSR } from '../../client';
 import { TimeSheetTable, PlayerInfoTable } from '../tables';
 import { PlayerViewProps, Player, TimeSheet, TimeSheetFilter, Pages } from '../../types';
 
@@ -13,8 +13,10 @@ const PlayerView: React.FC<PlayerViewProps> = ({ playerId }) => {
   const [gFlapTimeSheet, setGFlapTimeSheet] = useState<TimeSheet>();
   const [totalNGAF, setTotalNGAF] = useState<number>(0);
   const [totalNGTotalTime, setTotalNGTotalTime] = useState<number>(0);
+  const [totalNGPRSR, setTotalNGPRSR] = useState<number>(0);
   const [totalGAF, setTotalGAF] = useState<number>(0);
   const [totalGTotalTime, setTotalGTotalTime] = useState<number>(0);
+  const [totalGPRSR, setTotalGPRSR] = useState<number>(0);
   useEffect(() => {
     const fetchData = async () => {
       const numericPlayerId = parseInt(playerId, 10);
@@ -57,10 +59,14 @@ const PlayerView: React.FC<PlayerViewProps> = ({ playerId }) => {
       const totalGAF = await getTotalAF(g3lapfilter);
       const totalNGTotalTime = await getTotalTotalTime(ng3lapfilter);
       const totalGTotalTime = await getTotalTotalTime(g3lapfilter);
+      const totalNGPRSR = await getTotalPRSR(ng3lapfilter);
+      const totalGPRSR = await getTotalPRSR(g3lapfilter);
       setTotalNGAF(totalNGAF);
       setTotalGAF(totalGAF);
       setTotalNGTotalTime(totalNGTotalTime);
       setTotalGTotalTime(totalGTotalTime);
+      setTotalNGPRSR(totalNGPRSR);
+      setTotalGPRSR(totalGPRSR);
     };
 
     fetchData();
@@ -73,10 +79,10 @@ const PlayerView: React.FC<PlayerViewProps> = ({ playerId }) => {
         <PlayerInfoTable player={playerState} />
       </div>
       <div className="timesheet-container">
-        <TimeSheetTable timesheet={ng3LapTimeSheet} header="Non-SC - 3Lap" totalAF={0} totalTotalTime={0} footer={''}/>
-        <TimeSheetTable timesheet={g3LapTimeSheet} header="Unrestricted - 3Lap" totalAF={0} totalTotalTime={0} footer={''}/>
-        <TimeSheetTable timesheet={ngFlapTimeSheet} header="Non-SC - Flap" totalAF={totalNGAF} totalTotalTime={totalNGTotalTime} footer={'Non-SC'}/>
-        <TimeSheetTable timesheet={gFlapTimeSheet} header="Unrestricted - Flap" totalAF={totalGAF} totalTotalTime={totalGTotalTime} footer={'Unrestricted'}/>
+        <TimeSheetTable timesheet={ng3LapTimeSheet} header="Non-SC - 3Lap" totalAF={0} totalTotalTime={0} totalPRSR={0} footer={''}/>
+        <TimeSheetTable timesheet={g3LapTimeSheet} header="Unrestricted - 3Lap" totalAF={0} totalTotalTime={0} totalPRSR={0} footer={''}/>
+        <TimeSheetTable timesheet={ngFlapTimeSheet} header="Non-SC - Flap" totalAF={totalNGAF} totalTotalTime={totalNGTotalTime} totalPRSR={totalNGPRSR} footer={'Non-SC'}/>
+        <TimeSheetTable timesheet={gFlapTimeSheet} header="Unrestricted - Flap" totalAF={totalGAF} totalTotalTime={totalGTotalTime} totalPRSR={totalGPRSR} footer={'Unrestricted'}/>
       </div>
     </div>
   );

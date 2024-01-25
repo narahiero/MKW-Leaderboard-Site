@@ -16,8 +16,10 @@ namespace my_app.Services.Interfaces
         Task<TimeSheet> GetTimeSheet(TimeSheetFilter filter);
         Task<double> GetTotalAF(TimeSheetFilter filter);
         Task<long> GetTotalTotalTime(TimeSheetFilter filter);
+        Task<double> GetTotalPRSR(TimeSheetFilter filter);
         Task<IEnumerable<AFChartRow>> GetAFCharts(PlayerChartFilter filter);
         Task<IEnumerable<TotalTimeChartRow>> GetTotalTimeCharts(PlayerChartFilter filter);
+        Task<IEnumerable<PRSRChartRow>> GetPRSRCharts(PlayerChartFilter filter);
         Task<IEnumerable<LeaderboardChartRow>> GetLeaderboardCharts(LeaderboardChartFilter filter);
         Task<IEnumerable<LeaderboardChartRow>> GetRecordHoldersChart(LeaderboardChartFilter filter);
         Task<IEnumerable<WRRow>> GetWorldRecords(WRFilter filter);
