@@ -198,16 +198,14 @@ namespace my_app.Services
             var times = await connection.QueryAsync<Time>(sqlQuery, new { filter.Flap, filter.PlayerId });
 
             long totalTime = 0;
-            double prsr = 0;
 
             //only return totalTime and prsr if player has set a run on every track
             if(await GetTimeCount(filter) == 32)
             {
                 totalTime = CalculateTotalTime(times);
-                prsr = times.Select(t => t.PRSR).Average();
             }
 
-            return new TimeSheet(times, CalculateAF(times), totalTime, prsr);
+            return new TimeSheet(times, CalculateAF(times), totalTime, times.Select(t => t.PRSR).Average());
         }
 
         public async Task<double> GetTotalAF(TimeSheetFilter filter)
