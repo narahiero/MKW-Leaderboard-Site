@@ -16,6 +16,11 @@
   margin-right: 2%; /* Adjust as needed */
 }
 
+.player-table {
+  flex: 1;
+  margin-right: 2%; /* Adjust as needed */
+}
+
 .af-table {
   flex: 1;
   margin-right: 2%; /* Adjust as needed */
