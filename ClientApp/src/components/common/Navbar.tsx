@@ -1,31 +1,32 @@
 import React from 'react';
-import { NavbarProps, Pages } from '../../types';
+import { Pages } from '../../types';
 
-const Navbar: React.FC<NavbarProps> = ({ url }) => {
+const Navbar = () => {
+  const url = window.location.pathname;
   return (
     <div className="navbar">
-      <a href="/top10" className={url === Pages.Top10s ? 'active' : ''}>
+      <a href="/top10" className={url.includes(Pages.Top10s) ? 'active' : ''}>
         Top 10s
       </a>
-      <a href="/records" className={url === Pages.WorldRecords ? 'active' : ''}>
+      <a href="/records" className={url.includes(Pages.WorldRecords) ? 'active' : ''}>
         Records
       </a>
-      <a href="/top10rankings" className={url === Pages.Leaderboards ? 'active' : ''}>
+      <a href="/top10rankings" className={url.includes(Pages.Leaderboards) ? 'active' : ''}>
         Rankings (Top 10s)
       </a>
-      <a href="/af" className={url === Pages.AFCharts ? 'active' : ''}>
+      <a href="/af" className={url.includes(Pages.AFCharts) ? 'active' : ''}>
         Rankings (AF)
       </a>
-      <a href="/total-time" className={url === Pages.TotalTimeCharts ? 'active' : ''}>
+      <a href="/total-time" className={url.includes(Pages.TotalTimeCharts) ? 'active' : ''}>
         Total Times
       </a>
-      <a href="/prwr" className={url === Pages.PRSRCharts ? 'active' : ''}>
+      <a href="/prwr" className={url.includes(Pages.PRSRCharts) ? 'active' : ''}>
         PRWR
       </a>
-      <a href="/charts" className={url === Pages.TrackCharts ? 'active' : ''}>
+      <a href="/charts" className={url.includes(Pages.TrackCharts) ? 'active' : ''}>
         Charts
       </a>
-      <a href="/players" className={url === Pages.Players ? 'active' : ''}>
+      <a href="/players" className={url.includes(Pages.Players) ? 'active' : ''}>
         Players A-Z
       </a>
     </div>

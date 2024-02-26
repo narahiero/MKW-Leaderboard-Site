@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import '../App.css';
-import { Navbar } from '../common';
 import { PRSRTable } from '../tables';
 import { getPRSRCharts } from '../../client';
-import { FlapOverallButtonState, PlayerChartFilter, Pages, PRSRChartRow } from '../../types';
+import { FlapOverallButtonState, PlayerChartFilter, PRSRChartRow } from '../../types';
 import { GlitchButtons, FlapButtonsOverall } from '../buttons';
 
 const PRSRView = () => {
@@ -41,7 +40,6 @@ const PRSRView = () => {
 
   return (
     <div>
-      <Navbar url={Pages.PRSRCharts} />
       <div>
         <div>
             <GlitchButtons onButtonClick={handleGlitchClick} />

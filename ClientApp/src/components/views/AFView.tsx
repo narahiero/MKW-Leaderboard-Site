@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import '../App.css';
-import { Navbar } from '../common';
 import { AFTable } from '../tables';
 import { getAFCharts } from '../../client';
-import { FlapOverallButtonState, AFChartRow, PlayerChartFilter, Pages } from '../../types';
+import { FlapOverallButtonState, AFChartRow, PlayerChartFilter } from '../../types';
 import { GlitchButtons, FlapButtonsOverall } from '../buttons';
 
 const AFView = () => {
@@ -41,7 +40,6 @@ const AFView = () => {
 
   return (
     <div>
-      <Navbar url={Pages.AFCharts} />
       <div>
         <div>
             <GlitchButtons onButtonClick={handleGlitchClick} />

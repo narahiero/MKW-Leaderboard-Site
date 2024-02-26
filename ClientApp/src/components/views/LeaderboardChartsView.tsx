@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../App.css';
-import { Navbar } from '../common';
 import { getLeaderboardCharts, getRecordHolderCharts } from '../../client';
-import { Country, FlapOverallButtonState, LeaderboardChartFilter, LeaderboardChartRow, Pages } from '../../types';
+import { Country, FlapOverallButtonState, LeaderboardChartFilter, LeaderboardChartRow } from '../../types';
 import { GlitchButtons, FlapButtonsOverallTotalTime, RegionButtons } from '../buttons';
 import { LeaderboardChartTable, RecordHolderTable } from '../tables';
 
@@ -44,7 +43,6 @@ const LeaderboardChartsView = () => {
 
   return (
     <div>
-      <Navbar url={Pages.Leaderboards}/>
       <div>
         <div>
             <RegionButtons onButtonClick={handleRegionClick} />

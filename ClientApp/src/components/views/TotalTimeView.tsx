@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import '../App.css';
-import { Navbar } from '../common';
 import { getTotalTimeCharts } from '../../client';
 import { TotalTimeTable } from '../tables';
-import { FlapOverallButtonState, TotalTimeChartRow, PlayerChartFilter, Pages } from '../../types';
+import { FlapOverallButtonState, TotalTimeChartRow, PlayerChartFilter } from '../../types';
 import { GlitchButtons, FlapButtonsOverallTotalTime } from '../buttons';
 
 const TotalTimeView = () => {
@@ -41,7 +40,6 @@ const TotalTimeView = () => {
 
   return (
     <div>
-      <Navbar url={Pages.TotalTimeCharts} />
       <div>
         <div>
           <GlitchButtons onButtonClick={handleGlitchClick} />

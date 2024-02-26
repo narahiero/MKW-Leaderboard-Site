@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import '../App.css';
-import { Navbar } from '../common';
 import { getTimeSheet, getTotalAF, getTotalTotalTime, getPlayer, getTotalPRSR } from '../../client';
 import { TimeSheetTable, PlayerInfoTable } from '../tables';
-import { PlayerViewProps, Player, TimeSheet, TimeSheetFilter, Pages } from '../../types';
+import { PlayerViewProps, Player, TimeSheet, TimeSheetFilter } from '../../types';
 
 const PlayerView: React.FC<PlayerViewProps> = ({ playerId }) => {
   const [playerState, setPlayerState] = useState<Player>();
@@ -17,9 +16,10 @@ const PlayerView: React.FC<PlayerViewProps> = ({ playerId }) => {
   const [totalGAF, setTotalGAF] = useState<number>(0);
   const [totalGTotalTime, setTotalGTotalTime] = useState<number>(0);
   const [totalGPRSR, setTotalGPRSR] = useState<number>(0);
+
   useEffect(() => {
     const fetchData = async () => {
-      const numericPlayerId = parseInt(playerId, 10);
+      const numericPlayerId = parseInt(playerId!, 10);
 
       if (isNaN(numericPlayerId)) {
         return;
@@ -72,9 +72,12 @@ const PlayerView: React.FC<PlayerViewProps> = ({ playerId }) => {
     fetchData();
   }, [playerId]);
 
+  if(!playerId) {
+    return null;
+  }
+
   return (
     <div>
-      <Navbar url={Pages.Player}/>
       <div className="playerinfo-container">
         <PlayerInfoTable player={playerState} />
       </div>

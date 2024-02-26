@@ -1,13 +1,13 @@
-export enum Pages {
-    Top10s = '/top10',
-    WorldRecords = '/records',
-    Leaderboards = '/top10rankings',
-    AFCharts = '/af',
-    TotalTimeCharts = '/total-time',
-    PRSRCharts = '/prwr',
-    TrackCharts = '/charts',
-    Players = '/players',
-    Player = '/player',
+export const Pages = {
+    Top10s: '/top10',
+    WorldRecords: '/records',
+    Leaderboards: '/top10rankings',
+    AFCharts: '/af',
+    TotalTimeCharts: '/total-time',
+    PRSRCharts: '/prwr',
+    TrackCharts: '/charts',
+    Players: '/players',
+    Player: '/player',
 }
 
 export enum Track {
