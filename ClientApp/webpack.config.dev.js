@@ -11,7 +11,6 @@ module.exports = {
   mode: 'development',
   entry: {
     'js': [
-      require.resolve('react-hot-loader/patch'),
       resolve('src/index.tsx')
     ]
   },
@@ -31,8 +30,7 @@ module.exports = {
         exclude: /node_modules/,
         loader: require.resolve('babel-loader'),
         options: {
-          cacheDirectory: true,
-          plugins: ['react-hot-loader/babel']
+          cacheDirectory: true
         }
       },
       {

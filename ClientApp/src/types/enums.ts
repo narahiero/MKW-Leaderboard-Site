@@ -1,5 +1,5 @@
 export const Pages = {
-    Top10s: '/top10',
+    Top10s: '/top10s',
     WorldRecords: '/records',
     Leaderboards: '/top10rankings',
     AFCharts: '/af',

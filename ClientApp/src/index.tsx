@@ -16,31 +16,20 @@ import React from 'react';
 
     return (
       <BrowserRouter>
-        <RoutesWithNavbar />
-      </BrowserRouter>
-    );
-  };
-
-  const RoutesWithNavbar = () => {
-    const location = useLocation();
-    const showNavbar = !location.pathname.startsWith('/report/');
-
-    return (
-      <>
-        {showNavbar && <Navbar />}
+        <Navbar />
         <Routes>
-          <Route path="/" element={<Navigate to={Pages.Top10s} replace />} />
-          <Route path={Pages.Top10s} element={<Top10sView />} />
-          <Route path={Pages.AFCharts} element={<AFView />} />
-          <Route path={Pages.TotalTimeCharts} element={<TotalTimeView />} />
-          <Route path={Pages.PRSRCharts} element={<PRSRView />} />
-          <Route path={Pages.TrackCharts} element={<ChartsView />} />
-          <Route path={Pages.Players} element={<PlayersView />} />
-          <Route path={`${Pages.Player}/:playerId`} element={<PlayerViewWrapper />} />
-          <Route path={Pages.Leaderboards} element={<LeaderboardChartsView />} />
-          <Route path={Pages.WorldRecords} element={<WRView />} />
-        </Routes>
-      </>
+              <Route path="/" element={<Navigate to={Pages.Top10s} replace />} />
+              <Route path={Pages.Top10s} element={<Top10sView />} />
+              <Route path={Pages.AFCharts} element={<AFView />} />
+              <Route path={Pages.TotalTimeCharts} element={<TotalTimeView />} />
+              <Route path={Pages.PRSRCharts} element={<PRSRView />} />
+              <Route path={Pages.TrackCharts} element={<ChartsView />} />
+              <Route path={Pages.Players} element={<PlayersView />} />
+              <Route path={`${Pages.Player}/:playerId`} element={<PlayerViewWrapper />} />
+              <Route path={Pages.Leaderboards} element={<LeaderboardChartsView />} />
+              <Route path={Pages.WorldRecords} element={<WRView />} />
+          </Routes>
+      </BrowserRouter>
     );
   };
 
