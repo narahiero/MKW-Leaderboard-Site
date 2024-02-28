@@ -25,7 +25,7 @@ const PRSRTable: React.FC<PRSRTableProps> = ({charts}) => {
             <Cell>{calculatePRSRRank(row, charts)}</Cell>
             <Cell><img src={`/assets/flags/${Country[row.country]}.png`} alt={Country[row.country]} style={{ width: '3.5vh', height: '2vh' }} /></Cell>
             <Cell className="nobr"><a href={`/player/${row.playerId}`}>{row.name}</a></Cell>
-            <Cell>{(row.prsr*100).toFixed(4)}</Cell>
+            <Cell>{(row.prsr*100).toFixed(4)}%</Cell>
             </Row>
         ))}
         </Body>
