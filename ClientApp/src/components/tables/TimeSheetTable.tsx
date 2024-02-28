@@ -54,7 +54,7 @@ const TimeSheetTable: React.FC<TimeSheetTableProps> = ({ timesheet, header, foot
         <th>Totals</th>
         <th>{formatTotalTime(timesheet.totalTime)}</th>
         <th></th>
-        <th>{timesheet.af.toFixed(4)}</th>
+        <th>{timesheet.prsr !== 0 ? timesheet.af.toFixed(4) : ''}</th>
         <th>{timesheet.prsr !== 0 ? `${(timesheet.prsr*100).toFixed(2)}%` : ''}</th>
         {totalAF !== 0 && totalTotalTime !== 0 && totalPRSR !== 0 && (
         <><Row>

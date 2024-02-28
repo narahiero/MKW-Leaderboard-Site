@@ -197,9 +197,13 @@ namespace my_app.Services
             using var connection = GetConnection();
             var times = await connection.QueryAsync<Time>(sqlQuery, new { filter.Flap, filter.PlayerId });
 
+            if(!times.Any()) {
+                return new TimeSheet(new List<Time>(), 0, 0, 0);
+            }
+
             long totalTime = 0;
 
-            //only return totalTime and prsr if player has set a run on every track
+            //only return totalTime if player has set a run on every track
             if(await GetTimeCount(filter) == 32)
             {
                 totalTime = CalculateTotalTime(times);
