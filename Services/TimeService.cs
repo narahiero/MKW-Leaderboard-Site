@@ -285,7 +285,7 @@ namespace my_app.Services
                 sqlQuery += " TOP 100";
             }
 
-            sqlQuery += " p.Id, ROUND(AVG(CAST(Rank AS FLOAT)), 4) AS AF FROM ( SELECT *, DENSE_RANK() OVER (PARTITION BY Track, Flap ORDER BY RunTime) AS Rank FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Flap, Track ORDER BY RunTime) AS row_num FROM Times WHERE Obsoleted = 0 AND DeletedAt IS NULL ";
+            sqlQuery += " p.Id, ROUND(AVG(CAST(Rank AS FLOAT)), 4) AS AF FROM ( SELECT *, DENSE_RANK() OVER (PARTITION BY Track, Flap ORDER BY RunTime) AS Rank, COUNT(*) OVER (PARTITION BY PlayerId) AS time_count FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY PlayerId, Flap, Track ORDER BY RunTime) AS row_num FROM Times WHERE Obsoleted = 0 AND DeletedAt IS NULL ";
 
             if(filter.ThreeLap && !filter.Flap)
             {
@@ -301,7 +301,18 @@ namespace my_app.Services
                 sqlQuery += "AND Glitch = 0 ";
             }
 
-            sqlQuery += ") AS RankedTimes WHERE row_num = 1 ) AS frt INNER JOIN Players p ON frt.PlayerId = p.Id WHERE frt.PlayerId IN (" + GetFullTimeSheetersQuery(filter) + ") GROUP BY p.Id ORDER BY ROUND(AVG(CAST(Rank AS FLOAT)), 4)";
+            sqlQuery += ") AS RankedTimes WHERE row_num = 1 ) AS frt INNER JOIN Players p ON frt.PlayerId = p.Id WHERE frt.time_count = ";
+
+            if(filter.ThreeLap && filter.Flap)
+            {
+                sqlQuery += "64";
+            }
+            else
+            {
+                sqlQuery += "32";
+            }
+
+            sqlQuery += " GROUP BY p.Id ORDER BY ROUND(AVG(CAST(Rank AS FLOAT)), 4)";
 
             if(filter.All)
             {
