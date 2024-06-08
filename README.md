@@ -2,9 +2,9 @@ Running the project any%
 
 You will need:
 
-Docker
-.NET 6 (or alternatively upgrading the project to the latest version, this should be done at some point anyway)
-NodeJS
+- Docker
+- .NET 6 (or alternatively upgrading the project to the latest version, this should be done at some point anyway)
+- NodeJS
 
 1. Build and start the database by running ```docker-compose up``` at the project root
 2. Add a file called appsettings.json to the root of the project with the connection string password value filled in. There is a template at the root of the project. Default password can be found from ```docker-compose.yml```
