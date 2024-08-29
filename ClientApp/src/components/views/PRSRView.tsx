@@ -25,10 +25,10 @@ const PRSRView = () => {
 
   useEffect(() => {
     const filter: PlayerChartFilter = {
-        glitch: glitchState,
-        threeLap: flapOverallState === FlapOverallButtonState.Overall || flapOverallState === FlapOverallButtonState.ThreeLapOnly,
-        flap: flapOverallState === FlapOverallButtonState.Overall || flapOverallState === FlapOverallButtonState.FlapOnly,
-        all: allButtonState,
+      glitch: glitchState,
+      threeLap: flapOverallState === FlapOverallButtonState.Overall || flapOverallState === FlapOverallButtonState.ThreeLapOnly,
+      flap: flapOverallState === FlapOverallButtonState.Overall || flapOverallState === FlapOverallButtonState.FlapOnly,
+      all: allButtonState,
     }
     const fetchData = async () => {
       const fetchedCharts = await getPRSRCharts(filter);
@@ -39,20 +39,14 @@ const PRSRView = () => {
   }, [allButtonState, flapOverallState, glitchState]);
 
   return (
-    <div>
-      <div>
-        <div>
-            <GlitchButtons onButtonClick={handleGlitchClick} />
-        </div>
-        <div>
-            <FlapButtonsOverall onButtonClick={handleFlapOverallClick} />
-        </div>
-        <div className="button-container">
-            <label className="all-box-label">
-                Include scores outside the top 100
-                <input type="checkbox" className="all-box" onChange={(event) => handleAllButtonClick(event.target.checked)} />
-            </label>
-        </div>
+    <div className="main">
+      <GlitchButtons onButtonClick={handleGlitchClick} />
+      <FlapButtonsOverall onButtonClick={handleFlapOverallClick} />
+      <div className="button-container">
+        <label className="all-box-label">
+          Include scores outside the top 100
+          <input type="checkbox" className="all-box" onChange={(event) => handleAllButtonClick(event.target.checked)} />
+        </label>
       </div>
       <div className="table-container">
         <PRSRTable charts={charts} />

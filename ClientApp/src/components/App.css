@@ -1,280 +1,321 @@
 /* App.css */
 
-.table-container {
-  display: flex;
-  justify-content: space-around; /* Adjust as needed */
-  padding: 2%;
+
+/* Themes */
+
+:root {
+  --background-color: #FFF;
+  --background-color-alt: #F2F2F2;
+  --border-color: #DDD;
+  --primary-text-color: #000;
+  --secondary-text-color: #FFF;
+  --secondary-background-color: #4CAF50;
+  --secondary-background-color-active: #0F3325;
+  --navbar-background-color: var(--secondary-background-color);
+  --navbar-background-color-active: var(--secondary-background-color-active);
+  --filter-background-color: var(--secondary-background-color);
+  --filter-background-color-active: var(--secondary-background-color-active);
 }
 
-.top10-table {
-  flex: 1;
-  margin-right: 1%; /* Adjust as needed */
-}
-
-.chart-table {
-  flex: 1;
-  margin-right: 2%; /* Adjust as needed */
-}
-
-.player-table {
-  flex: 1;
-  margin-right: 2%; /* Adjust as needed */
-}
-
-.af-table {
-  flex: 1;
-  margin-right: 2%; /* Adjust as needed */
-}
-
-.total-time-table {
-  flex: 1;
-  margin-right: 2%; /* Adjust as needed */
-}
-
-.prsr-table {
-  flex: 1;
-  margin-right: 2%; /* Adjust as needed */
-}
-
-.wr-table {
-  flex: 1;
-  margin-right: 2%; /* Adjust as needed */
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: #fff;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  width: calc(100% - 2px); /* Adjust based on border size */
-  margin: 1px; /* Create a border effect */
-}
-
-tr:nth-child(even) {
-  background-color: #f2f2f2;
+[data-theme="dark"] {
+  --background-color: #111;
+  --background-color-alt: #1A1A1A;
+  --border-color: #333;
+  --primary-text-color: #DDD;
+  --secondary-text-color: #FFF;
+  --secondary-background-color: #3DAF42;
+  --secondary-background-color-active: #1A522b;
+  --navbar-background-color: var(--secondary-background-color);
+  --navbar-background-color-active: var(--secondary-background-color-active);
+  --filter-background-color: var(--secondary-background-color);
+  --filter-background-color-active: var(--secondary-background-color-active);
+  color-scheme: dark;
 }
 
 
-thead {
-  background-color: #3498db;
-  color: #fff;
-}
+/* General */
 
-th, td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 2px solid #ddd;
+* {
+  box-sizing: border-box;
 }
-
-th {
-  font-weight: bold;
-}
-
-/* Add these styles to center the button container */
-.button-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 11vh;
-}
-
-/* Add the styles for the cool button as before */
-.cool-button {
-  background-color: #4caf50;
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 8px;
-}
-
-/* Add the styles for the cool button as before */
-.cool-button-active {
-  background-color: #0F3325;
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 8px;
-}
-
 
 body {
-  transform: scale(0.8);
-  transform-origin: top;
+  margin: 0;
+  background-color: var(--background-color);
+  margin: auto;
+  width: 80%;
+}
+
+body, button {
+  color: var(--primary-text-color);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1rem;
+}
+
+.content {
+  display: flex;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.centered {
+  text-align: center;
+}
+
+
+/* Navbar */
+
+.navbar {
+  background-color: var(--navbar-background-color);
+  overflow: hidden;
+  border-radius: 8px;
+  margin: 10px 0 18px 0;
+}
+
+.navbar a {
+  float: left;
+  display: block;
+  color: var(--secondary-text-color);
+  text-align: center;
+  padding: 14px 12px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.navbar a:hover, .navbar a.active {
+  background-color: var(--navbar-background-color-active);
+}
+
+.navbar button {
+  float: right;
+  border: none;
+  background-color: transparent;
+  font-size: 1.5rem;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+
+/* Sidebar */
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  padding: 0px 20px;
+  height: calc(100vh - 24px);
+  inset: 4px;
+}
+
+.sidebar h2 {
+  font-size: 1.2rem;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0 4px 0 0;
+  margin: 0;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+}
+
+.sidebar li {
+  margin-bottom: 4px;
+}
+
+.sidebar button {
+  background-color: var(--secondary-background-color);
+  color: var(--secondary-text-color);
+  border: none;
+  padding: 10px;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar button:hover, .sidebar li.active button {
+  background-color: var(--secondary-background-color-active);
+}
+
+
+/* Filter buttons */
+
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  min-height: 32px;
+  padding: 5px;
+}
+
+.filter-button {
+  background-color: var(--filter-background-color);
+  border: none;
+  color: var(--secondary-text-color);
+  padding: 12px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 0.9rem;
+  margin: 2px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.img-filter-button {
+  padding: 8px 10px;
+}
+
+.filter-button:hover, .filter-button-active {
+  background-color: var(--filter-background-color-active);
+}
+
+.filter-button img {
+  width: 48px;
+  height: 48px;
+  vertical-align: middle; /* Removes mysterious extra padding below image, somehow */
 }
 
 .nobr {
   white-space: nowrap;
 }
 
-/* Navbar styles */
-.navbar {
-  background-color: #4caf50; /* Green background color */
-  overflow: hidden;
+.all-box-label {
+  position: absolute;
+  font-size: 0.9rem;
 }
 
-/* Navbar links */
-.navbar a {
-  float: left;
-  display: block;
-  color: #ffffff; /* White text color */
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
+.all-box {
+  position: absolute;
 }
 
-/* Change color on hover */
-.navbar a:hover {
-  background-color: #0F3325;
-}
 
-.navbar a.active {
-  background-color: #0F3325;
-}
+/* Pagination */
 
-.sidebar h2 {
-  font-size: 1.2em;
-  margin-bottom: 15px;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.sidebar li {
-  margin-bottom: 10px;
-}
-
-.sidebar button {
-  background-color: #4caf50;
-  color: #fff;
-  border: none;
-  padding: 10px;
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.sidebar button:hover {
-  background-color: #0F3325;
-}
-
-.sidebar li.active button {
-  background-color: #0F3325
-}
-
-.sidebar {
-  width: 200px;
-  padding: 20px;
-  position: fixed;
-  height: 100%;
-  overflow: auto;
-}
-
-.chart-button-container {
-  flex-grow: 1;
-  padding: 20px;
-  margin-left: 15%; /* Adjust to include the width of the sidebar */
-}
-
-/* Pagination Styles */
 .pagination {
   display: flex;
+  flex-wrap: wrap;
   list-style: none;
   padding: 0;
   margin: 20px 0;
   justify-content: center;
-  font-family: 'Arial', sans-serif;
 }
 
 .pagination button {
-  margin: 0 5px;
+  margin: 2px;
   display: inline-block;
-  background-color: #4caf50;
-  color: white;
+  border: 0;
+  background-color: var(--secondary-background-color);
+  color: var(--secondary-text-color);
   padding: 8px 12px;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.pagination button:hover {
-  background-color: #0F3325;
-}
-
-.pagination button.active {
-  background-color: #0F3325;
+.pagination button:hover, .pagination button.active {
+  background-color: var(--secondary-background-color-active);
 }
 
 .pagination button:disabled {
   background-color: #ddd;
   color: #999;
-  cursor: not-allowed;
+  cursor: default;
 }
 
-/* Previous and Next Buttons */
-.pagination button.pagination-previous,
-.pagination button.pagination-next {
-  margin: 0 5px;
-  display: inline-block;
-  background-color: #4caf50;
-  color: white;
-  padding: 8px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+
+/* Common */
+
+.flag-icon {
+  width: 36px;
+  height: 20px;
 }
 
-.playerinfo-container {
-  text-align: center;
-  margin-bottom: 5vh;
+
+/* Tables */
+
+.table-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding: 20px;
+}
+
+table {
+  border-collapse: collapse;
+  background-color: var(--background-color);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+tr:nth-child(even) {
+  background-color: var(--background-color-alt);
+}
+
+th, td {
+  /* TODO: disable Mui default styles to remove !important tags */
+  padding: 12px !important;
+  text-align: left !important;
+  border-bottom: 2px solid var(--border-color) !important;
+  color: var(--primary-text-color) !important;
+  font-size: 0.9rem !important;
+}
+
+th {
+  font-weight: bold;
+}
+
+
+/* Page-specifics */
+
+.chart-table,
+.player-table,
+.af-table,
+.total-time-table,
+.prsr-table,
+.wr-table,
+.leaderboard-chart-table,
+.record-holder-table {
+  flex: 1;
+  margin-right: 2%; /* Adjust as needed */
+  max-width: min-content;
+}
+
+.top10-table {
+  flex: 1;
+  margin-right: 1%; /* Adjust as needed */
+  max-width: min-content;
 }
 
 .playerinfo-table {
   max-width: 600px; /* Adjust the maximum width as needed */
   width: 100%;
-  margin: 0 auto; /* Center the table horizontally */
-}
-
-.timesheet-container {
-  display: grid;
-  grid-template-rows: repeat(2, 1fr);
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  margin: 0 auto 40px auto;
 }
 
 .timesheet-table {
-  width: 100%;
-  /* Add any additional styling for your tables here */
+  flex: 1 0 45%;
+  margin: 0 10px;
 }
 
-.category-header {
-  text-align: center;
-}
-
-.all-box-label {
-  position: absolute;
-  font-size: 18px; /* Increased font size, adjust as needed */
-}
-
-.all-box {
-  position: absolute;
-  height: 15px; /* Increased size, adjust as needed */
-  width: 15px; /* Increased size, adjust as needed */
+.timesheet-table h2 {
+  font-size: 1.2rem;
 }

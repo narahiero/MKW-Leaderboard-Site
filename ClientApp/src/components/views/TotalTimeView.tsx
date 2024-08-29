@@ -25,10 +25,10 @@ const TotalTimeView = () => {
 
   useEffect(() => {
     const filter: PlayerChartFilter = {
-        glitch: glitchState,
-        threeLap: flapOverallState === FlapOverallButtonState.Overall || flapOverallState === FlapOverallButtonState.ThreeLapOnly,
-        flap: flapOverallState === FlapOverallButtonState.Overall || flapOverallState === FlapOverallButtonState.FlapOnly,
-        all: allButtonState,
+      glitch: glitchState,
+      threeLap: flapOverallState === FlapOverallButtonState.Overall || flapOverallState === FlapOverallButtonState.ThreeLapOnly,
+      flap: flapOverallState === FlapOverallButtonState.Overall || flapOverallState === FlapOverallButtonState.FlapOnly,
+      all: allButtonState,
     }
     const fetchData = async () => {
       const fetchedCharts = await getTotalTimeCharts(filter);
@@ -39,20 +39,14 @@ const TotalTimeView = () => {
   }, [allButtonState, flapOverallState, glitchState]);
 
   return (
-    <div>
-      <div>
-        <div>
-          <GlitchButtons onButtonClick={handleGlitchClick} />
-        </div>
-        <div>
-          <FlapButtonsOverallTotalTime onButtonClick={handleFlapOverallClick} />
-        </div>
-        <div className="button-container">
-            <label className="all-box-label">
-                Include scores outside the top 100
-                <input type="checkbox" className="all-box" onChange={(event) => handleAllButtonClick(event.target.checked)} />
-            </label>
-        </div>
+    <div className="main">
+      <GlitchButtons onButtonClick={handleGlitchClick} />
+      <FlapButtonsOverallTotalTime onButtonClick={handleFlapOverallClick} />
+      <div className="button-container">
+        <label className="all-box-label">
+          Include scores outside the top 100
+          <input type="checkbox" className="all-box" onChange={(event) => handleAllButtonClick(event.target.checked)} />
+        </label>
       </div>
       <div className="table-container">
         <TotalTimeTable charts={charts} />

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Pages } from '../../types';
+import { cycleTheme } from '../../utils';
 
 const Navbar = () => {
   const url = window.location.pathname;
@@ -29,6 +30,7 @@ const Navbar = () => {
       <a href={Pages.Players} className={url.includes(Pages.Players) ? 'active' : ''}>
         Players A-Z
       </a>
+      <button className="theme-switch" onClick={cycleTheme}>&#x1F317;</button>
     </div>
   );
 };

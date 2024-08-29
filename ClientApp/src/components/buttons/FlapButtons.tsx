@@ -27,13 +27,13 @@ class FlapButtons extends React.Component<FlapButtonsProps, FlapButtonsState> {
     return (
       <div className="button-container">
         <button
-          className={`cool-button ${activeButton === false ? 'cool-button-active' : ''}`}
+          className={`filter-button ${activeButton === false ? 'filter-button-active' : ''}`}
           onClick={() => this.handleButtonClick(false)}
         >
           3Lap
         </button>
         <button
-          className={`cool-button ${activeButton === true ? 'cool-button-active' : ''}`}
+          className={`filter-button ${activeButton === true ? 'filter-button-active' : ''}`}
           onClick={() => this.handleButtonClick(true)}
         >
           Flap

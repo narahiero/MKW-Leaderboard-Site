@@ -27,20 +27,20 @@ class FlapButtonsOverall extends React.Component<FlapButtonsOverallProps, FlapBu
 
     return (
       <div className="button-container">
-      <button
-        className={`cool-button ${activeButton === FlapOverallButtonState.Overall ? 'cool-button-active' : ''}`}
-        onClick={() => this.handleButtonClick(FlapOverallButtonState.Overall)}
-      >
-        Overall
-      </button>
         <button
-          className={`cool-button ${activeButton === FlapOverallButtonState.ThreeLapOnly ? 'cool-button-active' : ''}`}
+          className={`filter-button ${activeButton === FlapOverallButtonState.Overall ? 'filter-button-active' : ''}`}
+          onClick={() => this.handleButtonClick(FlapOverallButtonState.Overall)}
+        >
+          Overall
+        </button>
+        <button
+          className={`filter-button ${activeButton === FlapOverallButtonState.ThreeLapOnly ? 'filter-button-active' : ''}`}
           onClick={() => this.handleButtonClick(FlapOverallButtonState.ThreeLapOnly)}
         >
           3Lap only
         </button>
         <button
-          className={`cool-button ${activeButton === FlapOverallButtonState.FlapOnly ? 'cool-button-active' : ''}`}
+          className={`filter-button ${activeButton === FlapOverallButtonState.FlapOnly ? 'filter-button-active' : ''}`}
           onClick={() => this.handleButtonClick(FlapOverallButtonState.FlapOnly)}
         >
           Flap only

@@ -6,30 +6,31 @@ import {
   TableRow as Row,
   TableCell as Cell,
 } from '@mui/material';
+import { FlagIcon } from '../common';
 import { calculateLeaderboardRank } from '../../utils';
-import { Country, LeaderboardChartProps, LeaderboardChartRow } from '../../types';
+import { LeaderboardChartProps, LeaderboardChartRow } from '../../types';
 
 const LeaderboardChartTable: React.FC<LeaderboardChartProps> = ({charts}) => {
   return (
     <div className="leaderboard-chart-table">
-    <h2>Point rankings</h2>
-    <h3>1st place is worth 10 points, 2nd place worth 9 points etc.</h3>
-    <Table>
+      <h2>Point rankings</h2>
+      <h3>1st place is worth 10 points, 2nd place worth 9 points etc.</h3>
+      <Table>
         <th>Rank</th>
         <th>Country</th>
         <th>Player</th>
         <th>Tally</th>
         <Body>
-        {charts.map((row: LeaderboardChartRow) => (
+          {charts.map((row: LeaderboardChartRow) => (
             <Row key={row.playerId}>
-            <Cell>{calculateLeaderboardRank(row, charts)}</Cell>
-            <Cell><img src={`/assets/flags/${Country[row.country]}.png`} alt={Country[row.country]} style={{ width: '3.5vh', height: '2vh' }} /></Cell>
-            <Cell className="nobr"><a href={`/player/${row.playerId}`}>{row.name}</a></Cell>
-            <Cell>{row.tally}</Cell>
+              <Cell>{calculateLeaderboardRank(row, charts)}</Cell>
+              <Cell><FlagIcon country={row.country} /></Cell>
+              <Cell className="nobr"><a href={`/player/${row.playerId}`}>{row.name}</a></Cell>
+              <Cell>{row.tally}</Cell>
             </Row>
-        ))}
+          ))}
         </Body>
-    </Table>
+      </Table>
     </div>
   );
 };

@@ -14,8 +14,8 @@ const TimeSheetTable: React.FC<TimeSheetTableProps> = ({ timesheet, header, foot
     return null;
   }
   return (
-    <div className="chart-table">
-    <h2 className="category-header">{header}</h2>
+    <div className="timesheet-table">
+      <h2 className="centered">{header}</h2>
       <Table>
         <th>Track</th>
         <th>Time</th>
@@ -57,16 +57,19 @@ const TimeSheetTable: React.FC<TimeSheetTableProps> = ({ timesheet, header, foot
         <th>{timesheet.prsr !== 0 ? timesheet.af.toFixed(4) : ''}</th>
         <th>{timesheet.prsr !== 0 ? `${(timesheet.prsr*100).toFixed(2)}%` : ''}</th>
         {totalAF !== 0 && totalTotalTime !== 0 && totalPRSR !== 0 && (
-        <><Row>
-            <th></th><th></th><th></th><th></th><th></th>
-          </Row><Row>
+          <>
+            <Row>
+              <th /><th /><th /><th /><th />
+            </Row>
+            <Row>
               <th><h2>Overall ({footer})</h2></th>
               <th>{formatTotalTime(totalTotalTime)}</th>
               <th></th>
-              <th><h1>{totalAF.toFixed(4)}</h1></th>
+              <th>{totalAF.toFixed(4)}</th>
               <th>{(totalPRSR*100).toFixed(4)}%</th>
-            </Row></>
-      )}
+            </Row>
+          </>
+        )}
       </Table>
     </div>
   );

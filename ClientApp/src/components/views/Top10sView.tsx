@@ -50,27 +50,17 @@ const Top10sView = () => {
   }, [cupState, flapState, glitchState, regionState]);
 
   return (
-    <div>
-        <div>
-        <div>
-            <RegionButtons onButtonClick={handleRegionClick} />
-        </div>
-        <div>
-            <CupButtons onButtonClick={handleCupClick} />
-        </div>
-        <div>
-            <GlitchButtons onButtonClick={handleGlitchClick} />
-        </div>
-        <div>
-            <FlapButtons onButtonClick={handleFlapClick} />
-        </div>
-        <div className="table-container">
-            <Top10Table top10s={top10Data1} />
-            <Top10Table top10s={top10Data2} />
-            <Top10Table top10s={top10Data3} />
-            <Top10Table top10s={top10Data4} />
-        </div>
-        </div>
+    <div className="main">
+      <RegionButtons onButtonClick={handleRegionClick} />
+      <CupButtons onButtonClick={handleCupClick} />
+      <GlitchButtons onButtonClick={handleGlitchClick} />
+      <FlapButtons onButtonClick={handleFlapClick} />
+      <div className="table-container">
+        <Top10Table top10s={top10Data1} />
+        <Top10Table top10s={top10Data2} />
+        <Top10Table top10s={top10Data3} />
+        <Top10Table top10s={top10Data4} />
+      </div>
     </div>
   );
 };

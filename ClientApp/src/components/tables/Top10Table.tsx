@@ -6,6 +6,7 @@ import {
   TableRow as Row,
   TableCell as Cell,
 } from '@mui/material';
+import { FlagIcon } from '../common';
 import { calculateRank, formatTime } from '../../utils';
 import { Top10TableProps, LongTrack, LeaderBoardTimeEntry, Country } from '../../types';
 
@@ -23,7 +24,7 @@ const Top10Table: React.FC<Top10TableProps> = ({top10s}) => {
           {top10s.map((entry: LeaderBoardTimeEntry) => (
             <Row key={entry.player.id}>
               <Cell>{calculateRank(entry, top10s, 1)}</Cell>
-              <Cell><img src={`/assets/flags/${Country[entry.player.country]}.png`} alt={Country[entry.player.country]} style={{ width: '3.5vh', height: '2vh' }} /></Cell>
+              <Cell><FlagIcon country={entry.player.country} /></Cell>
               <Cell className="nobr"><a href={`/player/${entry.player.id}`}>{entry.player.name}</a></Cell>
               <Cell>{formatTime(entry.time.runTime, entry.time.link)}</Cell>
               <Cell>

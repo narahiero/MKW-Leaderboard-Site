@@ -50,24 +50,16 @@ const ChartsView = () => {
   }, [trackState, flapState, glitchState, currentPage]); // Include currentPage in dependencies
 
   return (
-    <div>
-      <div className="sidebar">
-        <Sidebar onTrackSelect={handleTrackSelect} />
-      </div>
-      <div className="chart-button-container">
-        <div>
-          <GlitchButtons onButtonClick={handleGlitchClick} />
-        </div>
-        <div>
-          <FlapButtons onButtonClick={handleFlapClick} />
-        </div>
-        <div>
+    <>
+      <Sidebar onTrackSelect={handleTrackSelect} />
+      <div className="main">
+        <GlitchButtons onButtonClick={handleGlitchClick} />
+        <FlapButtons onButtonClick={handleFlapClick} />
         <Pagination
-            currentPage={currentPage}
-            totalPages={Math.ceil(chartsQuantity / 100)}
-            onPageChange={handlePageChange}
+          currentPage={currentPage}
+          totalPages={Math.ceil(chartsQuantity / 100)}
+          onPageChange={handlePageChange}
         />
-        </div>
         <div className="table-container">
           <ChartTable charts={charts} page={currentPage} />
         </div>
@@ -77,7 +69,7 @@ const ChartsView = () => {
           onPageChange={handlePageChange}
         />
       </div>
-    </div>
+    </>
   );
 };
 

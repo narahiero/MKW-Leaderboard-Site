@@ -6,30 +6,31 @@ import {
   TableRow as Row,
   TableCell as Cell,
 } from '@mui/material';
+import { FlagIcon } from '../common';
 import { calculateTotalTimeRank, formatTotalTime } from '../../utils';
-import { TotalTimeTableProps, TotalTimeChartRow, Country } from '../../types';
+import { TotalTimeTableProps, TotalTimeChartRow } from '../../types';
 
 const TotalTimeTable: React.FC<TotalTimeTableProps> = ({charts}) => {
   return (
     <div className="total-time-table">
-    <h2>Total Time</h2>
-    <h3>This ranking displays the sum of times on each given category. You must have finished a run on every category to qualify for these rankings.</h3>
-    <Table>
+      <h2>Total Time</h2>
+      <h3>This ranking displays the sum of times on each given category. You must have finished a run on every category to qualify for these rankings.</h3>
+      <Table>
         <th>Rank</th>
         <th>Country</th>
         <th>Player</th>
         <th>Total</th>
         <Body>
-        {charts.map((row: TotalTimeChartRow) => (
+          {charts.map((row: TotalTimeChartRow) => (
             <Row key={row.playerId}>
-            <Cell>{calculateTotalTimeRank(row, charts)}</Cell>
-            <Cell><img src={`/assets/flags/${Country[row.country]}.png`} alt={Country[row.country]} style={{ width: '3.5vh', height: '2vh' }} /></Cell>
-            <Cell className="nobr"><a href={`/player/${row.playerId}`}>{row.name}</a></Cell>
-            <Cell>{formatTotalTime(row.totalTime)}</Cell>
+              <Cell>{calculateTotalTimeRank(row, charts)}</Cell>
+              <Cell><FlagIcon country={row.country} /></Cell>
+              <Cell className="nobr"><a href={`/player/${row.playerId}`}>{row.name}</a></Cell>
+              <Cell>{formatTotalTime(row.totalTime)}</Cell>
             </Row>
-        ))}
+          ))}
         </Body>
-    </Table>
+      </Table>
     </div>
   );
 };

@@ -26,10 +26,10 @@ const LeaderboardChartsView = () => {
 
   useEffect(() => {
     const filter: LeaderboardChartFilter = {
-        glitch: glitchState,
-        threeLap: flapOverallState === FlapOverallButtonState.Overall || flapOverallState === FlapOverallButtonState.ThreeLapOnly,
-        flap: flapOverallState === FlapOverallButtonState.Overall || flapOverallState === FlapOverallButtonState.FlapOnly,
-        countries: regionState
+      glitch: glitchState,
+      threeLap: flapOverallState === FlapOverallButtonState.Overall || flapOverallState === FlapOverallButtonState.ThreeLapOnly,
+      flap: flapOverallState === FlapOverallButtonState.Overall || flapOverallState === FlapOverallButtonState.FlapOnly,
+      countries: regionState
     }
     const fetchData = async () => {
       const leaderboardCharts = await getLeaderboardCharts(filter);
@@ -42,18 +42,10 @@ const LeaderboardChartsView = () => {
   }, [flapOverallState, glitchState, regionState]);
 
   return (
-    <div>
-      <div>
-        <div>
-            <RegionButtons onButtonClick={handleRegionClick} />
-        </div>
-        <div>
-            <GlitchButtons onButtonClick={handleGlitchClick} />
-        </div>
-        <div>
-            <FlapButtonsOverallTotalTime onButtonClick={handleFlapOverallClick} />
-        </div>
-      </div>
+    <div className="main">
+      <RegionButtons onButtonClick={handleRegionClick} />
+      <GlitchButtons onButtonClick={handleGlitchClick} />
+      <FlapButtonsOverallTotalTime onButtonClick={handleFlapOverallClick} />
       <div className="table-container">
         <LeaderboardChartTable charts={leaderboardCharts} />
       </div>

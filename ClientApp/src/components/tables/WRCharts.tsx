@@ -6,8 +6,9 @@ import {
   TableRow as Row,
   TableCell as Cell,
 } from '@mui/material';
+import { FlagIcon } from '../common';
 import { formatTime } from '../../utils';
-import { Country, LongTrack, WRChartProps, WRRow } from '../../types';
+import { LongTrack, WRChartProps, WRRow } from '../../types';
 
 const WRCharts: React.FC<WRChartProps> = ({charts}) => {
   return (
@@ -23,8 +24,8 @@ const WRCharts: React.FC<WRChartProps> = ({charts}) => {
         <Body>
           {charts.map((entry: WRRow) => (
             <Row key={entry.track}>
-              <Cell>{LongTrack[entry.track]}</Cell>
-              <Cell><img src={`/assets/flags/${Country[entry.country]}.png`} alt={Country[entry.country]} style={{ width: '3.5vh', height: '2vh' }} /></Cell>
+              <Cell className="nobr">{LongTrack[entry.track]}</Cell>
+              <Cell><FlagIcon country={entry.country} /></Cell>
               <Cell className="nobr"><a href={`/player/${entry.playerId}`}>{entry.name}</a></Cell>
               <Cell>{formatTime(entry.runTime, entry.link)}</Cell>
               <Cell>

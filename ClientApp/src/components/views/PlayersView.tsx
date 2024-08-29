@@ -17,7 +17,7 @@ const PlayersView = () => {
   }, []);
 
   return (
-    <div>
+    <div className="main">
       <div className="table-container">
         <PlayerTable players={players} />
       </div>

@@ -6,7 +6,8 @@ import {
   TableRow as Row,
   TableCell as Cell,
 } from '@mui/material';
-import { PlayerInfoTableProps, Country } from '../../types';
+import { FlagIcon } from '../common';
+import { PlayerInfoTableProps } from '../../types';
 
 const PlayerInfoTable: React.FC<PlayerInfoTableProps> = ({player}) => {
   if(!player) {
@@ -14,23 +15,23 @@ const PlayerInfoTable: React.FC<PlayerInfoTableProps> = ({player}) => {
   }
   return (
     <div className="playerinfo-table">
-    <h2><img src={`/assets/flags/${Country[player.country]}.png`} alt={Country[player.country]} style={{ width: '3.5vh', height: '2vh' }} /> {player.name}</h2>
-    <Table key={player.id}>
+      <h2 className="centered"><FlagIcon country={player.country} /> {player.name}</h2>
+      <Table key={player.id}>
         <Body>
-            <Row>
-                <Cell>Town</Cell>
-                <Cell>{player.town}</Cell>
-            </Row>
-            <Row>
-                <Cell>Discord</Cell>
-                <Cell>{player.discord}</Cell>
-            </Row>
-            <Row>
-                <Cell>Info</Cell>
-                <Cell>{player.otherInfo}</Cell>
-            </Row>
-        </Body>
-    </Table>
+          <Row>
+            <Cell>Town</Cell>
+            <Cell>{player.town}</Cell>
+          </Row>
+          <Row>
+            <Cell>Discord</Cell>
+            <Cell>{player.discord}</Cell>
+          </Row>
+          <Row>
+            <Cell>Info</Cell>
+            <Cell>{player.otherInfo}</Cell>
+          </Row>
+         </Body>
+      </Table>
     </div>
   );
 };

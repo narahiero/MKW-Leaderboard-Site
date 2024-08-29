@@ -41,18 +41,10 @@ const LeaderboardChartsView = () => {
   }, [flapState, glitchState, regionState]);
 
   return (
-    <div>
-      <div>
-        <div>
-            <RegionButtons onButtonClick={handleRegionClick} />
-        </div>
-        <div>
-            <GlitchButtons onButtonClick={handleGlitchClick} />
-        </div>
-        <div>
-            <FlapButtons onButtonClick={handleFlapClick} />
-        </div>
-      </div>
+    <div className="main">
+      <RegionButtons onButtonClick={handleRegionClick} />
+      <GlitchButtons onButtonClick={handleGlitchClick} />
+      <FlapButtons onButtonClick={handleFlapClick} />
       <div className="table-container">
         <WRCharts charts={wrCharts} />
       </div>

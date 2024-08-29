@@ -77,11 +77,9 @@ const PlayerView: React.FC<PlayerViewProps> = ({ playerId }) => {
   }
 
   return (
-    <div>
-      <div className="playerinfo-container">
-        <PlayerInfoTable player={playerState} />
-      </div>
-      <div className="timesheet-container">
+    <div className="main">
+      <PlayerInfoTable player={playerState} />
+      <div className="table-container">
         <TimeSheetTable timesheet={ng3LapTimeSheet} header="Non-SC - 3Lap" totalAF={0} totalTotalTime={0} totalPRSR={0} footer={''}/>
         <TimeSheetTable timesheet={g3LapTimeSheet} header="Unrestricted - 3Lap" totalAF={0} totalTotalTime={0} totalPRSR={0} footer={''}/>
         <TimeSheetTable timesheet={ngFlapTimeSheet} header="Non-SC - Flap" totalAF={totalNGAF} totalTotalTime={totalNGTotalTime} totalPRSR={totalNGPRSR} footer={'Non-SC'}/>
